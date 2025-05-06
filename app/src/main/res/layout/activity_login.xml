@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".views.LoginActivity"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="320dp"
+        android:layout_height="200dp"
+        android:contentDescription="logo app"
+        android:src="@drawable/logo_app"
+        tools:ignore="HardcodedText"
+        android:layout_gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingHorizontal="10dp"
+        android:paddingTop="10dp"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        >
+
+        <LinearLayout
+            android:id="@+id/btnLoginViaFacebook"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            >
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/fb_icon"
+                android:contentDescription="fb"
+                tools:ignore="HardcodedText"
+                app:shapeAppearanceOverlay="@style/RoundedCornerImage"/>
+
+            <TextView
+                android:background="@drawable/rounded_textview"
+                android:backgroundTint="#2190E9"
+                android:paddingHorizontal="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Đăng nhập bằng Facebook"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                tools:ignore="HardcodedText"
+                android:gravity="center_vertical"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnLoginViaGoogle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables"
+            android:gravity="center"
+            android:layout_marginBottom="10dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/google_icon"
+                android:contentDescription="fb"
+                tools:ignore="HardcodedText"
+                app:shapeAppearanceOverlay="@style/RoundedCornerImage"/>
+
+            <TextView
+                android:background="@drawable/rounded_textview"
+                android:backgroundTint="#F80743"
+                android:paddingHorizontal="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Đăng nhập bằng Google"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                tools:ignore="HardcodedText"
+                android:gravity="center_vertical"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/btnLoginViaAccount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables"
+            android:gravity="center"
+            android:layout_marginBottom="10dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/phone_icon"
+                android:contentDescription="fb"
+                tools:ignore="HardcodedText"
+                app:shapeAppearanceOverlay="@style/RoundedCornerImage"/>
+
+            <TextView
+                android:background="@drawable/rounded_textview"
+                android:backgroundTint="#2B9D2F"
+                android:paddingHorizontal="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Đăng nhập bằng\n Số điện thại hoặc gmail"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                tools:ignore="HardcodedText"
+                android:gravity="center_vertical"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bạn chưa có tài khoản"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/btnGoRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:text="Đăng ký"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
