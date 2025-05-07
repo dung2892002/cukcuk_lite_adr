@@ -13,8 +13,12 @@
         android:theme="@style/Theme.App"
         tools:targetApi="31">
         <activity
-            android:name=".views.RegisterActivity"
+            android:name=".screens.AppInfo"
             android:exported="false" />
+        <activity
+            android:name=".views.RegisterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".views.LoginViaAccountActivity"
             android:exported="false" />

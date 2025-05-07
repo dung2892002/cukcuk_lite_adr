@@ -3,6 +3,9 @@ package com.example.app.views
 import android.app.ComponentCaller
 import android.content.Intent
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.RelativeSizeSpan
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +23,7 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var presenter: LoginContract.Presenter
     private val RC_SIGN_IN = 100
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -47,12 +51,27 @@ class LoginActivity : AppCompatActivity(), LoginContract.View {
             presenter.onRegisterClicked()
         }
 
+        handleResizeTextButton()
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+
+    private fun handleResizeTextButton() {
+        val text = binding.txtTextResize.text.toString()
+        val spannable = SpannableString(text)
+
+        spannable.setSpan(
+            RelativeSizeSpan(0.8f), // 80% size hiện tại
+            0,
+            "Đăng nhập bằng".length,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        binding.txtTextResize.text = spannable
     }
 
 

@@ -8,7 +8,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="250dp"
         android:layout_gravity="center"
         android:contentDescription="logo app"
         android:scaleType="fitXY"
@@ -16,12 +16,7 @@
         tools:ignore="HardcodedText" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:paddingHorizontal="10dp"
-        android:paddingTop="20dp"
-        android:orientation="vertical"
-        android:layout_weight="1"
+        style="@style/LoginActivity"
         tools:ignore="InefficientWeight">
 
         <LinearLayout
@@ -30,17 +25,23 @@
             style="@style/ButtonMethodLogin"
             >
 
-            <com.google.android.material.imageview.ShapeableImageView
-                style="@style/ButtonMethodLogin.Image"
-                app:srcCompat="@drawable/fb_icon"
-                android:contentDescription="fb"
-                tools:ignore="HardcodedText"
-                app:shapeAppearanceOverlay="@style/RoundedCornerImage"/>
+            <FrameLayout style="@style/ButtonMethodLogin.FrameImage"
+                android:background="@drawable/radius_left"
+                android:backgroundTint="#062C8C"
+                >
+
+                <ImageView
+                    style="@style/ButtonMethodLogin.Image"
+                    android:layout_gravity="center"
+                    android:contentDescription="fb"
+                    android:src="@drawable/ic_facebook"
+                    tools:ignore="HardcodedText" />
+            </FrameLayout>
 
             <TextView
                 style="@style/ButtonMethodLogin.Text"
                 android:background="@drawable/rounded_textview"
-                android:backgroundTint="#1076C8"
+                android:backgroundTint="#006FCE"
                 android:text="Đăng nhập bằng Facebook"
                 tools:ignore="HardcodedText" />
 
@@ -50,17 +51,23 @@
             android:id="@+id/btnLoginViaGoogle"
             style="@style/ButtonMethodLogin">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                style="@style/ButtonMethodLogin.Image"
-                android:src="@drawable/google_icon"
-                android:contentDescription="fb"
-                tools:ignore="HardcodedText"
-                app:shapeAppearanceOverlay="@style/RoundedCornerImage"/>
+            <FrameLayout style="@style/ButtonMethodLogin.FrameImage"
+                android:background="@drawable/radius_left"
+                android:backgroundTint="#8C0606"
+                >
+
+                <ImageView
+                    style="@style/ButtonMethodLogin.Image"
+                    android:layout_gravity="center"
+                    android:contentDescription="fb"
+                    android:src="@drawable/ic_google"
+                    tools:ignore="HardcodedText" />
+            </FrameLayout>
 
             <TextView
                 style="@style/ButtonMethodLogin.Text"
                 android:background="@drawable/rounded_textview"
-                android:backgroundTint="#D0345B"
+                android:backgroundTint="#E25578"
                 android:text="Đăng nhập bằng Google"
                 tools:ignore="HardcodedText"/>
 
@@ -70,19 +77,31 @@
             android:id="@+id/btnLoginViaAccount"
             style="@style/ButtonMethodLogin">
 
-            <com.google.android.material.imageview.ShapeableImageView
-                style="@style/ButtonMethodLogin.Image"
-                android:src="@drawable/phone_icon"
-                android:contentDescription="fb"
-                tools:ignore="HardcodedText"
-                app:shapeAppearanceOverlay="@style/ButtonMethodLogin.Image"/>
+            <FrameLayout style="@style/ButtonMethodLogin.FrameImage"
+                android:background="@drawable/radius_left"
+                android:backgroundTint="#00A89B"
+                >
 
-            <TextView
-                style="@style/ButtonMethodLogin.Text"
-                android:background="@drawable/rounded_textview"
-                android:backgroundTint="#23B62C"
-                android:text="Đăng nhập bằng\nSố điện thại hoặc email"
-                tools:ignore="HardcodedText"/>
+                <ImageView
+                    style="@style/ButtonMethodLogin.Image"
+                    android:layout_gravity="center"
+                    android:contentDescription="fb"
+                    android:src="@drawable/ic_phone"
+                    tools:ignore="HardcodedText" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/txtTextResize"
+                    style="@style/ButtonMethodLogin.Text"
+                    android:background="@drawable/rounded_textview"
+                    android:backgroundTint="#1BD1BD"
+                    android:text="Đăng nhập bằng\nSố điện thại hoặc email"
+                    tools:ignore="HardcodedText"/>
+            </LinearLayout>
 
         </LinearLayout>
 

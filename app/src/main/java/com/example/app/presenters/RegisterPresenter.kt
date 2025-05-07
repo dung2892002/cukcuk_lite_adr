@@ -4,18 +4,21 @@ import com.example.app.contract.RegisterContract
 
 class RegisterPresenter(private val view: RegisterContract.View) : RegisterContract.Presenter {
     override fun handleRegisterAccount(username: String, password: String) {
-        if (checkRequest(username, password)) {
+        val messageFail = checkRequest(username, password)
+        if (messageFail.isNullOrEmpty()) {
             view.showRegisterSuccess()
         }
         else {
-            view.showRegisterFailed()
+            view.showRegisterFailed(messageFail)
         }
     }
 
-    private fun checkRequest(username: String, password: String) : Boolean {
-        if (!checkPassword(password)) return false
-        if (!isEmailOrPhone(username)) return false
-        return true
+    private fun checkRequest(username: String, password: String) : String? {
+        if (username.isEmpty()) return "Số điện thoại hoặc email không được để trống"
+        if (password.isEmpty()) return "Mật khẩu không được để trống"
+        if (!isEmailOrPhone(username)) return "Email hoặc số điện thoại sai định dạng"
+        if (!checkPassword(password)) return "Mật khẩu phải từ 8 kí tự, có chữ hoa, chữ thường, chữ số và kí tự đặc biệt"
+        return null
     }
 
     private fun checkPassword(password: String) : Boolean {

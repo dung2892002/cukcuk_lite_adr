@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    style="@style/LinearBase"
+    tools:context=".screens.AppInfo">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/appInfoToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="40sp"
+        android:background="@color/bg_login_via_account"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="Thông tin sản phẩm"
+        android:titleTextColor="#FFFFFF"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+    <ImageView
+        android:layout_width="240dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:contentDescription="no"
+
+        android:src="@drawable/logo_app_info"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_info"
+
+        android:paddingHorizontal="20dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_info_2"
+
+        android:layout_marginTop="10dp"
+        android:paddingHorizontal="20dp"/>
+
+    <ListView
+        android:layout_marginStart="40dp"
+        android:id="@+id/lvAppInfos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        />
+
+</LinearLayout>

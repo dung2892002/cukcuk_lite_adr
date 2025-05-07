@@ -1,10 +1,12 @@
 package com.example.app.views
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -18,6 +20,7 @@ import com.example.app.R
 import com.example.app.contract.LoginAccountContract
 import com.example.app.databinding.ActivityLoginViaAccountBinding
 import com.example.app.presenters.LoginAccountPresenter
+import com.example.app.screens.AppInfo
 
 class LoginViaAccountActivity : AppCompatActivity(), LoginAccountContract.View {
     private lateinit var binding: ActivityLoginViaAccountBinding
@@ -32,13 +35,51 @@ class LoginViaAccountActivity : AppCompatActivity(), LoginAccountContract.View {
         presenter = LoginAccountPresenter(this)
 
         setupToolbar()
+        setupInput()
         handleLogin()
         handleForgetPassword()
+        goAppInfo()
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
+        }
+    }
+
+    private fun goAppInfo() {
+        binding.btnAppInfo.setOnClickListener {
+            val intent = Intent(this, AppInfo::class.java)
+            startActivity(intent)
+        }
+    }
+
+
+    private fun setupInput() {
+        binding.edtUsername.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.btnClearUsername.visibility = View.VISIBLE
+            }
+            else {
+                binding.btnClearUsername.visibility = View.GONE
+            }
+        }
+
+        binding.edtPassword.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.btnClearPassword.visibility = View.VISIBLE
+            }
+            else {
+                binding.btnClearPassword.visibility = View.GONE
+            }
+        }
+
+        binding.btnClearUsername.setOnClickListener {
+            binding.edtUsername.setText("")
+        }
+
+        binding.btnClearPassword.setOnClickListener {
+            binding.edtPassword.setText("")
         }
     }
 
@@ -81,7 +122,7 @@ class LoginViaAccountActivity : AppCompatActivity(), LoginAccountContract.View {
                 val value = dialogView.findViewById<EditText>(R.id.edtForgotPassword).text.toString()
 
                 if (value.isEmpty()) {
-                    Toast.makeText(this, "Nhap sdt or email", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Nhập sdt or email", Toast.LENGTH_SHORT).show()
                 }
                 else {
                     presenter.sendForgotPassword(value)

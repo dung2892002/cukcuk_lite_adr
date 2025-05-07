@@ -25,10 +25,6 @@
         android:src="@drawable/app_icon_white"
         tools:ignore="HardcodedText" />
 
-    <TextView
-        style="@style/LoginViaAccount.AppTitle"
-        android:text="CUKCUK LITE"
-        tools:ignore="HardcodedText" />
 
     <LinearLayout
         style="@style/LoginViaAccount.AccountInput"
@@ -45,16 +41,22 @@
 
             <EditText
                 android:id="@+id/edtUsername"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                style="@style/LoginViaAccount.AccountInput.Group.Input"
                 android:hint="Số điện thoại hoặc email"
                 android:importantForAutofill="no"
                 android:inputType="text"
-                android:minHeight="48dp"
+                tools:ignore="HardcodedText" />
+
+            <ImageButton
+                android:id="@+id/btnClearUsername"
+                style="@style/LoginViaAccount.AccountInput.Group.ButtonClear"
+                android:src="@drawable/ic_close"
+                android:contentDescription="no"
                 tools:ignore="HardcodedText" />
 
         </LinearLayout>
+
+        <View style="@style/LoginViaAccount.AccountInput.Line" />
 
         <LinearLayout style="@style/LoginViaAccount.AccountInput.Group">
 
@@ -66,44 +68,52 @@
 
             <EditText
                 android:id="@+id/edtPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                style="@style/LoginViaAccount.AccountInput.Group.Input"
                 android:hint="Mật khẩu"
                 android:importantForAutofill="no"
                 android:inputType="textPassword"
-                android:minHeight="48dp"
+                tools:ignore="HardcodedText"
+                />
+
+            <ImageButton
+                android:id="@+id/btnClearPassword"
+                style="@style/LoginViaAccount.AccountInput.Group.ButtonClear"
+                android:src="@drawable/ic_close"
+                android:contentDescription="no"
+                android:background="@color/cardview_light_background"
                 tools:ignore="HardcodedText" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnLogin"
+    <LinearLayout style="@style/LoginViaAccount.Actions">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogin"
+            style="@style/LoginViaAccount.Actions.ButtonSubmit"
+            android:text="ĐĂNG NHẬP"
+            tools:ignore="HardcodedText" />
+
+
+        <TextView
+            android:id="@+id/txtForgetPassword"
+            style="@style/LoginViaAccount.Actions.LinkForgetPassword"
+            android:text="Quên mật khẩu?"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/radius_block"
-        android:backgroundTint="#166BAF"
-        android:text="ĐĂNG NHẬP"
-        android:textColor="#ffffff"
-        android:textSize="20sp"
-        tools:ignore="HardcodedText" />
-
-
-    <TextView
-        android:id="@+id/txtForgetPassword"
-        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:text="Quên mật khẩu?"
-        android:textColor="#ffffff"
-        android:textSize="20sp"
-        tools:ignore="HardcodedText" />
+        android:layout_weight="1" />
+
+    <ImageButton
+        android:id="@+id/btnAppInfo"
+        style="@style/LoginViaAccount.ButtonInfo"
+        android:src="@drawable/ic_info"
+        android:contentDescription="no"
+        tools:ignore="HardcodedText"/>
 
 
 </LinearLayout>

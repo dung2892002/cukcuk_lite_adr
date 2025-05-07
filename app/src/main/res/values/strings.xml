@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">app</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_info">CUKCUK LITE là ứng dụng MIỄN PHÍ dành riêng cho các quán nhỏ và quầy di động phục vụ ăn uống
+    giúp chủ quán ghi món, tính tiền và thống kê doanh thu bán hàng nhanh chóng, dễ dàng trên điện thoại.</string>
+    <string name="app_info_2">CUKCUK LITE giúp chủ quán thực hiện các nghiệp vụ sau:</string>
 </resources>

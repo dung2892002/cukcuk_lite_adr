@@ -3,7 +3,7 @@ package com.example.app.contract
 interface RegisterContract {
     interface View {
         fun showRegisterSuccess()
-        fun showRegisterFailed()
+        fun showRegisterFailed(message:String)
     }
 
     interface Presenter {
