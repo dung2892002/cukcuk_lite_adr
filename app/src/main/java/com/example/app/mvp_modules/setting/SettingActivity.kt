@@ -1,27 +1,24 @@
-package com.example.app.screens
+package com.example.app.mvp_modules.setting
 
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.app.R
-import com.example.app.mvp_modules.login.adapters.AppInfoAdapter
-import com.example.app.databinding.ActivityAppInfoBinding
+import com.example.app.databinding.ActivitySettingBinding
 
-class AppInfo : AppCompatActivity() {
-    private lateinit var binding: ActivityAppInfoBinding
+class SettingActivity : AppCompatActivity() {
+    private lateinit var binding: ActivitySettingBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        binding = ActivityAppInfoBinding.inflate(layoutInflater)
+        binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupToolbar()
-        setupListView()
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -30,28 +27,16 @@ class AppInfo : AppCompatActivity() {
         }
     }
 
-    private fun setupListView() {
-        val items = mutableListOf<String>()
-        items.add("Cập nhật thực đơn của quán")
-        items.add("Ghi nhận các món khách gọi")
-        items.add("Tính tiền cho khách")
-        items.add("Xem thống kê doanh thu bán hàng theo thời gian")
-        items.add("Xem thống kê doanh thu bán hàng theo mặt hàng")
-
-        val adapter = AppInfoAdapter(this, items)
-        binding.lvAppInfos.adapter = adapter
-    }
-
     private fun setupToolbar() {
-        setSupportActionBar(binding.appInfoToolbar)
+
+        setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(true)
-    }
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.app_info_menu, menu);
-        return true;
+        binding.toolbarTitle.text = buildString {
+            append("Thiết lập")
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

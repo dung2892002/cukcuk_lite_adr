@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <group android:checkableBehavior="single" >
+        <item
+            android:id="@+id/nav_sale"
+            android:title="Bán hàng"
+            android:icon="@drawable/ic_nav_sale"
+            app:showAsAction="ifRoom"
+            tools:ignore="HardcodedText" />
+
+        <item android:id="@+id/nav_menu"
+            android:title="Thực đơn"
+            android:icon="@drawable/ic_nav_menu"
+            app:showAsAction="ifRoom"
+            tools:ignore="HardcodedText" />
+
+        <item android:id="@+id/nav_statistic"
+            android:title="Báo cáo"
+            android:icon="@drawable/ic_nav_statistic"
+            app:showAsAction="ifRoom"
+            tools:ignore="HardcodedText" />
+    </group>
+
+    <item android:title="Thiết lập"
+        tools:ignore="HardcodedText"
+        >
+        <menu>
+            <item
+                android:id="@+id/nav_sync_data"
+                android:title="Đồng bộ dữ liệu"
+                android:icon="@drawable/ic_nav_sync_data"
+                app:showAsAction="ifRoom"
+                tools:ignore="HardcodedText" />
+
+            <item android:id="@+id/nav_setting"
+                android:title="Settings"
+                android:icon="@drawable/ic_nav_setting"
+                app:showAsAction="ifRoom"
+                tools:ignore="HardcodedText" />
+
+            <item android:id="@+id/nav_link_account"
+                android:title="Liên kết tài khoản"
+                android:icon="@drawable/ic_nav_link_account"
+                app:showAsAction="ifRoom"
+                tools:ignore="HardcodedText" />
+        </menu>
+    </item>
+
+    <item android:title="Trợ giúp"
+        tools:ignore="HardcodedText">
+        <menu>
+            <item
+                android:id="@+id/nav_notification"
+                android:title="Thông báo"
+                android:icon="@drawable/ic_nav_notification"
+                app:showAsAction="ifRoom"
+                tools:ignore="HardcodedText" />
+
+            <item android:id="@+id/nav_share"
+                android:title="Giới thiệu cho bạn"
+                android:icon="@drawable/ic_nav_share"
+                app:showAsAction="ifRoom"
+                tools:ignore="HardcodedText" />
+
+            <item android:id="@+id/nav_rating"
+                android:title="Đánh giá ứng dụng"
+                android:icon="@drawable/ic_nav_rating"
+                app:showAsAction="ifRoom"
+                tools:ignore="HardcodedText" />
+
+            <item android:id="@+id/nav_suggestion"
+                android:title="Góp ý với nhà phát triển"
+                android:icon="@drawable/ic_nav_suggestion"
+                app:showAsAction="ifRoom"
+                tools:ignore="HardcodedText" />
+
+            <item android:id="@+id/nav_app_info"
+                android:title="Thông tin sản phẩm"
+                android:icon="@drawable/ic_nav_app_info"
+                app:showAsAction="ifRoom"
+                tools:ignore="HardcodedText" />
+        </menu>
+    </item>
+
+    <item android:title="Tài khoản"
+        tools:ignore="HardcodedText">
+        <menu>
+            <item
+                android:id="@+id/nav_password"
+                android:title="Đặt mật khẩu"
+                android:icon="@drawable/ic_nav_password"
+                app:showAsAction="ifRoom"
+                tools:ignore="HardcodedText" />
+
+            <item android:id="@+id/nav_logout"
+                android:title="Đăng xuất"
+                android:icon="@drawable/ic_nav_logout"
+                app:showAsAction="ifRoom"
+
+                tools:ignore="HardcodedText" />
+
+        </menu>
+    </item>
+</menu>

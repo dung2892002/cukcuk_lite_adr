@@ -13,17 +13,38 @@
         android:theme="@style/Theme.App"
         tools:targetApi="31">
         <activity
+            android:name=".mvp_modules.set_password.SetPasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvp_modules.suggestion.SuggestionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvp_modules.app_info.AppInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvp_modules.notification.NotificationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvp_modules.link_account.LinkAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvp_modules.setting.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvp_modules.sync_data.SyncDataActivity"
+            android:exported="false" />
+        <activity
             android:name=".screens.AppInfo"
             android:exported="false" />
         <activity
-            android:name=".views.RegisterActivity"
+            android:name=".mvp_modules.register.RegisterActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".views.LoginViaAccountActivity"
+            android:name=".mvp_modules.login_with_account.LoginAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".views.LoginActivity"
+            android:name=".mvp_modules.login.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

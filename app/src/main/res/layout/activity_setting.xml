@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    style="@style/LinearBase"
+    tools:context=".mvp_modules.sync_data.SyncDataActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/BaseToolbar">
+
+        <TextView
+            android:id="@+id/toolbarTitle"
+            android:textColor="@android:color/white"
+            style="@style/BaseToolbar.Title" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+</LinearLayout>
