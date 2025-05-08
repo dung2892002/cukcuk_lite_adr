@@ -67,10 +67,7 @@ class RegisterActivity : AppCompatActivity(), RegisterContract.View {
 
     private fun handleRegister() {
         binding.btnSubmitRegister.setOnClickListener {
-            val username = binding.edtRegisterUsername.text.toString()
-            val password = binding.edtRegisterPassword.text.toString()
-
-            presenter.handleRegisterAccount(username, password)
+            submitRegisterForm()
         }
     }
 
@@ -93,9 +90,7 @@ class RegisterActivity : AppCompatActivity(), RegisterContract.View {
                 true
             }
             R.id.btnSubmitRegisterToolbar -> {
-                val username = binding.edtRegisterUsername.text.toString()
-                val password = binding.edtRegisterPassword.text.toString()
-                presenter.handleRegisterAccount(username, password)
+                submitRegisterForm()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -103,11 +98,18 @@ class RegisterActivity : AppCompatActivity(), RegisterContract.View {
     }
 
     override fun showRegisterSuccess() {
-        Toast.makeText(this, "register success", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Đăng ký thành công", Toast.LENGTH_SHORT).show()
         finish()
     }
 
     override fun showRegisterFailed(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
+
+    private fun submitRegisterForm() {
+        val username = binding.edtRegisterUsername.text.toString().trim()
+        val password = binding.edtRegisterPassword.text.toString().trim()
+        presenter.handleRegisterAccount(username, password)
+    }
+
 }

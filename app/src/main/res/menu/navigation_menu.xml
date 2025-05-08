@@ -10,7 +10,8 @@
             android:title="Bán hàng"
             android:icon="@drawable/ic_nav_sale"
             app:showAsAction="ifRoom"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            android:checked="true"/>
 
         <item android:id="@+id/nav_menu"
             android:title="Thực đơn"

@@ -20,11 +20,12 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.app.MainActivity
 import com.example.app.R
 import com.example.app.databinding.ActivityLoginAccountBinding
-import com.example.app.screens.AppInfo
+import com.example.app.mvp_modules.login.screens.AppInfo
 
 class LoginAccountActivity : AppCompatActivity(), LoginAccountContract.View {
     private lateinit var binding: ActivityLoginAccountBinding
     private lateinit var presenter: LoginAccountContract.Presenter
+    private lateinit var dialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,7 +110,7 @@ class LoginAccountActivity : AppCompatActivity(), LoginAccountContract.View {
     private fun handleForgetPassword() {
         binding.txtForgetPassword.setOnClickListener {
             val dialogView = LayoutInflater.from(this).inflate(R.layout.forgot_password, null)
-            val dialog = AlertDialog.Builder(this)
+            dialog = AlertDialog.Builder(this)
                 .setView(dialogView)
                 .setCancelable(false)
                 .create()
@@ -120,22 +121,13 @@ class LoginAccountActivity : AppCompatActivity(), LoginAccountContract.View {
 
             dialogView.findViewById<Button>(R.id.btnSubmitForgetPassword).setOnClickListener {
                 val value = dialogView.findViewById<EditText>(R.id.edtForgotPassword).text.toString()
-
-                if (value.isEmpty()) {
-                    Toast.makeText(this, "Nhập sdt or email", Toast.LENGTH_SHORT).show()
-                }
-                else {
-                    presenter.sendForgotPassword(value)
-                    Toast.makeText(this, "Send data to sever: $value", Toast.LENGTH_SHORT).show()
-                    dialog.dismiss()
-                }
+                presenter.sendForgotPassword(value)
             }
 
             dialog.show()
         }
 
     }
-
 
     private fun handleLogin() {
         binding.btnLogin.setOnClickListener {
@@ -145,17 +137,7 @@ class LoginAccountActivity : AppCompatActivity(), LoginAccountContract.View {
         }
     }
 
-
-
-    override fun showLoading() {
-        Toast.makeText(this, "Đang xử lý...", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun hideLoading() {
-        // Nếu dùng ProgressDialog hoặc ProgressBar thì ẩn tại đây, tạm thời không cần
-    }
-
-    override fun showLoginSuccess(username: String, password: String) {
+    override fun handleLoginSuccess(username: String, password: String) {
         Toast.makeText(this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show()
 
         val sharedPref = getSharedPreferences("Auth", Context.MODE_PRIVATE)
@@ -174,8 +156,9 @@ class LoginAccountActivity : AppCompatActivity(), LoginAccountContract.View {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
-    override fun showForgotPasswordMessage(message: String) {
+    override fun showForgotPasswordMessage(message: String, state: Boolean) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        if (state) dialog.dismiss()
     }
 
 }

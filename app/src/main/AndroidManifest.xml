@@ -34,7 +34,7 @@
             android:name=".mvp_modules.sync_data.SyncDataActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.AppInfo"
+            android:name=".mvp_modules.login.screens.AppInfo"
             android:exported="false" />
         <activity
             android:name=".mvp_modules.register.RegisterActivity"

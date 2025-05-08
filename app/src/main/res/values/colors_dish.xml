@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="color_1">#FF000000</color> <!-- Black -->
+    <color name="color_2">#FFFFFFFF</color> <!-- White -->
+    <color name="color_3">#FFFF0000</color> <!-- Red -->
+    <color name="color_4">#FF00FF00</color> <!-- Green -->
+    <color name="color_5">#FF0000FF</color> <!-- Blue -->
+    <color name="color_6">#FFFFFF00</color> <!-- Yellow -->
+    <color name="color_7">#FFFFA500</color> <!-- Orange -->
+    <color name="color_8">#FF800080</color> <!-- Purple -->
+    <color name="color_9">#FF00FFFF</color> <!-- Cyan -->
+    <color name="color_10">#FFFFC0CB</color> <!-- Pink -->
+    <color name="color_11">#FF808080</color> <!-- Gray -->
+    <color name="color_12">#FFA52A2A</color> <!-- Brown -->
+    <color name="color_13">#FF008080</color> <!-- Teal -->
+    <color name="color_14">#FF000080</color> <!-- Navy -->
+    <color name="color_15">#FFB0C4DE</color> <!-- LightSteelBlue -->
+    <color name="color_16">#FFE6E6FA</color> <!-- Lavender -->
+    <color name="color_17">#FFF0E68C</color> <!-- Khaki -->
+    <color name="color_18">#FFFA8072</color> <!-- Salmon -->
+    <color name="color_19">#FFD2B48C</color> <!-- Tan -->
+    <color name="color_20">#FF4682B4</color> <!-- SteelBlue -->
+    <color name="color_21">#FFDC143C</color> <!-- Crimson -->
+    <color name="color_22">#FFADFF2F</color> <!-- GreenYellow -->
+    <color name="color_23">#FF7FFFD4</color> <!-- Aquamarine -->
+    <color name="color_24">#FFDEB887</color> <!-- BurlyWood -->
+    <color name="color_25">#FF5F9EA0</color> <!-- CadetBlue -->
+    <color name="color_26">#FFFFD700</color> <!-- Gold -->
+    <color name="color_27">#FFDA70D6</color> <!-- Orchid -->
+    <color name="color_28">#FF8A2BE2</color> <!-- BlueViolet -->
+    <color name="color_29">#FF2E8B57</color> <!-- SeaGreen -->
+    <color name="color_30">#FF3CB371</color> <!-- MediumSeaGreen -->
+    <color name="color_31">#FF1E90FF</color> <!-- DodgerBlue -->
+    <color name="color_32">#FF708090</color> <!-- SlateGray -->
+</resources>

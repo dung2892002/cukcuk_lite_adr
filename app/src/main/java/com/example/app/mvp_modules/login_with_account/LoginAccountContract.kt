@@ -2,11 +2,9 @@ package com.example.app.mvp_modules.login_with_account
 
 interface LoginAccountContract {
     interface View {
-        fun showLoading()
-        fun hideLoading()
-        fun showLoginSuccess(username: String, password: String)
+        fun handleLoginSuccess(username: String, password: String)
         fun showLoginError(message: String)
-        fun showForgotPasswordMessage(message: String)
+        fun showForgotPasswordMessage(message: String, state: Boolean)
     }
 
     interface Presenter {

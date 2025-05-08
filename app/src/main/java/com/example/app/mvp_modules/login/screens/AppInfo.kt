@@ -1,4 +1,4 @@
-package com.example.app.screens
+package com.example.app.mvp_modules.login.screens
 
 import android.os.Bundle
 import android.view.Menu
@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.app.R
-import com.example.app.mvp_modules.login.adapters.AppInfoAdapter
 import com.example.app.databinding.ActivityAppInfoBinding
+import com.example.app.mvp_modules.login.adapters.AppInfoAdapter
 
 class AppInfo : AppCompatActivity() {
     private lateinit var binding: ActivityAppInfoBinding

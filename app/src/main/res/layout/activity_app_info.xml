@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     style="@style/LinearBase"
-    tools:context=".screens.AppInfo">
+    tools:context=".mvp_modules.login.screens.AppInfo">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/appInfoToolbar"
