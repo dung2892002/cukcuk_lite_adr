@@ -29,6 +29,7 @@
 
     <style name="BaseImage" parent="RemovePaddingAndMargin">
         <item name="android:background">@android:color/transparent</item>
+        <item name="contentDescription">@string/content_description</item>
     </style>
 
     <style name="BaseText" parent="RemovePaddingAndMargin">
@@ -57,6 +58,11 @@
         <item name="cornerSizeBottomLeft">4dp</item>
         <item name="cornerSizeTopRight">0dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <style name="Required" parent="BaseText">
+        <item name="android:textColor">#FF0000</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 </resources>

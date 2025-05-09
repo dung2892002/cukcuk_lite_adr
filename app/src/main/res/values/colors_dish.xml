@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="color_1">#FF000000</color> <!-- Black -->
-    <color name="color_2">#FFFFFFFF</color> <!-- White -->
+    <color name="color_2">#B4AAAA</color> <!-- White -->
     <color name="color_3">#FFFF0000</color> <!-- Red -->
     <color name="color_4">#FF00FF00</color> <!-- Green -->
     <color name="color_5">#FF0000FF</color> <!-- Blue -->

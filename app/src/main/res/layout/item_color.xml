@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/viewColor"
+    style="@style/DishForm.Group.Last.Child.Button"
+    android:layout_marginStart="0dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginVertical="5dp">
+
+    <ImageView
+        android:id="@+id/imgCheckColor"
+        style="@style/DishForm.Group.Last.Child.Button.Image"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_yes"
+        android:visibility="gone"/>
+
+</com.google.android.material.card.MaterialCardView>

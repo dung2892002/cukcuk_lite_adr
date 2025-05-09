@@ -1,6 +1,4 @@
 package com.example.app
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -15,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.app.databinding.ActivityMainBinding
-import com.example.app.mvp_modules.menu.MenuFragment
+import com.example.app.mvp_modules.menu.views.MenuFragment
 import com.example.app.mvp_modules.sale.SaleFragment
 import com.example.app.mvp_modules.statistic.StatisticFragment
 import androidx.core.view.size

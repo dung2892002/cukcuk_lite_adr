@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    style="@style/LinearBase"
+    tools:context=".mvp_modules.menu.views.DishFormActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/BaseToolbar"
+        app:menu="@menu/menu_dish_form">
+
+        <TextView
+            android:id="@+id/txtToolbarTitle"
+            style="@style/BaseToolbar.Title" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout style="@style/DishForm.Group">
+        <TextView
+            style="@style/DishForm.Group.Label"
+            android:text="Tên món"
+
+            tools:ignore="HardcodedText" />
+
+        <TextView style="@style/Required"
+            android:text="*"
+            tools:ignore="HardcodedText" />
+
+        <EditText
+            android:id="@+id/edtDishName"
+            style="@style/DishForm.Group.Input"
+            android:hint="Nhập tên món"
+            android:importantForAutofill="no"
+            tools:ignore="HardcodedText,TextFields" />
+
+        <ImageButton
+            style="@style/DishForm.Group.Button"
+            android:importantForAccessibility="no"
+            />
+    </LinearLayout>
+    <View style="@style/Line"/>
+
+    <LinearLayout style="@style/DishForm.Group">
+        <TextView
+            style="@style/DishForm.Group.Label"
+            android:text="Giá bán"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/txtPrice"
+            style="@style/DishForm.Group.Input"
+            android:text="0"
+            tools:ignore="HardcodedText" />
+
+        <ImageButton
+            android:id="@+id/btnUpdatePrice"
+            style="@style/DishForm.Group.Button"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_arrow_right"
+            />
+
+    </LinearLayout>
+    <View style="@style/Line"/>
+
+    <LinearLayout style="@style/DishForm.Group">
+        <TextView
+            style="@style/DishForm.Group.Label"
+            android:text="Đơn vị tính"
+            tools:ignore="HardcodedText" />
+
+        <TextView style="@style/Required"
+            android:text="*"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/txtUnitName"
+            style="@style/DishForm.Group.Input"
+            tools:ignore="HardcodedText"
+            android:text="Chai"/>
+
+        <ImageButton
+            android:id="@+id/btnEditUnit"
+            style="@style/DishForm.Group.Button"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_arrow_right"
+            />
+    </LinearLayout>
+    <View style="@style/Line"/>
+
+    <LinearLayout style="@style/DishForm.Group.Last">
+
+        <LinearLayout style="@style/DishForm.Group.Last.Child" >
+            <TextView
+                style="@style/DishForm.Group.Label"
+                android:text="Màu sắc"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnSelectColor"
+                style="@style/DishForm.Group.Last.Child.Button"
+                >
+                <ImageView
+                    style="@style/DishForm.Group.Last.Child.Button.Image"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_colors" />
+            </com.google.android.material.card.MaterialCardView>
+
+
+        </LinearLayout>
+
+        <LinearLayout style="@style/DishForm.Group.Last.Child" >
+            <TextView
+                style="@style/DishForm.Group.Label"
+                android:text="Biểu tượng"
+                tools:ignore="HardcodedText" />
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/DishForm.Group.Last.Child.Button"
+                android:id="@+id/btnSelectImage"
+                >
+                <ImageView
+                    android:id="@+id/imgDish"
+                    style="@style/DishForm.Group.Last.Child.Button.Image"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_colors"/>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnSubmit"
+        style="@style/DishForm.ButtonSubmit"
+        android:text="CẤT"
+        tools:ignore="HardcodedText" />
+
+</LinearLayout>

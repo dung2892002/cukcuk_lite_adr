@@ -1,22 +1,14 @@
 package com.example.app.models
 
+import java.io.Serializable
 import java.util.UUID
 
-class Dish(
-    private var name: String,
-    private var price: Double,
-    unitDish: UnitDish,
-    private var color: String,
-    private var image: String
-) {
-    private var id: UUID = UUID.randomUUID()
-    private var unitId: UUID = unitDish.getId()
 
-    fun getId() : UUID {
-        return this.id
-    }
-
-    fun getPrice() : Double {
-        return this.price
-    }
-}
+data class Dish(
+    var id: UUID = UUID.randomUUID(),
+    var name: String,
+    var price: Double,
+    var unit: String,
+    var color: String,
+    var image: String
+) : Serializable

@@ -1,11 +1,7 @@
 package com.example.app.models
 
-import java.util.UUID
+import java.io.Serializable
 
-class UnitDish(name: String) {
-    private val id:UUID = UUID.randomUUID()
-
-    fun getId() : UUID {
-        return this.id
-    }
-}
+data class UnitDish(
+    var name: String
+) : Serializable

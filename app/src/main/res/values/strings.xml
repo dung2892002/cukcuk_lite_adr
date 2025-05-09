@@ -7,4 +7,5 @@
     <string name="app_info_2">CUKCUK LITE giúp chủ quán thực hiện các nghiệp vụ sau:</string>
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
+    <string name="content_description">No</string>
 </resources>

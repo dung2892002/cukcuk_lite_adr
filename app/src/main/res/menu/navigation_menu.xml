@@ -38,7 +38,7 @@
                 tools:ignore="HardcodedText" />
 
             <item android:id="@+id/nav_setting"
-                android:title="Settings"
+                android:title="Thiết lập"
                 android:icon="@drawable/ic_nav_setting"
                 app:showAsAction="ifRoom"
                 tools:ignore="HardcodedText" />
