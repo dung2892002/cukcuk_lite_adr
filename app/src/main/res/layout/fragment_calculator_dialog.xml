@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        style="@style/Calculator.Header"
+        tools:ignore="UseCompoundDrawables">
+        <TextView
+            style="@style/Calculator.Header.Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giá bán"
+            tools:ignore="HardcodedText" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/btnCloseCalculator"
+            style="@style/Calculator.Header.Button"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_close"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+
+    <LinearLayout style="@style/Calculator.Body">
+        <TextView
+            android:id="@+id/tvDisplay"
+            style="@style/Calculator.Body.Value"
+            android:text="0"
+            tools:ignore="HardcodedText" />
+
+        <GridLayout
+            android:id="@+id/gridButtons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:columnCount="4"
+            android:alignmentMode="alignMargins"
+            android:useDefaultMargins="false"
+            android:rowOrderPreserved="false">
+
+            <!-- Hàng 1 -->
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="C"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                tools:ignore="HardcodedText" />
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button.SmallerTextSize"
+                android:text="Giảm"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                tools:ignore="HardcodedText" />
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button.SmallerTextSize"
+                android:text="Tăng"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1"
+                tools:ignore="HardcodedText"/>
+            <androidx.appcompat.widget.AppCompatImageButton
+                style="@style/Calculator.Body.Button.Image"
+                android:src="@drawable/ic_remove"
+                android:contentDescription="Xóa"
+                android:layout_width="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_columnWeight="1"
+                tools:ignore="HardcodedText"/>
+
+            <!-- Hàng 2 -->
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="7"
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1" />
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="8"
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1" />
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="9"
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1" />
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="-"
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+
+                android:layout_marginEnd="0dp"
+                android:layout_columnWeight="1" />
+
+            <!-- Hàng 3 -->
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="4"
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1" />
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="5"
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1" />
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="6"
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1" />
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="+"
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_columnWeight="1" />
+
+            <!-- Hàng 4 -->
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="1"
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1" />
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="2"
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1" />
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="3"
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1" />
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="±"
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+
+                android:layout_marginEnd="0dp"
+                android:layout_columnWeight="1" />
+
+            <!-- Hàng 5 -->
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="0"
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1" />
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text="000"
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1" />
+            <androidx.appcompat.widget.AppCompatButton
+                style="@style/Calculator.Body.Button"
+                android:text=","
+                tools:ignore="HardcodedText"
+                android:layout_width="0dp"
+                android:layout_columnWeight="1" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_columnWeight="1"
+                android:orientation="horizontal">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnSubmitCalculator"
+                    style="@style/Calculator.Body.Button.Submit"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="0dp"
+                    android:text="Xong"
+                    tools:ignore="HardcodedText"/>
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnHandleCalculator"
+                    style="@style/Calculator.Body.Button.Submit"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:layout_marginEnd="0dp"
+                    android:text="="
+                    tools:ignore="HardcodedText"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+        </GridLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

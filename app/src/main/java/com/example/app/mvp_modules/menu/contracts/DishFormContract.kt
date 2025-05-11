@@ -6,6 +6,8 @@ interface DishFormContract {
     interface View{
         fun handleSubmitForm()
         fun handleSubmitFormResult(isSuccess: Boolean, message: String)
+        fun openCalculator()
+        fun openSelectUnitDish()
     }
 
     interface Presenter{

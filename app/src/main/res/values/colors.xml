@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="bg_login_via_account">#1A73E7</color>
     <color name="nav_item_selected">#FFCCCCCC</color>
+    <color name="gray">#FFCCCCCC</color>
+    <color name="gray_80">#EBEBEB</color>
 </resources>

@@ -24,8 +24,10 @@ import java.util.UUID
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.app.mvp_modules.calculator.CalculatorDialogFragment
 import com.example.app.mvp_modules.menu.adapters.ListColorAdapter
 import com.example.app.mvp_modules.menu.adapters.ListImageAdapter
+import com.example.app.utils.FormatDisplay
 import com.example.app.utils.ImageHelper
 
 class DishFormActivity : AppCompatActivity(), DishFormContract.View {
@@ -56,6 +58,22 @@ class DishFormActivity : AppCompatActivity(), DishFormContract.View {
 
         binding.btnSelectImage.setOnClickListener {
             showImagePickerPopup()
+        }
+
+        binding.btnUpdatePrice.setOnClickListener {
+            openCalculator()
+        }
+
+        binding.txtPrice.setOnClickListener {
+            openCalculator()
+        }
+
+        binding.btnEditUnit.setOnClickListener {
+            openSelectUnitDish()
+        }
+
+        binding.txtUnitName.setOnClickListener {
+            openSelectUnitDish()
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -89,6 +107,17 @@ class DishFormActivity : AppCompatActivity(), DishFormContract.View {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun openCalculator() {
+        CalculatorDialogFragment.newInstance(dish.price.toString()) {result ->
+            dish.price = result.toDouble()
+            binding.txtPrice.text = FormatDisplay.formatNumber(result.toString())
+        }.show(supportFragmentManager, null)
+    }
+
+    override fun openSelectUnitDish() {
+        Toast.makeText(this,"mo chon don vi tinh", Toast.LENGTH_SHORT).show()
     }
 
     @SuppressLint("InflateParams")
