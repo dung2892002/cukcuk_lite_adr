@@ -26,7 +26,7 @@ class CalculatorDialogFragment : DialogFragment(), CalculatorContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initialValue = arguments?.getString("initial_value") ?: ""
+        initialValue = arguments?.getString("initial_value")!!
 
         while (initialValue.last() == '0' && initialValue.contains('.')) {
             initialValue = initialValue.dropLast(1)
@@ -85,7 +85,7 @@ class CalculatorDialogFragment : DialogFragment(), CalculatorContract.View {
     }
 
     override fun updateDisplay(value: String) {
-
+        println(value)
         display.text = value
     }
 

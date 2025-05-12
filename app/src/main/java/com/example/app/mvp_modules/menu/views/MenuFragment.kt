@@ -12,15 +12,21 @@ import android.view.ViewGroup
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.FragmentMenuBinding
 import com.example.app.models.Dish
+import com.example.app.models.UnitDish
+import com.example.app.mvp_modules.menu.adapters.ListDishAdapter
 import com.example.app.mvp_modules.menu.contracts.MenuContract
 import com.example.app.mvp_modules.menu.presenters.MenuPresenter
+import java.util.UUID
 
 class MenuFragment : Fragment(), MenuContract.View {
     private lateinit var binding: FragmentMenuBinding
     private lateinit var presenter: MenuContract.Presenter
+    private var dishes: MutableList<Dish> = mutableListOf()
+    private lateinit var adapter: ListDishAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,9 +34,259 @@ class MenuFragment : Fragment(), MenuContract.View {
     ): View {
         binding = FragmentMenuBinding.inflate(inflater, container, false)
         presenter = MenuPresenter(this)
+
         setupToolbar()
+        addData()
+        setupAdapter()
 
         return binding.root
+    }
+
+    private fun setupAdapter() {
+        adapter = ListDishAdapter(requireContext(), dishes).apply {
+            onItemSelected = { dish ->
+                presenter.openDishForm(dish)
+            }
+        }
+        binding.recyclerListDish.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerListDish.adapter = adapter
+    }
+
+    private fun addData() {
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "100 cuốn chả giỏ",
+                price = 14000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "10 chai coca 2lit",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "10 chai nước mắm",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "50 cái sandwich",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+
+        dishes.add(
+            Dish(
+                id = UUID.randomUUID(),
+                name = "Bò húc",
+                price = 10000.0,
+                unit = UnitDish("Chai"),
+                color = "#FF00FF00",
+                image = "_1_banh_cuon.png",
+                isActive = true
+            )
+        )
+
+
+
     }
 
     private fun setupToolbar() {

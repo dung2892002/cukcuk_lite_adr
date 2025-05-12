@@ -12,9 +12,9 @@ object FormatDisplay {
         if (resultValue.last() == '.') {
             resultValue = resultValue.dropLast(1)
         }
+
         return try {
             val cleaned = resultValue.trimStart('0')
-
             val doubleValue = cleaned.toDoubleOrNull() ?: return "0"
 
             val symbols = DecimalFormatSymbols().apply {

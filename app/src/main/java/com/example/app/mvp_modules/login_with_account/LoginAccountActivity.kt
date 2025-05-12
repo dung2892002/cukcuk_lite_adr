@@ -109,7 +109,7 @@ class LoginAccountActivity : AppCompatActivity(), LoginAccountContract.View {
     @SuppressLint("InflateParams")
     private fun handleForgetPassword() {
         binding.txtForgetPassword.setOnClickListener {
-            val dialogView = LayoutInflater.from(this).inflate(R.layout.forgot_password, null)
+            val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_forgot_password, null)
             dialog = AlertDialog.Builder(this)
                 .setView(dialogView)
                 .setCancelable(false)

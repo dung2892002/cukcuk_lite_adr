@@ -8,7 +8,8 @@ data class Dish(
     var id: UUID = UUID.randomUUID(),
     var name: String,
     var price: Double,
-    var unit: String,
+    var unit: UnitDish,
     var color: String,
-    var image: String
+    var image: String,
+    var isActive: Boolean
 ) : Serializable

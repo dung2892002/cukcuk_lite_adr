@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/LinearBase"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="8dp"
+    android:gravity="center_vertical"
+    android:backgroundTint="#ffffffff">
+
+    <com.google.android.material.card.MaterialCardView
+        style="@style/DishForm.Group.Last.Child.Button"
+        android:id="@+id/colorDishDetail"
+        >
+        <ImageView
+            android:id="@+id/imgDishDetail"
+            style="@style/DishForm.Group.Last.Child.Button.Image"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_colors"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        style="@style/LinearBase"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="10dp">
+
+        <TextView style="@style/BaseText"
+            android:id="@+id/txtDishNameDetail"
+            android:textSize="16sp"
+            android:text="Bò húc"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
+        <TextView style="@style/BaseText"
+            android:id="@+id/txtDishPriceDetail"
+            android:textSize="14sp"
+            android:textColor="#808080"
+            android:text="Giá bán 12.000"
+            tools:ignore="HardcodedText"/>
+    </LinearLayout>
+
+    <ImageView
+        style="@style/BaseImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_arrow_right"/>
+</LinearLayout>

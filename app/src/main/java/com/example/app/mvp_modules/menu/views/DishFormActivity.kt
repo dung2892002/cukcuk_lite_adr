@@ -1,6 +1,7 @@
 package com.example.app.mvp_modules.menu.views
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +11,8 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -24,6 +27,7 @@ import java.util.UUID
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.app.models.UnitDish
 import com.example.app.mvp_modules.calculator.CalculatorDialogFragment
 import com.example.app.mvp_modules.menu.adapters.ListColorAdapter
 import com.example.app.mvp_modules.menu.adapters.ListImageAdapter
@@ -33,8 +37,9 @@ import com.example.app.utils.ImageHelper
 class DishFormActivity : AppCompatActivity(), DishFormContract.View {
     private lateinit var binding: ActivityDishFormBinding
     private lateinit var presenter: DishFormContract.Presenter
-    private var dish: Dish = Dish(UUID.randomUUID(),"",0.0,"Chai","#FFFA8072","ic_default.png")
+    private var dish: Dish = Dish(UUID.randomUUID(),"",0.0,UnitDish("Chai"),"#FFFA8072","ic_default.png", true)
     private var isAddNew: Boolean = true
+    private lateinit var unitDishLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +81,14 @@ class DishFormActivity : AppCompatActivity(), DishFormContract.View {
             openSelectUnitDish()
         }
 
+        unitDishLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val unit = result.data?.getSerializableExtra("unit_data") as? UnitDish
+                dish.unit = unit!!
+                binding.txtUnitName.text = dish.unit.name
+            }
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -114,10 +127,13 @@ class DishFormActivity : AppCompatActivity(), DishFormContract.View {
             dish.price = result.toDouble()
             binding.txtPrice.text = FormatDisplay.formatNumber(result.toString())
         }.show(supportFragmentManager, null)
+
     }
 
     override fun openSelectUnitDish() {
-        Toast.makeText(this,"mo chon don vi tinh", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, DishUnitActivity::class.java)
+        intent.putExtra("unit_data", dish.unit)
+        unitDishLauncher.launch(intent)
     }
 
     @SuppressLint("InflateParams")
@@ -195,15 +211,20 @@ class DishFormActivity : AppCompatActivity(), DishFormContract.View {
     }
 
     private fun getDish() {
-        if (intent.getSerializableExtra("dish") as? Dish != null) {
+        val dishIntent = intent.getSerializableExtra("dish_data") as? Dish
+        if (dishIntent != null) {
             "Sửa món".also { binding.txtToolbarTitle.text = it }
+            dish = dishIntent
             isAddNew = false
         }
         else {
             "Thêm món".also { binding.txtToolbarTitle.text = it }
+            binding.groupIsActive.visibility = View.GONE
         }
         setImage()
-        binding.txtUnitName.text = dish.unit
+        binding.txtUnitName.text = dish.unit.name
+        binding.txtPrice.text = FormatDisplay.formatNumber(dish.price.toString())
+        binding.edtDishName.setText(dish.name)
         setColor(dish.color)
     }
 
@@ -221,6 +242,9 @@ class DishFormActivity : AppCompatActivity(), DishFormContract.View {
 
     override fun handleSubmitForm() {
         dish.name = binding.edtDishName.text.toString()
+        if (!isAddNew) {
+            dish.isActive = !binding.chkIsActiveDish.isChecked
+        }
         presenter.submitForm(dish,isAddNew)
     }
 

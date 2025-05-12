@@ -1,8 +1,5 @@
 package com.example.app.mvp_modules.calculator
 
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-
 class CalculatorPresenter(private val view: CalculatorDialogFragment) : CalculatorContract.Presenter {
     private var input = ""
 
@@ -11,8 +8,7 @@ class CalculatorPresenter(private val view: CalculatorDialogFragment) : Calculat
             "C" -> input = "0"
             "Xóa" -> {
                 val tmp = input.dropLast(1)
-                input = if (tmp.isNotEmpty()) tmp
-                else "0"
+                input = tmp.ifEmpty { "0" }
             }
             "Giảm" -> {
                 input = evaluate(input)
@@ -26,23 +22,15 @@ class CalculatorPresenter(private val view: CalculatorDialogFragment) : Calculat
             }
             "+" -> {
                 view.onCalculateState(true)
-                if (input.last() == '+') {
-                    return
-                }
-                if (input.last() == '-') {
-                    input.dropLast(1) + '+'
-                    return
+                if (input.last() == '+' || input.last() == '.' || input.last() == '-') {
+                    input = input.dropLast(1)
                 }
                 input += "+"
             }
             "-" -> {
                 view.onCalculateState(true)
-                if (input.last() == '-') {
-                    return
-                }
-                if (input.last() == '+') {
-                    input.dropLast(1) + '-'
-                    return
+                if (input.last() == '+' || input.last() == '.' || input.last() == '-') {
+                    input = input.dropLast(1)
                 }
                 input += "-"
             }
@@ -155,6 +143,5 @@ class CalculatorPresenter(private val view: CalculatorDialogFragment) : Calculat
         val roundedResult = "%.2f".format(result)
         return roundedResult
     }
-
 
 }

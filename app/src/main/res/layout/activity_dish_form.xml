@@ -89,9 +89,9 @@
     </LinearLayout>
     <View style="@style/Line"/>
 
-    <LinearLayout style="@style/DishForm.Group.Last">
+    <LinearLayout style="@style/DishForm.Group">
 
-        <LinearLayout style="@style/DishForm.Group.Last.Child" >
+        <LinearLayout style="@style/DishForm.Group.Last.Child" android:padding="0dp">
             <TextView
                 style="@style/DishForm.Group.Label"
                 android:text="Màu sắc"
@@ -127,10 +127,30 @@
                     android:src="@drawable/ic_colors"/>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
-
-
-
     </LinearLayout>
+
+    <LinearLayout style="@style/DishForm.Group" android:id="@+id/groupIsActive">
+        <TextView
+            style="@style/DishForm.Group.Label"
+            android:text="Trạng thái"
+            tools:ignore="HardcodedText" />
+
+        <CheckBox
+            android:id="@+id/chkIsActiveDish"
+            android:layout_width="24dp"
+            android:layout_height="24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngừng bán"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnSubmit"
