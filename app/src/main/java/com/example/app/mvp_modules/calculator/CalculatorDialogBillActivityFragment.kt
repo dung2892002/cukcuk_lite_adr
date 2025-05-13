@@ -11,10 +11,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.app.R
-import com.example.app.utils.FormatDisplay
 
 
-class CalculatorDialogFragment : DialogFragment(), CalculatorContract.View {
+class CalculatorDialogBillActivityFragment : DialogFragment(), CalculatorContract.View {
 
     private lateinit var presenter: CalculatorContract.Presenter
     private lateinit var display: TextView
@@ -115,8 +114,8 @@ class CalculatorDialogFragment : DialogFragment(), CalculatorContract.View {
         fun newInstance(
             initialValue: String,
             onResult: (Double) -> Unit
-        ): CalculatorDialogFragment {
-            val fragment = CalculatorDialogFragment()
+        ): CalculatorDialogBillActivityFragment {
+            val fragment = CalculatorDialogBillActivityFragment()
             fragment.arguments = Bundle().apply {
                 putString("initial_value", initialValue)
             }

@@ -1,8 +1,11 @@
 package com.example.app.mvp_modules.sale.views
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,6 +15,7 @@ import com.example.app.R
 import com.example.app.databinding.ActivityBillBinding
 import com.example.app.models.Bill
 import com.example.app.models.UnitDish
+import com.example.app.mvp_modules.calculator.CalculatorDialogFragment
 import com.example.app.mvp_modules.sale.adapters.ListDishOrderBillAdapter
 import com.example.app.mvp_modules.sale.adapters.ListOrderAdapter
 import com.example.app.mvp_modules.sale.contracts.BillContract
@@ -36,11 +40,30 @@ class BillActivity : AppCompatActivity(), BillContract.View {
         setupToolbar()
         getBillData()
 
+        binding.btnOpenCalculator.setOnClickListener {
+            openCalculator()
+        }
+
+        binding.btnSubmitBill.setOnClickListener {
+            createBill()
+        }
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+
+    override fun openCalculator() {
+        CalculatorDialogFragment.newInstance(bill.moneyGive.toString()) {result ->
+            bill.moneyGive = result.toDouble()
+            bill.moneyReturn = bill.moneyGive - bill.order.totalPrice
+            binding.txtMoneyGive.text = FormatDisplay.formatNumber(result.toString())
+            binding.txtReturnMoney.text = FormatDisplay.formatNumber(bill.moneyReturn.toString())
+        }.show(supportFragmentManager, null)
+
     }
 
     private fun setupToolbar() {
@@ -61,8 +84,19 @@ class BillActivity : AppCompatActivity(), BillContract.View {
                 finish()
                 true
             }
+
+            R.id.btnSubmitBillToolbar -> {
+                createBill()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun createBill() {
+        val result = presenter.handleCreateBill(bill)
+        Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show()
+        if (result.isSuccess) finish()
     }
 
     private fun getBillData() {
@@ -71,10 +105,20 @@ class BillActivity : AppCompatActivity(), BillContract.View {
         showDataBill()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showDataBill() {
         binding.txtTotalPrice.text = FormatDisplay.formatNumber(bill.order.totalPrice.toString())
         binding.txtMoneyGive.text = FormatDisplay.formatNumber(bill.moneyGive.toString())
         binding.txtReturnMoney.text = FormatDisplay.formatNumber(bill.moneyReturn.toString())
+        binding.txtCreatedAt.text = "Ngày: ${FormatDisplay.formatTo12HourWithCustomAMPM(bill.createdAt)}"
+        binding.txtBillNumber.text = "Số: ${bill.id}"
+
+        if (bill.order.tableNumber == null) {
+            binding.txtNumberTable.visibility = View.GONE
+        } else {
+            binding.txtNumberTable.text = "Bàn: ${bill.order.tableNumber}"
+            binding.txtNumberTable.visibility = View.VISIBLE
+        }
 
         adapter = ListDishOrderBillAdapter(this, bill.order.dishes)
         binding.recyclerListDishOrderInBill.layoutManager = LinearLayoutManager(this)

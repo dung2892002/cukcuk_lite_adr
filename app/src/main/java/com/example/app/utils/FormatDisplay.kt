@@ -1,6 +1,8 @@
 package com.example.app.utils
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 object FormatDisplay {
     fun formatNumber(number: String): String {
@@ -28,5 +30,26 @@ object FormatDisplay {
         } catch (e: Exception) {
             "0"
         }
+    }
+
+    fun formatDateTimeCompat(input: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd/MM/yyyy (HH:mm)", Locale.getDefault())
+
+        val date = inputFormat.parse(input)
+        return outputFormat.format(date!!)
+    }
+
+    fun formatTo12HourWithCustomAMPM(input: String): String {
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd/MM/yyyy (hh:mm a)", Locale.getDefault())
+
+        val date = inputFormat.parse(input) ?: return ""
+
+        var formatted = outputFormat.format(date)
+
+        formatted = formatted.replace("AM", "SA").replace("PM", "CH")
+
+        return formatted
     }
 }

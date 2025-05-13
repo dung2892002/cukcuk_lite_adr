@@ -1,6 +1,6 @@
 package com.example.app.mvp_modules.calculator
 
-class CalculatorPresenter(private val view: CalculatorDialogFragment) : CalculatorContract.Presenter {
+class CalculatorPresenter(private val view: CalculatorContract.View) : CalculatorContract.Presenter {
     private var input = ""
 
     override fun onButtonClicked(value: String) {
@@ -35,7 +35,6 @@ class CalculatorPresenter(private val view: CalculatorDialogFragment) : Calculat
                 input += "-"
             }
             "=" -> {
-                println("calculate")
                 input = evaluate(input)
                 view.onCalculateState(false)
             }
@@ -49,7 +48,6 @@ class CalculatorPresenter(private val view: CalculatorDialogFragment) : Calculat
                 input += "."
             }
             "Xong" -> {
-                println("submit")
                 view.showResult(input.toDouble())
                 view.close()
             }

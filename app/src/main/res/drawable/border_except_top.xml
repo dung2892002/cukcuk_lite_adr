@@ -7,7 +7,7 @@
         android:top="0dp"
         android:bottom="0dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/black" />
+            <solid android:color="#000000" />
         </shape>
     </item>
     <!-- Border phải -->
@@ -17,7 +17,7 @@
         android:top="0dp"
         android:bottom="0dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/black" />
+            <solid android:color="#000000" />
         </shape>
     </item>
     <!-- Border dưới -->
@@ -27,27 +27,16 @@
         android:top="-1dp"
         android:bottom="0dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/black" />
-        </shape>
-    </item>
-    <!-- Border trên -->
-    <item
-        android:left="0dp"
-        android:right="0dp"
-        android:top="0dp"
-        android:bottom="-1dp">
-        <shape android:shape="rectangle">
-            <solid android:color="@color/black" />
+            <solid android:color="#000000" />
         </shape>
     </item>
     <!-- Nền -->
     <item
         android:left="1dp"
         android:right="1dp"
-        android:top="1dp"
         android:bottom="1dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/white" />
+            <solid android:color="#FFFFFF" />
         </shape>
     </item>
 </layer-list>

@@ -57,8 +57,17 @@
         <item name="android:backgroundTint">@color/gray_80</item>
     </style>
 
+    <style name="Calculator.Body.Button.Light" parent="Calculator.Body.Button">
+        <item name="android:backgroundTint">#ffffffff</item>
+    </style>
+
     <style name="Calculator.Body.Button.Image" parent="Calculator.Body.Button">
         <item name="android:gravity">center</item>
+    </style>
+
+
+    <style name="Calculator.Body.Button.Image.Light" parent="Calculator.Body.Button.Image">
+        <item name="android:backgroundTint">#ffffffff</item>
     </style>
 
     <style name="Calculator.Body.Button.SmallerTextSize" parent="Calculator.Body.Button">
@@ -69,5 +78,6 @@
         <item name="android:backgroundTint">#1a73e7</item>
         <item name="android:textColor">#ffffffff</item>
     </style>
+
     
 </resources>
