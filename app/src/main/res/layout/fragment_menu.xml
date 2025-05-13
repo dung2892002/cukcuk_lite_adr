@@ -6,11 +6,6 @@
     tools:context=".mvp_modules.menu.views.MenuFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="trang thuc dơn"
-        tools:ignore="HardcodedText" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerListDish"

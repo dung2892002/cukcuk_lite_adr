@@ -81,6 +81,10 @@ class DishFormActivity : AppCompatActivity(), DishFormContract.View {
             openSelectUnitDish()
         }
 
+        binding.btnDelete.setOnClickListener {
+            deleteDish()
+        }
+
         unitDishLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 val unit = result.data?.getSerializableExtra("unit_data") as? UnitDish
@@ -162,7 +166,7 @@ class DishFormActivity : AppCompatActivity(), DishFormContract.View {
             onColorSelected = { color ->
                 dish.color = color
                 dialog.dismiss()
-                setColor(color)
+                setColorView(color)
             }
         }
 
@@ -196,7 +200,7 @@ class DishFormActivity : AppCompatActivity(), DishFormContract.View {
             onImageSelected = { image ->
                 dish.image = image
                 dialog.dismiss()
-                setImage()
+                setImageView()
             }
         }
 
@@ -219,22 +223,23 @@ class DishFormActivity : AppCompatActivity(), DishFormContract.View {
         }
         else {
             "Thêm món".also { binding.txtToolbarTitle.text = it }
+            binding.btnDelete.visibility = View.GONE
             binding.groupIsActive.visibility = View.GONE
         }
-        setImage()
+        setImageView()
         binding.txtUnitName.text = dish.unit.name
         binding.txtPrice.text = FormatDisplay.formatNumber(dish.price.toString())
         binding.edtDishName.setText(dish.name)
-        setColor(dish.color)
+        setColorView(dish.color)
     }
 
-    private fun setImage() {
-        val imageView = binding.imgDish // thêm thư mục con
+    private fun setImageView() {
+        val imageView = binding.imgDish
         val drawable = ImageHelper.getDrawableImageFromAssets(this,dish.image)
         imageView.setImageDrawable(drawable)
     }
 
-    private fun setColor(color: String) {
+    private fun setColorView(color: String) {
         val colorInt = color.toColorInt()
         binding.btnSelectColor.backgroundTintList = ColorStateList.valueOf(colorInt)
         binding.btnSelectImage.backgroundTintList = ColorStateList.valueOf(colorInt)
@@ -245,12 +250,19 @@ class DishFormActivity : AppCompatActivity(), DishFormContract.View {
         if (!isAddNew) {
             dish.isActive = !binding.chkIsActiveDish.isChecked
         }
-        presenter.submitForm(dish,isAddNew)
+        val response = presenter.handleSubmitForm(dish,isAddNew)
+        Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
+        if (response.isSuccess) {
+            finish()
+            return
+        }
     }
 
-    override fun handleSubmitFormResult(isSuccess: Boolean, message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-        if (isSuccess) {
+
+    override fun deleteDish() {
+        val response = presenter.handleDeleteDish(dish)
+        Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
+        if (response.isSuccess) {
             finish()
             return
         }

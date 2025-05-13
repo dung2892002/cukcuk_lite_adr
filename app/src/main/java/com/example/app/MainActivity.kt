@@ -14,7 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.app.databinding.ActivityMainBinding
 import com.example.app.mvp_modules.menu.views.MenuFragment
-import com.example.app.mvp_modules.sale.SaleFragment
+import com.example.app.mvp_modules.sale.views.SaleFragment
 import com.example.app.mvp_modules.statistic.StatisticFragment
 import androidx.core.view.size
 import androidx.core.view.get

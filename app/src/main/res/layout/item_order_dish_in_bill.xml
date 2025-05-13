@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="4dp">
+
+    <TextView
+        android:id="@+id/txtItemDishName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Pepsi"
+        android:gravity="start"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/txtItemQuantity"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="2"
+        android:gravity="center"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/txtItemDishPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="end"
+        android:text="10.000"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/txtItemTotalPrice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="end"
+        android:text="20.000"
+        tools:ignore="HardcodedText" />
+
+</LinearLayout>

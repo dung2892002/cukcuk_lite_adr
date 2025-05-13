@@ -5,7 +5,7 @@ import java.util.UUID
 
 
 data class Dish(
-    var id: UUID = UUID.randomUUID(),
+    var id: UUID? = null,
     var name: String,
     var price: Double,
     var unit: UnitDish,

@@ -44,6 +44,11 @@
         <item name="android:background">#cccccc</item>
     </style>
 
+    <style name="Line.Vertical" parent="Line">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
 
     <style name="BaseButton" parent="RemovePaddingAndMargin">
         <item name="android:layout_width">wrap_content</item>

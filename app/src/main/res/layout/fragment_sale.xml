@@ -3,13 +3,68 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mvp_modules.sale.SaleFragment">
+    tools:context=".mvp_modules.sale.views.SaleFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
+        android:id="@+id/fragmentStateEmptyOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="280dp"
+                android:layout_height="94dp"
+                android:layout_gravity="center_vertical"
+                android:importantForAccessibility="no"
+                android:scaleType="fitXY"
+                android:src="@drawable/logo_app"
+                android:tint="#B1B1B1" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="53dp"
+                android:layout_height="170dp"
+                android:layout_gravity="end"
+                android:importantForAccessibility="no"
+                android:scaleType="fitXY"
+                android:src="@drawable/right_top_focus"
+                android:tint="#B1B1B1" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chưa có khách gọi món"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bấm vào đây hoặc dấu + để gọi món"
+            android:textSize="20sp"
+            android:textColor="#078CF8"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerListOrder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="man hinh ban hang"
-        tools:ignore="HardcodedText" />
+        />
 
 </FrameLayout>

@@ -1,16 +1,18 @@
 package com.example.app.mvp_modules.menu.contracts
 
 import com.example.app.models.Dish
+import com.example.app.models.SeverResponse
 
 interface DishFormContract {
     interface View{
         fun handleSubmitForm()
-        fun handleSubmitFormResult(isSuccess: Boolean, message: String)
+        fun deleteDish()
         fun openCalculator()
         fun openSelectUnitDish()
     }
 
     interface Presenter{
-        fun submitForm(dish:Dish, isAddNew: Boolean)
+        fun handleSubmitForm(dish:Dish, isAddNew: Boolean) : SeverResponse
+        fun handleDeleteDish(dish: Dish) : SeverResponse
     }
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     style="@style/LinearBase"
+    android:orientation="vertical"
     tools:context=".mvp_modules.menu.views.DishFormActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -18,13 +19,15 @@
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout style="@style/DishForm.Group">
+
         <TextView
             style="@style/DishForm.Group.Label"
             android:text="Tên món"
 
             tools:ignore="HardcodedText" />
 
-        <TextView style="@style/Required"
+        <TextView
+            style="@style/Required"
             android:text="*"
             tools:ignore="HardcodedText" />
 
@@ -37,12 +40,13 @@
 
         <ImageButton
             style="@style/DishForm.Group.Button"
-            android:importantForAccessibility="no"
-            />
+            android:importantForAccessibility="no" />
     </LinearLayout>
-    <View style="@style/Line"/>
+
+    <View style="@style/Line" />
 
     <LinearLayout style="@style/DishForm.Group">
+
         <TextView
             style="@style/DishForm.Group.Label"
             android:text="Giá bán"
@@ -58,40 +62,45 @@
             android:id="@+id/btnUpdatePrice"
             style="@style/DishForm.Group.Button"
             android:importantForAccessibility="no"
-            android:src="@drawable/ic_arrow_right"
-            />
+            android:src="@drawable/ic_arrow_right" />
 
     </LinearLayout>
-    <View style="@style/Line"/>
+
+    <View style="@style/Line" />
 
     <LinearLayout style="@style/DishForm.Group">
+
         <TextView
             style="@style/DishForm.Group.Label"
             android:text="Đơn vị tính"
             tools:ignore="HardcodedText" />
 
-        <TextView style="@style/Required"
+        <TextView
+            style="@style/Required"
             android:text="*"
             tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/txtUnitName"
             style="@style/DishForm.Group.Input"
-            tools:ignore="HardcodedText"
-            android:text="Chai"/>
+            android:text="Chai"
+            tools:ignore="HardcodedText" />
 
         <ImageButton
             android:id="@+id/btnEditUnit"
             style="@style/DishForm.Group.Button"
             android:importantForAccessibility="no"
-            android:src="@drawable/ic_arrow_right"
-            />
+            android:src="@drawable/ic_arrow_right" />
     </LinearLayout>
-    <View style="@style/Line"/>
+
+    <View style="@style/Line" />
 
     <LinearLayout style="@style/DishForm.Group">
 
-        <LinearLayout style="@style/DishForm.Group.Last.Child" android:padding="0dp">
+        <LinearLayout
+            style="@style/DishForm.Group.Last.Child"
+            android:padding="0dp">
+
             <TextView
                 style="@style/DishForm.Group.Label"
                 android:text="Màu sắc"
@@ -99,8 +108,8 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/btnSelectColor"
-                style="@style/DishForm.Group.Last.Child.Button"
-                >
+                style="@style/DishForm.Group.Last.Child.Button">
+
                 <ImageView
                     style="@style/DishForm.Group.Last.Child.Button.Image"
                     android:importantForAccessibility="no"
@@ -110,26 +119,30 @@
 
         </LinearLayout>
 
-        <LinearLayout style="@style/DishForm.Group.Last.Child" >
+        <LinearLayout style="@style/DishForm.Group.Last.Child">
+
             <TextView
                 style="@style/DishForm.Group.Label"
                 android:text="Biểu tượng"
                 tools:ignore="HardcodedText" />
 
             <com.google.android.material.card.MaterialCardView
-                style="@style/DishForm.Group.Last.Child.Button"
                 android:id="@+id/btnSelectImage"
-                >
+                style="@style/DishForm.Group.Last.Child.Button">
+
                 <ImageView
                     android:id="@+id/imgDish"
                     style="@style/DishForm.Group.Last.Child.Button.Image"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_colors"/>
+                    android:src="@drawable/ic_colors" />
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout style="@style/DishForm.Group" android:id="@+id/groupIsActive">
+    <LinearLayout
+        android:id="@+id/groupIsActive"
+        style="@style/DishForm.Group">
+
         <TextView
             style="@style/DishForm.Group.Label"
             android:text="Trạng thái"
@@ -152,10 +165,34 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnSubmit"
-        style="@style/DishForm.ButtonSubmit"
-        android:text="CẤT"
-        tools:ignore="HardcodedText" />
+
+    <LinearLayout
+        style="@style/LinearBase"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="4dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnDelete"
+            style="@style/DishForm.ButtonSubmit"
+            android:layout_width="180dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="0dp"
+            android:backgroundTint="#FF0000"
+            android:text="Xóa"
+            tools:ignore="HardcodedText" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSubmit"
+            style="@style/DishForm.ButtonSubmit"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:text="CẤT"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
 
 </LinearLayout>

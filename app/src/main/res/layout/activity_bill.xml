@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    style="@style/LinearBase"
+    tools:context=".mvp_modules.sale.views.BillActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/BaseToolbar"
+        app:menu="@menu/menu_bill">
+
+        <TextView
+            android:id="@+id/txtToolbarTitle"
+            style="@style/BaseToolbar.Title"
+            android:text="Thu tiền"
+            tools:ignore="HardcodedText" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        style="@style/LinearBase"
+        android:orientation="vertical"
+        android:background="#DCDCDC"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#ffffffff">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="6dp">
+                <TextView
+                    style="@style/BaseText"
+                    android:text="HÓA ĐƠN"
+                    android:textStyle="bold"
+                    android:textSize="22sp"
+                    android:layout_gravity="center_horizontal"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/txtBillNumber"
+                    style="@style/BaseText"
+                    android:text="Số: 00012"
+                    android:textStyle="bold"
+                    android:layout_gravity="center_horizontal"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/txtNumberTable"
+                    style="@style/BaseText"
+                    android:text="Bàn: 4"
+                    android:layout_gravity="start"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/txtCreatedAt"
+                    style="@style/BaseText"
+                    android:text="Ngày: 13/05/2025 (04:18 CH)"
+                    android:layout_gravity="start"
+                    tools:ignore="HardcodedText" />
+
+                <!--hien thi bang cac mon da dat-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginVertical="10dp"
+                    android:layout_height="50dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/border_block_no_radius">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="4dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Tên hàng"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="SL"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Đơn giá"
+                            android:textStyle="bold"
+                            android:gravity="end"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:text="Thành tiên"
+                            android:textStyle="bold"
+                            android:gravity="end"
+                            tools:ignore="HardcodedText" />
+                    </LinearLayout>
+
+                    <View style="@style/Line" android:background="@color/black"/>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recyclerListDishOrderInBill"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="2dp">
+
+                    <TextView
+                        style="@style/BaseText"
+                        android:text="Số tiền phải trả"
+                        android:textStyle="bold"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/txtTotalPrice"
+                        style="@style/BaseText"
+                        android:text="100.000"
+                        android:textStyle="bold"
+                        android:layout_gravity="end"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+                <View style="@style/Line" android:background="@color/black" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="2dp">
+
+                    <TextView
+                        style="@style/BaseText"
+                        android:text="Tiền khách đưa"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:textColor="#078cf8"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/txtMoneyGive"
+                        style="@style/BaseText"
+                        android:text="120.000"
+                        android:textColor="#078cf8"
+                        tools:ignore="HardcodedText" />
+
+                    <ImageView
+                        android:layout_width="12dp"
+                        android:layout_height="wrap_content"
+                        android:scaleType="centerCrop"
+                        android:importantForAccessibility="no"
+                        android:src="@drawable/ic_arrow_right"/>
+                </LinearLayout>
+                <View style="@style/Line" android:background="@color/black"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/BaseText"
+                        android:text="Tiền trả lại cho khách"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/txtReturnMoney"
+                        style="@style/BaseText"
+                        android:text="20.000"
+                        android:layout_gravity="end"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+            </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:importantForAccessibility="no"
+                android:scaleType="fitXY"
+                android:src="@drawable/top_zigzag" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            style="@style/DishForm.ButtonSubmit"
+            android:layout_marginStart="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginTop="10dp"
+            android:text="Xong"
+            android:background="#078cf8"
+            tools:ignore="HardcodedText" />
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -9,11 +9,11 @@ import android.widget.TextView
 import com.example.app.R
 
 class AppInfoAdapter(context: Context, private val items: List<String>)
-    : ArrayAdapter<String>(context,R.layout.app_info_item,items) {
+    : ArrayAdapter<String>(context,R.layout.item_app_info,items) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context)
-            .inflate(R.layout.app_info_item, parent, false)
+            .inflate(R.layout.item_app_info, parent, false)
 
         val textView = view.findViewById<TextView>(R.id.txtInfo)
         textView.text = items[position]

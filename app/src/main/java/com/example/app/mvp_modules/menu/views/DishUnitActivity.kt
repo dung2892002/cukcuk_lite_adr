@@ -172,7 +172,6 @@ class DishUnitActivity : AppCompatActivity(), DishUnitContract.View {
         val resultIntent = Intent().apply {
             putExtra("unit_data", unitSelected)
         }
-        println(unitSelected.name)
         setResult(RESULT_OK, resultIntent)
         finish()
     }
