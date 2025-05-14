@@ -89,7 +89,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSubmitCalculator"
                 style="@style/Calculator.Body.Button.Submit.Merge_2_Column"
-                android:text="Xong"
+                android:text="Đồng ý"
                 tools:ignore="HardcodedText"/>
         </GridLayout>
 

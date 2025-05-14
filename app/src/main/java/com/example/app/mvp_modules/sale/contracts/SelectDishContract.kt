@@ -7,6 +7,10 @@ import com.example.app.models.SeverResponse
 
 interface SelectDishContract {
     interface View{
+        fun openCalculatorTable()
+        fun openCalculatorPeople()
+        fun openCalculatorDish()
+
         fun updateTotalPrice(newPrice: Double)
         fun navigateToBillActivity(bill: Bill)
         fun closeActivity(response: SeverResponse)

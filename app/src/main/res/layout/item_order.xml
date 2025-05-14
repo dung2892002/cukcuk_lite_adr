@@ -86,7 +86,7 @@
                 android:id="@+id/btnItemDeleteOrder"
                 tools:ignore="UseCompoundDrawables">
 
-                <androidx.appcompat.widget.AppCompatImageButton
+                <androidx.appcompat.widget.AppCompatImageView
                     style="@style/ItemOrder_Buttons_Icon"
                     android:importantForAccessibility="no"
                     android:src="@drawable/ic_close"/>
@@ -102,7 +102,7 @@
                 android:id="@+id/btnItemCreateBill"
                 tools:ignore="UseCompoundDrawables">
 
-                <androidx.appcompat.widget.AppCompatImageButton
+                <androidx.appcompat.widget.AppCompatImageView
                     style="@style/ItemOrder_Buttons_Icon"
                     android:importantForAccessibility="no"
                     android:src="@drawable/ic_add" />

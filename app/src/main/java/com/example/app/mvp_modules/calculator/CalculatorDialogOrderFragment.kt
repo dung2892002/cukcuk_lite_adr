@@ -3,27 +3,33 @@ package com.example.app.mvp_modules.calculator
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.GridLayout
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.app.R
 
-
-class CalculatorDialogBillActivityFragment : DialogFragment(), CalculatorContract.View {
-
+class CalculatorDialogOrderFragment : DialogFragment(), CalculatorContract.View {
     private lateinit var presenter: CalculatorContract.Presenter
     private lateinit var display: TextView
     private lateinit var buttonSubmit: Button
 
     private var initialValue = ""
+    private var title = ""
     private var onResultCallback: ((Double) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initialValue = arguments?.getString("initial_value")!!
+
+        initialValue = arguments?.getString("initial_value") ?: ""
+        title = arguments?.getString("title") ?: ""
+
 
         while (initialValue.last() == '0' && initialValue.contains('.')) {
             initialValue = initialValue.dropLast(1)
@@ -35,7 +41,7 @@ class CalculatorDialogBillActivityFragment : DialogFragment(), CalculatorContrac
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val view = layoutInflater.inflate(R.layout.fragment_calculator_dialog_bill_activity, null)
+        val view = layoutInflater.inflate(R.layout.fragment_calculator_dialog_order, null)
         display = view.findViewById(R.id.tvDisplay)
         val grid = view.findViewById<GridLayout>(R.id.gridButtons)
         buttonSubmit = view.findViewById(R.id.btnSubmitCalculator)
@@ -66,6 +72,12 @@ class CalculatorDialogBillActivityFragment : DialogFragment(), CalculatorContrac
             presenter.onButtonClicked("Xong")
         }
 
+
+        view.findViewById<ImageView>(R.id.btnCloseCalculator).setOnClickListener {
+            presenter.close()
+        }
+
+        view.findViewById<TextView>(R.id.calculatorTitle).text = title
 
         return AlertDialog.Builder(requireContext())
             .setView(view)
@@ -101,14 +113,18 @@ class CalculatorDialogBillActivityFragment : DialogFragment(), CalculatorContrac
     companion object {
         fun newInstance(
             initialValue: String,
+            title: String,
             onResult: (Double) -> Unit
-        ): CalculatorDialogBillActivityFragment {
-            val fragment = CalculatorDialogBillActivityFragment()
-            fragment.arguments = Bundle().apply {
+        ): CalculatorDialogOrderFragment {
+            val fragment = CalculatorDialogOrderFragment()
+            val bundle = Bundle().apply {
                 putString("initial_value", initialValue)
+                putString("title", title)
             }
+            fragment.arguments = bundle
             fragment.onResultCallback = onResult
             return fragment
         }
     }
+
 }

@@ -18,6 +18,7 @@ import com.example.app.databinding.ActivityBillBinding
 import com.example.app.models.Bill
 import com.example.app.models.Order
 import com.example.app.models.UnitDish
+import com.example.app.mvp_modules.calculator.CalculatorDialogBillActivityFragment
 import com.example.app.mvp_modules.calculator.CalculatorDialogFragment
 import com.example.app.mvp_modules.sale.adapters.ListDishOrderBillAdapter
 import com.example.app.mvp_modules.sale.adapters.ListOrderAdapter
@@ -61,13 +62,12 @@ class BillActivity : AppCompatActivity(), BillContract.View {
     }
 
     override fun openCalculator() {
-        CalculatorDialogFragment.newInstance(bill.moneyGive.toString()) {result ->
+        CalculatorDialogBillActivityFragment.newInstance(bill.moneyGive.toString()) { result ->
             bill.moneyGive = result.toDouble()
             bill.moneyReturn = bill.moneyGive - bill.order.totalPrice
             binding.txtMoneyGive.text = FormatDisplay.formatNumber(result.toString())
             binding.txtReturnMoney.text = FormatDisplay.formatNumber(bill.moneyReturn.toString())
         }.show(supportFragmentManager, null)
-
     }
 
     override fun navigateCreateOrder(order: Order?) {
@@ -80,7 +80,7 @@ class BillActivity : AppCompatActivity(), BillContract.View {
         else
         {
             val resultIntent = Intent()
-            resultIntent.putExtra("order_data", order) // đơn hàng mới
+            resultIntent.putExtra("create_new_order", true)
             setResult(Activity.RESULT_OK, resultIntent)
             finish()
         }
@@ -133,13 +133,14 @@ class BillActivity : AppCompatActivity(), BillContract.View {
         binding.txtTotalPrice.text = FormatDisplay.formatNumber(bill.order.totalPrice.toString())
         binding.txtMoneyGive.text = FormatDisplay.formatNumber(bill.moneyGive.toString())
         binding.txtReturnMoney.text = FormatDisplay.formatNumber(bill.moneyReturn.toString())
-        binding.txtCreatedAt.text = "Ngày: ${FormatDisplay.formatTo12HourWithCustomAMPM(bill.createdAt)}"
+        binding.txtCreatedAt.text =  FormatDisplay.formatTo12HourWithCustomAMPM(bill.createdAt)
         binding.txtBillNumber.text = "Số: ${bill.id}"
 
         if (bill.order.tableNumber == null) {
-            binding.txtNumberTable.visibility = View.GONE
+            binding.groupNumberTable.visibility = View.GONE
         } else {
-            binding.txtNumberTable.text = "Bàn: ${bill.order.tableNumber}"
+            binding.groupNumberTable.visibility = View.VISIBLE
+            binding.txtNumberTable.text = bill.order.tableNumber.toString()
             binding.txtNumberTable.visibility = View.VISIBLE
         }
 

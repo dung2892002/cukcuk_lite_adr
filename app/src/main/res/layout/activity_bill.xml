@@ -45,7 +45,8 @@
                     android:text="Số: 00012"
                     tools:ignore="HardcodedText" />
 
-                <LinearLayout style="@style/Bill_Group">
+                <LinearLayout style="@style/Bill_Group"
+                    android:id="@+id/groupNumberTable">
                     <TextView
                         style="@style/Bill_Group_Label"
                         android:text="Bàn:"

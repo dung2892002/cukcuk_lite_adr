@@ -19,6 +19,8 @@ import com.example.app.models.DishSelect
 import com.example.app.models.Order
 import com.example.app.models.OrderDish
 import com.example.app.models.SeverResponse
+import com.example.app.mvp_modules.calculator.CalculatorDialogFragment
+import com.example.app.mvp_modules.calculator.CalculatorDialogOrderFragment
 import com.example.app.mvp_modules.sale.adapters.ListSelectDishAdapter
 import com.example.app.mvp_modules.sale.contracts.SelectDishContract
 import com.example.app.mvp_modules.sale.presenters.SelectDishPresenter
@@ -30,6 +32,7 @@ class SelectDishActivity : AppCompatActivity(), SelectDishContract.View {
     private lateinit var order: Order
     private var dishesSelect = mutableListOf<DishSelect>()
     private lateinit var adapter: ListSelectDishAdapter
+    private var positionIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,11 +54,43 @@ class SelectDishActivity : AppCompatActivity(), SelectDishContract.View {
             presenter.submitOrder(order)
         }
 
+        binding.btnOpenInputTable.setOnClickListener {
+            openCalculatorTable()
+        }
+
+        binding.btnOpenInputPeople.setOnClickListener {
+            openCalculatorPeople()
+        }
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+
+    override fun openCalculatorTable() {
+        val initValue = if (order.tableNumber != null) order.tableNumber.toString() else "0"
+        CalculatorDialogOrderFragment.newInstance(initValue, "Nhập số bàn") { result ->
+            order.tableNumber = result.toInt()
+            binding.btnOpenInputTable.text = FormatDisplay.formatNumber(result.toString())
+        }.show(supportFragmentManager, null)
+    }
+
+    override fun openCalculatorPeople() {
+        val initValue = if (order.quantityPeople != null) order.tableNumber.toString() else "0"
+        CalculatorDialogOrderFragment.newInstance(initValue, "Nhập số người") { result ->
+            order.quantityPeople = result.toInt()
+            binding.btnOpenInputPeople.text = FormatDisplay.formatNumber(result.toString())
+        }.show(supportFragmentManager, null)
+    }
+
+    override fun openCalculatorDish() {
+        val initValue = dishesSelect[positionIndex].quantity
+        CalculatorDialogOrderFragment.newInstance(initValue.toString(), "Nhập số lượng") { result ->
+            dishesSelect[positionIndex].quantity = result.toInt()
+            presenter.calculatorTotalPrice(dishesSelect)
+            adapter.notifyItemChanged(positionIndex)
+        }.show(supportFragmentManager, null)
     }
 
     override fun onActivityResult(
@@ -66,7 +101,11 @@ class SelectDishActivity : AppCompatActivity(), SelectDishContract.View {
     ) {
         super.onActivityResult(requestCode, resultCode, data, caller)
         if (requestCode == 500 && resultCode == Activity.RESULT_OK) {
-            getDataOrder()
+            val createNewOrder = data?.getBooleanExtra("create_new_order", false) == true
+            if (createNewOrder) {
+                finish() // Kết thúc activity hiện tại
+                startActivity(Intent(this, SelectDishActivity::class.java)) // Mở activity mới
+            }
         }
     }
 
@@ -144,7 +183,6 @@ class SelectDishActivity : AppCompatActivity(), SelectDishContract.View {
     private fun setupAdapter() {
         adapter = ListSelectDishAdapter(this,dishesSelect).apply {
             onClickItem = { dishSelect, position ->
-//                presenter.openDishForm(dish)
                 dishesSelect[position].quantity++
                 presenter.calculatorTotalPrice(dishesSelect)
             }
@@ -167,7 +205,8 @@ class SelectDishActivity : AppCompatActivity(), SelectDishContract.View {
             }
 
             onClickOpenCalculator = { dishSelect, position ->
-                println("Bat may tinh nhap so luong ${dishSelect.dish.name}")
+                positionIndex = position
+                openCalculatorDish()
             }
         }
 

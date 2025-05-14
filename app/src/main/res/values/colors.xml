@@ -7,4 +7,7 @@
     <color name="gray">#FFCCCCCC</color>
     <color name="gray_80">#EBEBEB</color>
     <color name="dish_selected">#F4F4F4</color>
+    <color name="dish_select_order_value">#e0e0e0</color>
+    <color name="main_color">#078cf8</color>
+    <color name="footer_select_dish">#E2EEFF</color>
 </resources>
