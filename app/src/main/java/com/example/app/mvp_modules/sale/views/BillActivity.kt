@@ -1,6 +1,8 @@
 package com.example.app.mvp_modules.sale.views
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.ActivityBillBinding
 import com.example.app.models.Bill
+import com.example.app.models.Order
 import com.example.app.models.UnitDish
 import com.example.app.mvp_modules.calculator.CalculatorDialogFragment
 import com.example.app.mvp_modules.sale.adapters.ListDishOrderBillAdapter
@@ -27,6 +30,7 @@ class BillActivity : AppCompatActivity(), BillContract.View {
     private lateinit var presenter: BillContract.Presenter
     private lateinit var bill : Bill
     private lateinit var adapter: ListDishOrderBillAdapter
+    private var fromSaleFragment = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +70,22 @@ class BillActivity : AppCompatActivity(), BillContract.View {
 
     }
 
+    override fun navigateCreateOrder(order: Order?) {
+        if (fromSaleFragment) {
+            val intent = Intent(this, SelectDishActivity::class.java)
+            intent.putExtra("order_data", order)
+            startActivity(intent)
+            finish()
+        }
+        else
+        {
+            val resultIntent = Intent()
+            resultIntent.putExtra("order_data", order) // đơn hàng mới
+            setResult(Activity.RESULT_OK, resultIntent)
+            finish()
+        }
+    }
+
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -96,11 +116,14 @@ class BillActivity : AppCompatActivity(), BillContract.View {
     private fun createBill() {
         val result = presenter.handleCreateBill(bill)
         Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show()
-        if (result.isSuccess) finish()
+        if (result.isSuccess) {
+            presenter.createOrder()
+        }
     }
 
     private fun getBillData() {
         bill = intent.getSerializableExtra("bill_data") as Bill
+        fromSaleFragment = intent.getSerializableExtra("from_sale_fragment") as Boolean
         println(bill.order.dishes.size)
         showDataBill()
     }

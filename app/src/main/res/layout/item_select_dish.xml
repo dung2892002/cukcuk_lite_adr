@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ItemSelectDish">
+
+    <FrameLayout
+        android:id="@+id/itemDishSelectLayout"
+        style="@style/ItemBase">
+        <LinearLayout style="@style/ItemSelectDish_DishValue">
+            <com.google.android.material.card.MaterialCardView
+                style="@style/ItemSelectDish_ImageGroup"
+                android:id="@+id/colorDishSelect">
+
+                <ImageView
+                    android:id="@+id/imgDishSelect"
+                    style="@style/DishForm.Group.Last.Child.Button.Image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_colors" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/ItemSelectDish_ImageGroup"
+                android:id="@+id/btnCheckQuantity">
+                <ImageView
+                    style="@style/DishForm.Group.Last.Child.Button.Image"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_yes"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <LinearLayout style="@style/ItemSelectDish_DishValue_TextGroup">
+
+                <TextView style="@style/ItemDishName"
+                    android:id="@+id/txtDishNameSelect"
+                    android:text="Bò húcBò húc ádas sdsad đâsd đâsd"
+                    android:maxLines="1"
+                    tools:ignore="HardcodedText" />
+
+                <TextView style="@style/BaseText"
+                    android:id="@+id/txtDishPriceSelect"
+                    android:text="12.000"
+                    tools:ignore="HardcodedText"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/groupEditQuantity"
+            style="@style/ItemSelectDish_GroupEditQuantity">
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/ItemSelectDish_GroupEditQuantity_Button"
+                android:id="@+id/btnSubtract">
+                <androidx.appcompat.widget.AppCompatImageView
+                    style="@style/ItemSelectDish_GroupEditQuantity_Button_Image"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_add"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/ItemSelectDish_GroupEditQuantity_Value"
+                android:id="@+id/btnOpenCalculator">
+                <TextView
+                    android:id="@+id/txtDishQuantitySelect"
+                    style="@style/ItemSelectDish_GroupEditQuantity_Value_Text"
+                    android:text="20"
+                    tools:ignore="HardcodedText" />
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                style="@style/ItemSelectDish_GroupEditQuantity_Button"
+                android:id="@+id/btnAdd">
+                <androidx.appcompat.widget.AppCompatImageView
+                    style="@style/ItemSelectDish_GroupEditQuantity_Button_Image_Add"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_add"/>
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+    </FrameLayout>
+
+    <View style="@style/Line" android:background="#B1B0B0"/>
+
+</LinearLayout>

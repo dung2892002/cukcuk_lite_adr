@@ -2,37 +2,18 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/LinearBase"
-    android:orientation="vertical"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical">
+    style="@style/ItemUnitDish">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingVertical="10dp"
-        android:paddingEnd="10dp"
-        android:paddingStart="0dp">
-        <FrameLayout
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="5dp">
+        style="@style/ItemUnitDish.Group">
+        <FrameLayout style="@style/ItemUnitDish_Group_Selected">
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/chkUnitDish"
-                style="@style/DishForm.Group.Last.Child.Button"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="0dp"
-                android:backgroundTint="@color/color_29">
+                style="@style/ItemUnitDish_Group_Selected_Color">
 
                 <ImageView
-                    style="@style/DishForm.Group.Last.Child.Button.Image"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    style="@style/ItemUnitDish_Group_Selected_Icon"
                     android:importantForAccessibility="no"
                     android:src="@drawable/ic_yes"/>
 
@@ -41,20 +22,13 @@
 
         <TextView
             android:id="@+id/txtUnitName"
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_weight="1"
+            style="@style/ItemUnitDish_UnitName"
             android:text="Chai"
-            android:textSize="18sp"
-            android:gravity="center_vertical"
             tools:ignore="HardcodedText" />
 
         <ImageButton
             android:id="@+id/btnEditUnit"
-            style="@style/BaseImage"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:scaleType="centerCrop"
+            style="@style/ItemUnitDish_ButtonEdit"
             android:importantForAccessibility="no"
             android:src="@drawable/ic_edit_pencil"/>
     </LinearLayout>

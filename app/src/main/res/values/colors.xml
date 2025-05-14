@@ -6,4 +6,5 @@
     <color name="nav_item_selected">#FFCCCCCC</color>
     <color name="gray">#FFCCCCCC</color>
     <color name="gray_80">#EBEBEB</color>
+    <color name="dish_selected">#F4F4F4</color>
 </resources>

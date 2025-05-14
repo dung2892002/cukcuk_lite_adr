@@ -131,11 +131,13 @@ class SaleFragment : Fragment(), SaleContract.View {
         println(bill.order.dishes.size)
         val intent = Intent(requireContext(), BillActivity::class.java)
         intent.putExtra("bill_data", bill)
+        intent.putExtra("from_sale_fragment", true)
         startActivity(intent)
     }
 
     override fun navigateToSelectDishActivity(order: Order?) {
-        if (order == null) println("them moi")
-        else println("update")
+        val intent = Intent(requireContext(), SelectDishActivity::class.java)
+        intent.putExtra("order_data", order)
+        startActivity(intent)
     }
 }

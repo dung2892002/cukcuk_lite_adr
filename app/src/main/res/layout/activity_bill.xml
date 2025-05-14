@@ -19,13 +19,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
-        style="@style/LinearBase"
-        android:orientation="vertical"
-        android:background="#DCDCDC"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        style="@style/Bill">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,127 +34,77 @@
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="6dp">
                 <TextView
-                    style="@style/BaseText"
+                    style="@style/Bill_Title"
                     android:text="HÓA ĐƠN"
-                    android:textStyle="bold"
-                    android:textSize="22sp"
-                    android:layout_gravity="center_horizontal"
                     tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/txtBillNumber"
-                    style="@style/BaseText"
+                    style="@style/Bill_Title"
+                    android:textSize="16sp"
                     android:text="Số: 00012"
-                    android:textStyle="bold"
-                    android:layout_gravity="center_horizontal"
                     tools:ignore="HardcodedText" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <LinearLayout style="@style/Bill_Group">
                     <TextView
-                        style="@style/BaseText"
-                        android:layout_width="60dp"
-                        android:textStyle="bold"
+                        style="@style/Bill_Group_Label"
                         android:text="Bàn:"
-                        android:layout_gravity="start"
                         tools:ignore="HardcodedText" />
                     <TextView
                         android:id="@+id/txtNumberTable"
                         style="@style/BaseText"
                         android:text="4"
-                        android:layout_gravity="start"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                <LinearLayout style="@style/Bill_Group">
                     <TextView
-                        style="@style/BaseText"
-                        android:layout_width="60dp"
-                        android:textStyle="bold"
+                        style="@style/Bill_Group_Label"
                         android:text="Ngày:"
-                        android:layout_gravity="start"
                         tools:ignore="HardcodedText" />
                     <TextView
                         android:id="@+id/txtCreatedAt"
                         style="@style/BaseText"
                         android:text="13/05/2025 (04:18 CH)"
-                        android:layout_gravity="start"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
 
 
                 <!--hien thi bang cac mon da dat-->
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="4dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/border_block_no_radius">
+                    style="@style/Bill_Table_Header">
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
+                        style="@style/Bill_Table_Header_Item.DishName"
                         android:text="Tên hàng"
-                        android:textStyle="bold"
-                        android:gravity="center"
                         tools:ignore="HardcodedText" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        style="@style/Bill_Table_Header_Item.Quantity"
                         android:text="SL"
-                        android:textStyle="bold"
-                        android:gravity="center"
                         tools:ignore="HardcodedText" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        style="@style/Bill_Table_Header_Item.DishPrice"
                         android:text="Đơn giá"
                         android:textStyle="bold"
-                        android:gravity="end"
                         tools:ignore="HardcodedText" />
 
                     <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="2"
+                        style="@style/Bill_Table_Header_Item.TotalPrice"
                         android:text="Thành tiên"
-                        android:textStyle="bold"
-                        android:gravity="end"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerListDishOrderInBill"
-                    android:background="@drawable/border_except_top"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    style="@style/Bill_Recycler"
                     />
 
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="2dp">
-
+                <LinearLayout style="@style/Bill_Group">
                     <TextView
-                        style="@style/BaseText"
+                        style="@style/Bill_Group_Label.FullLine"
                         android:text="Số tiền phải trả"
-                        android:textStyle="bold"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
                         tools:ignore="HardcodedText" />
 
                     <TextView
@@ -168,23 +112,19 @@
                         style="@style/BaseText"
                         android:text="100.000"
                         android:textStyle="bold"
-                        android:layout_gravity="end"
                         tools:ignore="HardcodedText" />
                 </LinearLayout>
-                <View style="@style/Line" android:background="@color/black" />
+                <View
+                    style="@style/Line"
+                    android:background="@color/black" />
 
                 <LinearLayout
                     android:id="@+id/btnOpenCalculator"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="2dp">
+                    style="@style/Bill_Group">
 
                     <TextView
-                        style="@style/BaseText"
+                        style="@style/Bill_Group_Label.FullLine.NormalStyle"
                         android:text="Tiền khách đưa"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
                         android:textColor="#078cf8"
                         tools:ignore="HardcodedText" />
 
@@ -202,7 +142,8 @@
                         android:importantForAccessibility="no"
                         android:src="@drawable/ic_arrow_right"/>
                 </LinearLayout>
-                <View style="@style/Line" android:background="@color/black"/>
+                <View style="@style/Line"
+                    android:background="@color/black"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -210,7 +151,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        style="@style/BaseText"
+                        style="@style/Bill_Group_Label.FullLine.NormalStyle"
                         android:text="Tiền trả lại cho khách"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -233,19 +174,15 @@
         </LinearLayout>
 
         <View
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSubmitBill"
-            style="@style/DishForm.ButtonSubmit"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginTop="10dp"
+            style="@style/Bill_ButtonSubmit"
             android:text="Xong"
-            android:background="#078cf8"
             tools:ignore="HardcodedText" />
 
 

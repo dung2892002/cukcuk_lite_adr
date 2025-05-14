@@ -13,6 +13,9 @@
         android:theme="@style/Theme.App"
         tools:targetApi="31">
         <activity
+            android:name=".mvp_modules.sale.views.SelectDishActivity"
+            android:exported="false" />
+        <activity
             android:name=".mvp_modules.sale.views.BillActivity"
             android:exported="false" />
         <activity

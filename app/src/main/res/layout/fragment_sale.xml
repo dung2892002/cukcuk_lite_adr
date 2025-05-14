@@ -19,45 +19,26 @@
             android:orientation="horizontal">
             <View
                 android:layout_width="0dp"
-                android:layout_height="1dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"/>
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="280dp"
-                android:layout_height="94dp"
-                android:layout_gravity="center_vertical"
-                android:importantForAccessibility="no"
-                android:scaleType="fitXY"
-                android:src="@drawable/logo_app"
-                android:tint="#B1B1B1" />
+                style="@style/MenuLogo"
+                android:src="@drawable/logo_app"/>
 
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="53dp"
-                android:layout_height="170dp"
-                android:layout_gravity="end"
-                android:importantForAccessibility="no"
-                android:scaleType="fitXY"
-                android:src="@drawable/right_top_focus"
-                android:tint="#B1B1B1" />
+                style="@style/MenuLogo.Focus"
+                android:src="@drawable/right_top_focus" />
         </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/MenuTextNote"
             android:text="Chưa có khách gọi món"
-            android:textStyle="bold"
-            android:textSize="20sp"
-            android:layout_gravity="center_horizontal"
             tools:ignore="HardcodedText" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/MenuTextNote.Button"
             android:text="Bấm vào đây hoặc dấu + để gọi món"
-            android:textSize="20sp"
-            android:textColor="#078CF8"
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal"
             tools:ignore="HardcodedText" />
     </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.example.app.mvp_modules.sale.presenters
 
 import com.example.app.models.Bill
+import com.example.app.models.Order
 import com.example.app.models.SeverResponse
 import com.example.app.mvp_modules.sale.contracts.BillContract
 import kotlin.random.Random
@@ -15,5 +16,9 @@ class BillPresenter(private val view: BillContract.View) : BillContract.Presente
             response.message = "Có lỗi xảy ra"
         }
         return response
+    }
+
+    override fun createOrder() {
+        view.navigateCreateOrder(null)
     }
 }

@@ -16,6 +16,8 @@ import kotlin.random.Random
 class SalePresenter(private val view: SaleContract.View) : SaleContract.Presenter {
     override fun fetchData() {
         var orders = mutableListOf<Order>()
+//        view.showDataOrders(orders)
+//        return
         orders.add(
             Order(
                 UUID.randomUUID(),

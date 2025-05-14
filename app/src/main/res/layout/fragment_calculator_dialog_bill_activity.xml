@@ -18,120 +18,79 @@
         android:background="#CACACA">
         <GridLayout
             android:id="@+id/gridButtons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="4"
-            android:alignmentMode="alignMargins"
-            android:useDefaultMargins="false"
-            android:rowOrderPreserved="false">
+            style="@style/CalculatorGrid">
 
             <!-- Hàng 1 -->
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.Light"
                 android:text="7"
-                android:layout_width="0dp"
-                android:layout_columnWeight="1"
                 tools:ignore="HardcodedText" />
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.Light"
                 android:text="8"
-                android:layout_width="0dp"
-                android:layout_columnWeight="1"
                 tools:ignore="HardcodedText" />
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.Light"
                 android:text="9"
-                android:layout_width="0dp"
-                android:layout_columnWeight="1"
                 tools:ignore="HardcodedText"/>
             <androidx.appcompat.widget.AppCompatImageButton
-                style="@style/Calculator.Body.Button.Image.Light"
+                style="@style/Calculator.Body.Button.Image.Light.End"
                 android:src="@drawable/ic_remove"
                 android:contentDescription="Xóa"
-                android:layout_width="0dp"
-                android:layout_marginEnd="0dp"
-                android:layout_columnWeight="1"
                 tools:ignore="HardcodedText"/>
 
             <!-- Hàng 2 -->
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.Light"
                 android:text="4"
-                tools:ignore="HardcodedText"
-                android:layout_width="0dp"
-                android:layout_columnWeight="1" />
+                tools:ignore="HardcodedText"/>
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.Light"
                 android:text="5"
-                tools:ignore="HardcodedText"
-                android:layout_width="0dp"
-                android:layout_columnWeight="1" />
+                tools:ignore="HardcodedText" />
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.Light"
                 android:text="6"
-                tools:ignore="HardcodedText"
-                android:layout_width="0dp"
-                android:layout_columnWeight="1" />
+                tools:ignore="HardcodedText"/>
             <androidx.appcompat.widget.AppCompatButton
-                style="@style/Calculator.Body.Button.Light"
+                style="@style/Calculator.Body.Button.Light.End"
                 android:text="C"
                 tools:ignore="HardcodedText"
-                android:layout_width="0dp"
-
-                android:layout_marginEnd="0dp"
-                android:layout_columnWeight="1" />
+                android:layout_width="0dp"/>
 
             <!-- Hàng 3 -->
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.Light"
                 android:text="1"
-                tools:ignore="HardcodedText"
-                android:layout_width="0dp"
-                android:layout_columnWeight="1" />
+                tools:ignore="HardcodedText" />
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.Light"
                 android:text="2"
-                tools:ignore="HardcodedText"
-                android:layout_width="0dp"
-                android:layout_columnWeight="1" />
+                tools:ignore="HardcodedText" />
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.Light"
                 android:text="3"
-                tools:ignore="HardcodedText"
-                android:layout_width="0dp"
-                android:layout_columnWeight="1" />
+                tools:ignore="HardcodedText" />
             <androidx.appcompat.widget.AppCompatButton
-                style="@style/Calculator.Body.Button.Light"
+                style="@style/Calculator.Body.Button.Light.End"
                 android:text=","
-                tools:ignore="HardcodedText"
-                android:layout_width="0dp"
-                android:layout_marginEnd="0dp"
-                android:layout_columnWeight="1" />
+                tools:ignore="HardcodedText" />
 
             <!-- Hàng 4 -->
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.Light"
                 android:text="0"
-                tools:ignore="HardcodedText"
-                android:layout_width="0dp"
-                android:layout_columnWeight="1" />
+                tools:ignore="HardcodedText"/>
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.Light"
                 android:text="000"
-                tools:ignore="HardcodedText"
-                android:layout_width="0dp"
-                android:layout_columnWeight="1" />
+                tools:ignore="HardcodedText"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnSubmitCalculator"
-                style="@style/Calculator.Body.Button.Submit"
+                style="@style/Calculator.Body.Button.Submit.Merge_2_Column"
                 android:text="Xong"
-                tools:ignore="HardcodedText"
-                android:layout_width="0dp"
-                android:layout_columnWeight="1"
-                android:layout_column="2"
-                android:layout_columnSpan="2"
-                android:layout_marginEnd="0dp"/>
+                tools:ignore="HardcodedText"/>
         </GridLayout>
 
     </LinearLayout>

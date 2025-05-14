@@ -1,70 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/LinearBase"
-    android:orientation="horizontal"
-    android:layout_height="120dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
-    android:background="@drawable/border_block"
-    android:backgroundTint="#ffffffff">
+    style="@style/ItemOrder">
 
-    <LinearLayout style="@style/LinearBase"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:backgroundTint="@android:color/transparent"
-        android:paddingVertical="10dp">
+    <LinearLayout style="@style/ItemOrder_Group">
 
         <com.google.android.material.card.MaterialCardView
-            style="@style/DishForm.Group.Last.Child.Button"
+            style="@style/ItemOrder_Group_NumberTable"
             android:id="@+id/btnSelectImage"
-            android:backgroundTint="#00BCD4"
-            android:layout_marginEnd="10dp"
             >
 
             <TextView
                 android:id="@+id/txtItemNumberTable"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/ItemOrder_Group_NumberTable_Value"
                 android:text="1"
-                android:textSize="24sp"
-                android:textColor="#ffffffff"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText"
-                android:layout_gravity="center"/>
+                tools:ignore="HardcodedText"/>
 
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
-            style="@style/LinearBase"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
+            style="@style/ItemOrder_Group_QuantityPeople"
             tools:ignore="UseCompoundDrawables">
 
             <TextView
                 android:id="@+id/txtItemQuantityPeople"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/ItemOrder_Group_QuantityPeople_Value"
                 android:text="1"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                tools:ignore="HardcodedText"
-                android:layout_marginStart="10dp"/>
+                tools:ignore="HardcodedText"/>
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgHasPeople"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:scaleType="centerCrop"
+                style="@style/ItemOrder_Group_QuantityPeople_Icon"
                 android:importantForAccessibility="no"
-                android:src="@drawable/user_icon"
-                android:tint="#006FFF"
-                android:background="@android:color/transparent"
-                android:layout_marginEnd="10dp"/>
-
+                android:src="@drawable/user_icon"/>
         </LinearLayout>
 
     </LinearLayout>
@@ -83,23 +51,13 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingHorizontal="10dp"
-                android:paddingTop="10dp"
-                android:paddingBottom="5dp">
+            <LinearLayout style="@style/ItemOrder_Group_2">
                 <TextView
                     android:id="@+id/txtListDish"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    style="@style/ItemOrder_ListDish"
                     android:text="testasfasfasfasfasftestasfasfasfasfasffahfghasgfhasfhasnambvyr8yr49184fnancajr817471924718481724124124124127414"
                     tools:ignore="HardcodedText"
-                    android:textSize="16sp"
-                    android:maxLines="2"
-                    android:ellipsize="end"/>
+                   />
 
                 <TextView
                     android:id="@+id/txtTotalPrice"
@@ -122,63 +80,36 @@
 
         <View style="@style/Line" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:background="#F4F4F4">
+        <LinearLayout style="@style/ItemOrder_Buttons">
 
-            <LinearLayout
+            <LinearLayout style="@style/ItemOrder_Buttons.Button"
                 android:id="@+id/btnItemDeleteOrder"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center"
                 tools:ignore="UseCompoundDrawables">
 
                 <androidx.appcompat.widget.AppCompatImageButton
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:scaleType="centerCrop"
+                    style="@style/ItemOrder_Buttons_Icon"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_close"
-                    android:tint="#FF0000"
-                    android:background="@android:color/transparent"
-                    android:layout_marginEnd="10dp"/>
+                    android:src="@drawable/ic_close"/>
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/ItemOrder_Buttons_Label"
                     android:text="Hủy"
-                    android:textSize="20sp"
                     tools:ignore="HardcodedText" />
             </LinearLayout>
             <View style="@style/Line.Vertical" />
 
             <LinearLayout
+                style="@style/ItemOrder_Buttons.Button"
                 android:id="@+id/btnItemCreateBill"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:gravity="center"
                 tools:ignore="UseCompoundDrawables">
 
                 <androidx.appcompat.widget.AppCompatImageButton
-                    android:layout_width="24dp"
-                    android:layout_height="25dp"
-                    android:layout_marginEnd="10dp"
-                    android:background="@android:color/transparent"
+                    style="@style/ItemOrder_Buttons_Icon"
                     android:importantForAccessibility="no"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_add"
-                    android:tint="#FF0000" />
+                    android:src="@drawable/ic_add" />
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/ItemOrder_Buttons_Label"
                     android:text="Thu tiền"
-                    android:textSize="20sp"
                     tools:ignore="HardcodedText" />
             </LinearLayout>
 
