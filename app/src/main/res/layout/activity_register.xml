@@ -27,9 +27,9 @@
             android:id="@+id/edtRegisterUsername"
             style="@style/Register.Group.Input"
             android:hint="Nhập số điện thoại hoặc email"
-            android:inputType="text"
             android:importantForAutofill="no"
-            tools:ignore="HardcodedText" />
+            android:inputType="text"
+            tools:ignore="HardcodedText,TextContrastCheck,VisualLintTextFieldSize" />
 
 
         <View style="@style/Line" />
@@ -43,13 +43,14 @@
             style="@style/Register.Group.Label"
             android:text="Mật khẩu"
             tools:ignore="HardcodedText" />
+
         <EditText
             android:id="@+id/edtRegisterPassword"
             style="@style/Register.Group.Input"
             android:hint="Nhập mật khẩu"
-            android:inputType="textPassword"
             android:importantForAutofill="no"
-            tools:ignore="HardcodedText" />
+            android:inputType="textPassword"
+            tools:ignore="HardcodedText,TextContrastCheck,VisualLintTextFieldSize" />
 
         <View style="@style/Line" />
     </LinearLayout>
@@ -62,7 +63,7 @@
             android:id="@+id/btnSubmitRegister"
             style="@style/Register.Footer.ButtonSubmit"
             android:text="Đăng ký"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,VisualLintButtonSize" />
 
         <TextView
             android:id="@+id/txtFooterContent"

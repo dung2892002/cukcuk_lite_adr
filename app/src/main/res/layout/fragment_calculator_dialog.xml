@@ -10,13 +10,14 @@
     <LinearLayout
         style="@style/Calculator.Header"
         tools:ignore="UseCompoundDrawables">
+
         <TextView
             android:id="@+id/calculatorTitle"
             style="@style/Calculator.Header.Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Giá bán"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,TextContrastCheck" />
 
         <View
             android:layout_width="0dp"
@@ -28,7 +29,7 @@
             style="@style/Calculator.Header.Button"
             android:importantForAccessibility="no"
             android:src="@drawable/ic_close"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription,ImageContrastCheck" />
 
     </LinearLayout>
 
@@ -48,99 +49,114 @@
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button"
                 android:text="C"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.SmallerTextSize"
                 android:text="Giảm"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.SmallerTextSize"
                 android:text="Tăng"
-                tools:ignore="HardcodedText"/>
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
             <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/Calculator.Body.Button.Image.End"
-                android:src="@drawable/ic_remove"
                 android:contentDescription="Xóa"
-                tools:ignore="HardcodedText"/>
+                android:src="@drawable/ic_remove"
+                tools:ignore="HardcodedText,TouchTargetSizeCheck,ImageContrastCheck" />
 
             <!-- Hàng 2 -->
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button"
                 android:text="7"
-                tools:ignore="HardcodedText"/>
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button"
                 android:text="8"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button"
                 android:text="9"
-                tools:ignore="HardcodedText"/>
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.End"
                 android:text="-"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
 
             <!-- Hàng 3 -->
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button"
                 android:text="4"
-                tools:ignore="HardcodedText"/>
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button"
                 android:text="5"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button"
                 android:text="6"
-                tools:ignore="HardcodedText"/>
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.End"
                 android:text="+"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
 
             <!-- Hàng 4 -->
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button"
                 android:text="1"
-                tools:ignore="HardcodedText"/>
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button"
                 android:text="2"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button"
                 android:text="3"
-                tools:ignore="HardcodedText"/>
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button.End"
                 android:text="±"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
 
             <!-- Hàng 5 -->
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button"
                 android:text="0"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,TouchTargetSizeCheck,DuplicateSpeakableTextCheck" />
+
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button"
                 android:text="000"
-                tools:ignore="HardcodedText"/>
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
             <androidx.appcompat.widget.AppCompatButton
                 style="@style/Calculator.Body.Button"
                 android:text=","
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_columnWeight="1"
                 android:orientation="horizontal">
+
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnSubmitCalculator"
                     style="@style/Calculator.Body.Button.Submit"
                     android:text="Xong"
-                    tools:ignore="HardcodedText"/>
+                    tools:ignore="HardcodedText,TouchTargetSizeCheck" />
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btnHandleCalculator"
                     style="@style/Calculator.Body.Button.Submit"

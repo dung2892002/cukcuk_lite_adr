@@ -44,7 +44,8 @@
         app:itemTextAppearance="@style/NoPaddingItemText"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:itemBackground="@drawable/nav_item_selected"/>
+        app:itemBackground="@drawable/nav_item_selected"
+        tools:ignore="VisualLintBounds" />
 
 
 </androidx.drawerlayout.widget.DrawerLayout>

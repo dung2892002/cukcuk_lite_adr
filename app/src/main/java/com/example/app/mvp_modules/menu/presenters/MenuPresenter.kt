@@ -6,17 +6,17 @@ import com.example.app.mvp_modules.menu.contracts.MenuContract
 import java.time.LocalDateTime
 import java.util.UUID
 
-class MenuPresenter(private val view: MenuContract.View) : MenuContract.Presenter {
-    override fun openDishForm(inventory: Inventory?) {
-        view.navigateToDishForm(inventory)
+class MenuPresenter(private val view: MenuContract.View,
+                    private val model: MenuContract.Model) : MenuContract.Presenter {
+    override fun openInventoryForm(inventoryId: UUID?) {
+        view.navigateToInventoryForm(inventoryId)
     }
 
 
     //call api
     override fun fetchData() {
-        println("fetching data.....")
-        var dishes = testData()
-        view.showDataDishes(dishes)
+        val dishes = model.getAllInventories()
+        view.showDataInventories(dishes)
     }
 
     @SuppressLint("NewApi")

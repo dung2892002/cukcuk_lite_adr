@@ -73,6 +73,7 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
         val repository = UnitRepository(dbHelper)
         val model = UnitModel(repository)
         presenter = UnitPresenter(this, model)
+
         units = presenter.getListUnit()
         setupToolbar()
         getUnitSelected()

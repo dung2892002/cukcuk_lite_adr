@@ -27,10 +27,13 @@ import java.util.UUID
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.app.datas.CukcukDbHelper
+import com.example.app.datas.repositories.InventoryRepository
 import com.example.app.entities.Unit
 import com.example.app.mvp_modules.calculator.CalculatorDialogFragment
 import com.example.app.mvp_modules.menu.adapters.ListColorAdapter
 import com.example.app.mvp_modules.menu.adapters.ListImageAdapter
+import com.example.app.mvp_modules.menu.models.InventoryFormModel
 import com.example.app.utils.FormatDisplay
 import com.example.app.utils.ImageHelper
 import java.time.LocalDateTime
@@ -68,9 +71,12 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
         binding = ActivityDishFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = InventoryFormPresenter(this)
+        val dbHelper = CukcukDbHelper(this)
+        val repository = InventoryRepository(dbHelper)
+        val model = InventoryFormModel(repository)
+        presenter = InventoryFormPresenter(this, model)
 
-        getDish()
+        getInventory()
         setupToolbar()
 
         binding.btnSubmit.setOnClickListener {
@@ -180,7 +186,7 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
             val colorId = resources.getIdentifier(colorName, "color", packageName)
             if (colorId != 0) {
                 val colorInt = ContextCompat.getColor(this, colorId)
-                String.format("#%08X", colorInt)
+                String.format("#%06X", colorInt)
             } else null
         }
 
@@ -236,12 +242,19 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
         dialog.show()
     }
 
-    private fun getDish() {
-        val inventoryIntent = intent.getSerializableExtra("dish_data") as? Inventory
-        if (inventoryIntent != null) {
+    private fun getInventory() {
+        val inventoryIdIntent = intent.getSerializableExtra("inventory_data") as? UUID
+        if (inventoryIdIntent != null) {
             "Sửa món".also { binding.txtToolbarTitle.text = it }
-            inventory = inventoryIntent
             isAddNew = false
+            val inventoryData = presenter.getInventory(inventoryIdIntent)
+            if (inventoryData != null) {
+                inventory = inventoryData
+            }
+            else {
+                Toast.makeText(this, "Có lỗi xảy ra", Toast.LENGTH_SHORT).show()
+                finish()
+            }
         }
         else {
             "Thêm món".also { binding.txtToolbarTitle.text = it }
@@ -252,6 +265,7 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
         binding.txtUnitName.text = inventory.UnitName
         binding.txtPrice.text = FormatDisplay.formatNumber(inventory.Price.toString())
         binding.edtDishName.setText(inventory.InventoryName)
+        binding.chkIsActiveDish.isChecked = !inventory.Inactive
         setColorView(inventory.Color)
     }
 
@@ -275,6 +289,7 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
         val response = presenter.handleSubmitForm(inventory,isAddNew)
         Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
         if (response.isSuccess) {
+            setResult(RESULT_OK)
             finish()
             return
         }
@@ -282,9 +297,10 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
 
 
     override fun deleteDish() {
-        val response = presenter.handleDeleteDish(inventory)
+        val response = presenter.handleDeleteInventory(inventory)
         Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
         if (response.isSuccess) {
+            setResult(RESULT_OK)
             finish()
             return
         }

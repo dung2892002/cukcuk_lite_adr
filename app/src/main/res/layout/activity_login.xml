@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     tools:context=".mvp_modules.login.LoginActivity"
@@ -42,7 +41,8 @@
                 style="@style/ButtonMethodLogin.Text"
                 android:background="@drawable/rounded_textview"
                 android:backgroundTint="#006FCE"
-                android:text="Đăng nhập bằng Facebook"
+                android:text="
+                Đăng nhập bằng Facebook"
                 tools:ignore="HardcodedText" />
 
         </LinearLayout>

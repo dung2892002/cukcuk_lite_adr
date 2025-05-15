@@ -1,19 +1,20 @@
 package com.example.app.mvp_modules.menu.contracts
 
 import com.example.app.entities.Inventory
+import java.util.UUID
 
 interface MenuContract {
     interface View {
-        fun navigateToDishForm(inventory: Inventory?)
-        fun showDataDishes(data: MutableList<Inventory>)
+        fun navigateToInventoryForm(inventoryId: UUID?)
+        fun showDataInventories(data: MutableList<Inventory>)
     }
 
     interface Presenter {
-        fun openDishForm(inventory: Inventory?)
+        fun openInventoryForm(inventoryId: UUID?)
         fun fetchData()
     }
 
     interface Model {
-        fun getAllInventories()
+        fun getAllInventories() : MutableList<Inventory>
     }
 }

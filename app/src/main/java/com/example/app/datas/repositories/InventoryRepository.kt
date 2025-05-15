@@ -13,11 +13,12 @@ import com.example.app.utils.getString
 import com.example.app.utils.getUUID
 import java.util.UUID
 
+
+@SuppressLint("Recycle")
 class InventoryRepository(private val dbHelper: CukcukDbHelper) {
     private val db = dbHelper.readableDatabase
 
-    @SuppressLint("Recycle")
-    fun getAllInventory() : List<Inventory> {
+    fun getAllInventory() : MutableList<Inventory> {
         val query = "SELECT i.*, u.UnitName " +
                 "FROM Inventory i " +
                 "JOIN Unit u " +
@@ -53,8 +54,7 @@ class InventoryRepository(private val dbHelper: CukcukDbHelper) {
         return inventoryList
     }
 
-    @SuppressLint("Recycle")
-    fun getAllInventoryById(inventoryID: UUID) : Inventory? {
+    fun getInventoryById(inventoryID: UUID) : Inventory? {
         val query = """
                 SELECT i.*, u.UnitName
                 FROM Inventory i
@@ -143,5 +143,26 @@ class InventoryRepository(private val dbHelper: CukcukDbHelper) {
         return result > 0
     }
 
+    fun deleteInventory(inventory: Inventory) : Boolean {
+        if (inventory.InventoryID == null) return false
+        val result = db.delete(
+            "Inventory",
+            "InventoryID = ?",
+            arrayOf(inventory.InventoryID.toString())
+        )
 
+        return result > 0
+    }
+
+    fun checkInventoryIsInInvoice(inventory: Inventory) : Boolean {
+        if (inventory.InventoryID == null) return false
+        val query = """
+            SELECT 1 FROM InvoiceDetail i WHERE i.InventoryId = ? LIMIT 1
+        """.trimIndent()
+
+        val cursor = db.rawQuery(query, arrayOf(inventory.InventoryID.toString()))
+        val exists = cursor.moveToFirst()
+        cursor.close()
+        return exists
+    }
 }
