@@ -35,7 +35,7 @@ class CalculatorDialogBillActivityFragment : DialogFragment(), CalculatorContrac
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val view = layoutInflater.inflate(R.layout.fragment_calculator_dialog_bill_activity, null)
+        val view = layoutInflater.inflate(R.layout.fragment_calculator_dialog_invoice_receive_money, null)
         display = view.findViewById(R.id.tvDisplay)
         val grid = view.findViewById<GridLayout>(R.id.gridButtons)
         buttonSubmit = view.findViewById(R.id.btnSubmitCalculator)

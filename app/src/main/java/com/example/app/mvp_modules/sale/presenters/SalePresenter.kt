@@ -1,166 +1,184 @@
 package com.example.app.mvp_modules.sale.presenters
 
-import com.example.app.models.Bill
-import com.example.app.models.Dish
-import com.example.app.models.Order
-import com.example.app.models.OrderDish
-import com.example.app.models.SeverResponse
-import com.example.app.models.UnitDish
+import android.annotation.SuppressLint
+import com.example.app.entities.Invoice
+import com.example.app.entities.InvoiceDetail
+import com.example.app.entities.SeverResponse
 import com.example.app.mvp_modules.sale.contracts.SaleContract
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.time.LocalDateTime
 import java.util.UUID
 import kotlin.random.Random
 
 class SalePresenter(private val view: SaleContract.View) : SaleContract.Presenter {
+    @SuppressLint("NewApi")
     override fun fetchData() {
-        var orders = mutableListOf<Order>()
+        var invoices = mutableListOf<Invoice>()
 //        view.showDataOrders(orders)
 //        return
-        orders.add(
-            Order(
-                UUID.randomUUID(),
-                null,
-                null,
-                50000.0,
-                dishes = mutableListOf(
-                    OrderDish(
-                        null,
-                        null,
-                        null,
-                        UUID.randomUUID(),
-                        dish = Dish(
-                            null,
-                            "Bún đậu",
-                            20000.0,
-                            unit = UnitDish("Suất"),
-                            color = "",
-                            image = "",
-                            isActive = true
-                        ),
-                        5,
-                        100000.0
+        invoices.add(
+            Invoice(
+                InvoiceID = UUID.randomUUID(),
+                InvoiceType = 1,
+                InvoiceNo = "",
+                InvoiceDate = LocalDateTime.now(),
+                Amount = 50000.0,
+                ReceiveAmount = 0.0,
+                ReturnAmount = 0.0,
+                RemainAmount = 0.0,
+                JournalMemo = "",
+                PaymentStatus = 0,
+                NumberOfPeople = 0,
+                TableName = "",
+                ListItemName = "Bún đậu (2)",
+                CreatedDate = LocalDateTime.now(),
+                CreatedBy = "",
+                ModifiedDate = LocalDateTime.now(),
+                ModifiedBy = "",
+                InvoiceDetails = mutableListOf(
+                    InvoiceDetail(
+                        InvoiceDetailID = null,
+                        InvoiceDetailType = 0,
+                        InvoiceID = null,
+                        InventoryID = null,
+                        InventoryName = "Bún đậu",
+                        UnitID = null,
+                        UnitName = "",
+                        Quantity = 2.0,
+                        UnitPrice = 10000.0,
+                        Amount = 20000.0,
+                        Description = "",
+                        SortOrder = 1,
+                        CreatedDate = LocalDateTime.now(),
+                        CreatedBy = "",
+                        ModifiedDate = LocalDateTime.now(),
+                        ModifiedBy = "",
                     )
                 )
             )
         )
 
-        orders.add(
-            Order(
-                UUID.randomUUID(),
-                4,
-                6,
-                450000.0,
-                dishes = mutableListOf<OrderDish>(
-                    OrderDish(
-                        null,
-                        null,
-                        null,
-                        UUID.randomUUID(),
-                        dish = Dish(
-                            null,
-                            "Bún đậu",
-                            20000.0,
-                            unit = UnitDish("Suất"),
-                            color = "",
-                            image = "",
-                            isActive = true
-                        ),
-                        3,
-                        60000.0
+        invoices.add(
+            Invoice(
+                InvoiceID = UUID.randomUUID(),
+                InvoiceType = 1,
+                InvoiceNo = "",
+                InvoiceDate = LocalDateTime.now(),
+                Amount = 50000.0,
+                ReceiveAmount = 0.0,
+                ReturnAmount = 0.0,
+                RemainAmount = 0.0,
+                JournalMemo = "",
+                PaymentStatus = 0,
+                NumberOfPeople = 0,
+                TableName = "",
+                ListItemName = "",
+                CreatedDate = LocalDateTime.now(),
+                CreatedBy = "",
+                ModifiedDate = LocalDateTime.now(),
+                ModifiedBy = "",
+                InvoiceDetails = mutableListOf(
+                    InvoiceDetail(
+                        InvoiceDetailID = null,
+                        InvoiceDetailType = 0,
+                        InvoiceID = null,
+                        InventoryID = null,
+                        InventoryName = "Bún đậu",
+                        UnitID = null,
+                        UnitName = "",
+                        Quantity = 2.0,
+                        UnitPrice = 10000.0,
+                        Amount = 20000.0,
+                        Description = "",
+                        SortOrder = 1,
+                        CreatedDate = LocalDateTime.now(),
+                        CreatedBy = "",
+                        ModifiedDate = LocalDateTime.now(),
+                        ModifiedBy = "",
                     ),
-                    OrderDish(
-                        null,
-                        null,
-                        null,
-                        UUID.randomUUID(),
-                        dish = Dish(
-                            null,
-                            "Bún đậu đầy đủ",
-                            30000.0,
-                            unit = UnitDish("Suất"),
-                            color = "",
-                            image = "",
-                            isActive = true
-                        ),
-                        3,
-                        90000.0
+                    InvoiceDetail(
+                        InvoiceDetailID = null,
+                        InvoiceDetailType = 0,
+                        InvoiceID = null,
+                        InventoryID = null,
+                        InventoryName = "Bún chả",
+                        UnitID = null,
+                        UnitName = "",
+                        Quantity = 2.0,
+                        UnitPrice = 10000.0,
+                        Amount = 20000.0,
+                        Description = "",
+                        SortOrder = 1,
+                        CreatedDate = LocalDateTime.now(),
+                        CreatedBy = "",
+                        ModifiedDate = LocalDateTime.now(),
+                        ModifiedBy = "",
                     ),
-                    OrderDish(
-                        null,
-                        null,
-                        null,
-                        UUID.randomUUID(),
-                        dish = Dish(
-                            null,
-                            "100 cuốn chả giò",
-                            1000.0,
-                            unit = UnitDish("Suất"),
-                            color = "",
-                            image = "",
-                            isActive = true
-                        ),
-                        100,
-                        100000.0
+                    InvoiceDetail(
+                        InvoiceDetailID = null,
+                        InvoiceDetailType = 0,
+                        InvoiceID = null,
+                        InventoryID = null,
+                        InventoryName = "Bún đậu",
+                        UnitID = null,
+                        UnitName = "",
+                        Quantity = 2.0,
+                        UnitPrice = 10000.0,
+                        Amount = 20000.0,
+                        Description = "",
+                        SortOrder = 1,
+                        CreatedDate = LocalDateTime.now(),
+                        CreatedBy = "",
+                        ModifiedDate = LocalDateTime.now(),
+                        ModifiedBy = "",
                     ),
-                    OrderDish(
-                        null,
-                        null,
-                        null,
-                        UUID.randomUUID(),
-                        dish = Dish(
-                            null,
-                            "Bò húc",
-                            10000.0,
-                            unit = UnitDish("Suất"),
-                            color = "",
-                            image = "",
-                            isActive = true
-                        ),
-                        5,
-                        50000.0
+                    InvoiceDetail(
+                        InvoiceDetailID = null,
+                        InvoiceDetailType = 0,
+                        InvoiceID = null,
+                        InventoryID = null,
+                        InventoryName = "Bún đậu",
+                        UnitID = null,
+                        UnitName = "",
+                        Quantity = 2.0,
+                        UnitPrice = 10000.0,
+                        Amount = 20000.0,
+                        Description = "",
+                        SortOrder = 1,
+                        CreatedDate = LocalDateTime.now(),
+                        CreatedBy = "",
+                        ModifiedDate = LocalDateTime.now(),
+                        ModifiedBy = "",
                     ),
-                    OrderDish(
-                        null,
-                        null,
-                        null,
-                        UUID.randomUUID(),
-                        dish = Dish(
-                            null,
-                            "Coca 2l",
-                            15000.0,
-                            unit = UnitDish("Suất"),
-                            color = "",
-                            image = "",
-                            isActive = true
-                        ),
-                        10,
-                        150000.0
+                    InvoiceDetail(
+                        InvoiceDetailID = null,
+                        InvoiceDetailType = 0,
+                        InvoiceID = null,
+                        InventoryID = null,
+                        InventoryName = "Bún đậu",
+                        UnitID = null,
+                        UnitName = "",
+                        Quantity = 2.0,
+                        UnitPrice = 10000.0,
+                        Amount = 20000.0,
+                        Description = "",
+                        SortOrder = 1,
+                        CreatedDate = LocalDateTime.now(),
+                        CreatedBy = "",
+                        ModifiedDate = LocalDateTime.now(),
+                        ModifiedBy = "",
                     )
                 )
             )
         )
-        view.showDataOrders(orders)
+        view.showDataOrders(invoices)
     }
 
-    override fun createBill(order: Order) {
-        var bill = Bill(
-            id = UUID.randomUUID(),
-            orderId = order.id,
-            order = order,
-            createdAt = SimpleDateFormat(
-                "yyyy-MM-dd'T'HH:mm:ss",
-                Locale.getDefault()
-            ).format(Date()),
-            moneyGive = order.totalPrice,
-            moneyReturn = 0.0
-        )
-        view.navigateToBillActivity(bill)
+    override fun createBill(invoice: Invoice) {
+        view.navigateToInvoiceActivity(invoice)
     }
 
-    override fun deleteOrder(order: Order): SeverResponse {
-        println(order)
+    override fun deleteOrder(invoice: Invoice): SeverResponse {
+        println(invoice)
         var response = SeverResponse(true, "Xóa thành công")
         val intRandom = Random.Default.nextInt(100)
         if (intRandom % 2 == 0) {
@@ -170,7 +188,7 @@ class SalePresenter(private val view: SaleContract.View) : SaleContract.Presente
         return response
     }
 
-    override fun handleNavigateSelectDish(order: Order?) {
-        view.navigateToSelectDishActivity(order)
+    override fun handleNavigateSelectDish(invoice: Invoice?) {
+        view.navigateToSelectDishActivity(invoice)
     }
 }

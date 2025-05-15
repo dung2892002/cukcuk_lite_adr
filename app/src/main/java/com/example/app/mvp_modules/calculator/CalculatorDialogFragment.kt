@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.example.app.R
-import com.example.app.utils.FormatDisplay
 
 
 class CalculatorDialogFragment : DialogFragment(), CalculatorContract.View {
@@ -22,11 +21,13 @@ class CalculatorDialogFragment : DialogFragment(), CalculatorContract.View {
     private lateinit var buttonHandleCalculator: Button
 
     private var initialValue = ""
+    private var title = ""
     private var onResultCallback: ((Double) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initialValue = arguments?.getString("initial_value")!!
+        title = arguments?.getString("title")!!
 
         while (initialValue.last() == '0' && initialValue.contains('.')) {
             initialValue = initialValue.dropLast(1)
@@ -78,6 +79,8 @@ class CalculatorDialogFragment : DialogFragment(), CalculatorContract.View {
             presenter.close()
         }
 
+        view.findViewById<TextView>(R.id.calculatorTitle).text = title
+
         return AlertDialog.Builder(requireContext())
             .setView(view)
             .setCancelable(true)
@@ -114,11 +117,13 @@ class CalculatorDialogFragment : DialogFragment(), CalculatorContract.View {
     companion object {
         fun newInstance(
             initialValue: String,
+            title: String,
             onResult: (Double) -> Unit
         ): CalculatorDialogFragment {
             val fragment = CalculatorDialogFragment()
             fragment.arguments = Bundle().apply {
                 putString("initial_value", initialValue)
+                putString("title", title)
             }
             fragment.onResultCallback = onResult
             return fragment

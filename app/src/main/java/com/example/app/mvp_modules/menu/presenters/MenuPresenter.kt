@@ -1,13 +1,14 @@
 package com.example.app.mvp_modules.menu.presenters
 
-import com.example.app.models.Dish
-import com.example.app.models.UnitDish
+import android.annotation.SuppressLint
+import com.example.app.entities.Inventory
 import com.example.app.mvp_modules.menu.contracts.MenuContract
+import java.time.LocalDateTime
 import java.util.UUID
 
 class MenuPresenter(private val view: MenuContract.View) : MenuContract.Presenter {
-    override fun openDishForm(dish: Dish?) {
-        view.navigateToDishForm(dish)
+    override fun openDishForm(inventory: Inventory?) {
+        view.navigateToDishForm(inventory)
     }
 
 
@@ -18,240 +19,200 @@ class MenuPresenter(private val view: MenuContract.View) : MenuContract.Presente
         view.showDataDishes(dishes)
     }
 
-    private fun testData() : MutableList<Dish> {
-        var dishes = mutableListOf<Dish>()
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
+    @SuppressLint("NewApi")
+    private fun testData() : MutableList<Inventory> {
+        var inventories =  mutableListOf(
+            Inventory(
+                InventoryID = UUID.randomUUID(),
+                InventoryCode = "",
+                InventoryName = "Bò Húc",
+                InventoryType = 0,
+                Price = 10000.0,
+                Description = "",
+                Inactive = true,
+                CreatedDate = LocalDateTime.now(),
+                CreatedBy = "",
+                ModifiedDate = LocalDateTime.now(),
+                ModifiedBy = "",
+                Color = "#00FF00",
+                IconFileName = "_1_banh_cuon.png",
+                UseCount = 0,
+                UnitID = null,
+                UnitName = "Cái"
+            ),
+
+            Inventory(
+                InventoryID = UUID.randomUUID(),
+                InventoryCode = "",
+                InventoryName = "Bò Húc",
+                InventoryType = 0,
+                Price = 10000.0,
+                Description = "",
+                Inactive = true,
+                CreatedDate = LocalDateTime.now(),
+                CreatedBy = "",
+                ModifiedDate = LocalDateTime.now(),
+                ModifiedBy = "",
+                Color = "#00FF00",
+                IconFileName = "_1_banh_cuon.png",
+                UseCount = 0,
+                UnitID = null,
+                UnitName = "Cái"
+            ),
+
+            Inventory(
+                InventoryID = UUID.randomUUID(),
+                InventoryCode = "",
+                InventoryName = "Bò Húc",
+                InventoryType = 0,
+                Price = 10000.0,
+                Description = "",
+                Inactive = true,
+                CreatedDate = LocalDateTime.now(),
+                CreatedBy = "",
+                ModifiedDate = LocalDateTime.now(),
+                ModifiedBy = "",
+                Color = "#00FF00",
+                IconFileName = "_1_banh_cuon.png",
+                UseCount = 0,
+                UnitID = null,
+                UnitName = "Cái"
+            ),
+
+            Inventory(
+                InventoryID = UUID.randomUUID(),
+                InventoryCode = "",
+                InventoryName = "Bò Húc",
+                InventoryType = 0,
+                Price = 10000.0,
+                Description = "",
+                Inactive = true,
+                CreatedDate = LocalDateTime.now(),
+                CreatedBy = "",
+                ModifiedDate = LocalDateTime.now(),
+                ModifiedBy = "",
+                Color = "#00FF00",
+                IconFileName = "_1_banh_cuon.png",
+                UseCount = 0,
+                UnitID = null,
+                UnitName = "Cái"
+            ),
+
+            Inventory(
+                InventoryID = UUID.randomUUID(),
+                InventoryCode = "",
+                InventoryName = "Bò Húc",
+                InventoryType = 0,
+                Price = 10000.0,
+                Description = "",
+                Inactive = true,
+                CreatedDate = LocalDateTime.now(),
+                CreatedBy = "",
+                ModifiedDate = LocalDateTime.now(),
+                ModifiedBy = "",
+                Color = "#00FF00",
+                IconFileName = "_1_banh_cuon.png",
+                UseCount = 0,
+                UnitID = null,
+                UnitName = "Cái"
+            ),
+
+            Inventory(
+                InventoryID = UUID.randomUUID(),
+                InventoryCode = "",
+                InventoryName = "Bò Húc",
+                InventoryType = 0,
+                Price = 10000.0,
+                Description = "",
+                Inactive = true,
+                CreatedDate = LocalDateTime.now(),
+                CreatedBy = "",
+                ModifiedDate = LocalDateTime.now(),
+                ModifiedBy = "",
+                Color = "#00FF00",
+                IconFileName = "_1_banh_cuon.png",
+                UseCount = 0,
+                UnitID = null,
+                UnitName = "Cái"
+            ),
+
+            Inventory(
+                InventoryID = UUID.randomUUID(),
+                InventoryCode = "",
+                InventoryName = "Bò Húc",
+                InventoryType = 0,
+                Price = 10000.0,
+                Description = "",
+                Inactive = true,
+                CreatedDate = LocalDateTime.now(),
+                CreatedBy = "",
+                ModifiedDate = LocalDateTime.now(),
+                ModifiedBy = "",
+                Color = "#00FF00",
+                IconFileName = "_1_banh_cuon.png",
+                UseCount = 0,
+                UnitID = null,
+                UnitName = "Cái"
+            ),
+
+            Inventory(
+                InventoryID = UUID.randomUUID(),
+                InventoryCode = "",
+                InventoryName = "Bò Húc",
+                InventoryType = 0,
+                Price = 10000.0,
+                Description = "",
+                Inactive = true,
+                CreatedDate = LocalDateTime.now(),
+                CreatedBy = "",
+                ModifiedDate = LocalDateTime.now(),
+                ModifiedBy = "",
+                Color = "#00FF00",
+                IconFileName = "_1_banh_cuon.png",
+                UseCount = 0,
+                UnitID = null,
+                UnitName = "Cái"
+            ),
+
+            Inventory(
+                InventoryID = UUID.randomUUID(),
+                InventoryCode = "",
+                InventoryName = "Bò Húc",
+                InventoryType = 0,
+                Price = 10000.0,
+                Description = "",
+                Inactive = true,
+                CreatedDate = LocalDateTime.now(),
+                CreatedBy = "",
+                ModifiedDate = LocalDateTime.now(),
+                ModifiedBy = "",
+                Color = "#00FF00",
+                IconFileName = "_1_banh_cuon.png",
+                UseCount = 0,
+                UnitID = null,
+                UnitName = "Cái"
+            ),
+
+            Inventory(
+                InventoryID = UUID.randomUUID(),
+                InventoryCode = "",
+                InventoryName = "Bò Húc",
+                InventoryType = 0,
+                Price = 10000.0,
+                Description = "",
+                Inactive = true,
+                CreatedDate = LocalDateTime.now(),
+                CreatedBy = "",
+                ModifiedDate = LocalDateTime.now(),
+                ModifiedBy = "",
+                Color = "#00FF00",
+                IconFileName = "_1_banh_cuon.png",
+                UseCount = 0,
+                UnitID = null,
+                UnitName = "Cái"
+            ),
         )
 
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "100 cuốn chả giỏ",
-                price = 14000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "10 chai coca 2lit",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "10 chai nước mắm",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "50 cái sandwich",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-
-        dishes.add(
-            Dish(
-                id = UUID.randomUUID(),
-                name = "Bò húc",
-                price = 10000.0,
-                unit = UnitDish("Chai"),
-                color = "#FF00FF00",
-                image = "_1_banh_cuon.png",
-                isActive = true
-            )
-        )
-
-        return dishes
+        return inventories
     }
 }

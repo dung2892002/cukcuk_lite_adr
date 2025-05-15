@@ -15,18 +15,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.FragmentMenuBinding
-import com.example.app.models.Dish
-import com.example.app.models.UnitDish
-import com.example.app.mvp_modules.menu.adapters.ListDishAdapter
+import com.example.app.entities.Inventory
+import com.example.app.mvp_modules.menu.adapters.ListInventoryAdapter
 import com.example.app.mvp_modules.menu.contracts.MenuContract
 import com.example.app.mvp_modules.menu.presenters.MenuPresenter
-import java.util.UUID
 
 class MenuFragment : Fragment(), MenuContract.View {
     private lateinit var binding: FragmentMenuBinding
     private lateinit var presenter: MenuContract.Presenter
-    private var dishes: MutableList<Dish> = mutableListOf()
-    private lateinit var adapter: ListDishAdapter
+    private var inventories: MutableList<Inventory> = mutableListOf()
+    private lateinit var adapter: ListInventoryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +41,7 @@ class MenuFragment : Fragment(), MenuContract.View {
     }
 
     private fun setupAdapter() {
-        adapter = ListDishAdapter(requireContext(), dishes).apply {
+        adapter = ListInventoryAdapter(requireContext(), inventories).apply {
             onItemSelected = { dish ->
                 presenter.openDishForm(dish)
             }
@@ -52,8 +50,8 @@ class MenuFragment : Fragment(), MenuContract.View {
         binding.recyclerListDish.adapter = adapter
     }
 
-    override fun showDataDishes(data: MutableList<Dish>) {
-        dishes = data
+    override fun showDataDishes(data: MutableList<Inventory>) {
+        inventories = data
         setupAdapter()
     }
 
@@ -81,9 +79,9 @@ class MenuFragment : Fragment(), MenuContract.View {
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
-    override fun navigateToDishForm(dish: Dish?) {
-        val intent = Intent(requireContext(), DishFormActivity::class.java)
-        intent.putExtra("dish_data", dish)
+    override fun navigateToDishForm(inventory: Inventory?) {
+        val intent = Intent(requireContext(), InventoryFormActivity::class.java)
+        intent.putExtra("dish_data", inventory)
         startActivity(intent)
     }
 }

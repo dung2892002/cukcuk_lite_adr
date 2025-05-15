@@ -3,10 +3,7 @@ package com.example.app.mvp_modules.calculator
 import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.GridLayout
 import android.widget.ImageButton
@@ -41,7 +38,7 @@ class CalculatorDialogOrderFragment : DialogFragment(), CalculatorContract.View 
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val view = layoutInflater.inflate(R.layout.fragment_calculator_dialog_order, null)
+        val view = layoutInflater.inflate(R.layout.fragment_calculator_dialog_invoice, null)
         display = view.findViewById(R.id.tvDisplay)
         val grid = view.findViewById<GridLayout>(R.id.gridButtons)
         buttonSubmit = view.findViewById(R.id.btnSubmitCalculator)

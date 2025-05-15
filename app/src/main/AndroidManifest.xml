@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".CukcukApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,16 +14,16 @@
         android:theme="@style/Theme.App"
         tools:targetApi="31">
         <activity
-            android:name=".mvp_modules.sale.views.SelectDishActivity"
+            android:name=".mvp_modules.sale.views.SelectInventoryActivity"
             android:exported="false" />
         <activity
-            android:name=".mvp_modules.sale.views.BillActivity"
+            android:name=".mvp_modules.sale.views.InvoiceActivity"
             android:exported="false" />
         <activity
-            android:name=".mvp_modules.menu.views.DishUnitActivity"
+            android:name=".mvp_modules.menu.views.UnitActivity"
             android:exported="false" />
         <activity
-            android:name=".mvp_modules.menu.views.DishFormActivity"
+            android:name=".mvp_modules.menu.views.InventoryFormActivity"
             android:exported="false" />
         <activity
             android:name=".mvp_modules.set_password.SetPasswordActivity"

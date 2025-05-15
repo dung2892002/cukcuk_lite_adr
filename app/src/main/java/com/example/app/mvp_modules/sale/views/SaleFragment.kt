@@ -18,17 +18,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.FragmentSaleBinding
-import com.example.app.models.Bill
-import com.example.app.models.Order
+import com.example.app.entities.Invoice
 import com.example.app.mvp_modules.sale.presenters.SalePresenter
-import com.example.app.mvp_modules.sale.adapters.ListOrderAdapter
+import com.example.app.mvp_modules.sale.adapters.ListInvoiceAdapter
 import com.example.app.mvp_modules.sale.contracts.SaleContract
 
 class SaleFragment : Fragment(), SaleContract.View {
     private lateinit var binding: FragmentSaleBinding
     private lateinit var presenter: SaleContract.Presenter
-    private var orders = mutableListOf<Order>()
-    private lateinit var adapter: ListOrderAdapter
+    private var invoices = mutableListOf<Invoice>()
+    private lateinit var adapter: ListInvoiceAdapter
     private lateinit var dialog: AlertDialog
 
     override fun onCreateView(
@@ -73,7 +72,7 @@ class SaleFragment : Fragment(), SaleContract.View {
     }
 
     private fun setupAdapter() {
-        adapter = ListOrderAdapter(requireContext(), orders).apply {
+        adapter = ListInvoiceAdapter(requireContext(), invoices).apply {
             onItemClick = { order ->
                 presenter.handleNavigateSelectDish(order)
             }
@@ -89,8 +88,8 @@ class SaleFragment : Fragment(), SaleContract.View {
         binding.recyclerListOrder.adapter = adapter
     }
 
-    private fun openDialogDelete(order: Order) {
-        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_delete_order, null)
+    private fun openDialogDelete(invoice: Invoice) {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_delete_invoice, null)
         dialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .setCancelable(false)
@@ -105,7 +104,7 @@ class SaleFragment : Fragment(), SaleContract.View {
         }
 
         dialogView.findViewById<AppCompatButton>(R.id.btnAcceptDeleteOrder).setOnClickListener {
-            val result = presenter.deleteOrder(order)
+            val result = presenter.deleteOrder(invoice)
             Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
             if (result.isSuccess) {
                 dialog.dismiss()
@@ -114,7 +113,7 @@ class SaleFragment : Fragment(), SaleContract.View {
         dialog.show()
     }
 
-    override fun showDataOrders(data: MutableList<Order>) {
+    override fun showDataOrders(data: MutableList<Invoice>) {
         if (data.isEmpty()) {
             binding.fragmentStateEmptyOrder.visibility = View.VISIBLE
             binding.recyclerListOrder.visibility = View.GONE
@@ -122,22 +121,22 @@ class SaleFragment : Fragment(), SaleContract.View {
         else {
             binding.fragmentStateEmptyOrder.visibility = View.GONE
             binding.recyclerListOrder.visibility = View.VISIBLE
-            orders = data
+            invoices = data
             setupAdapter()
         }
     }
 
-    override fun navigateToBillActivity(bill: Bill) {
-        println(bill.order.dishes.size)
-        val intent = Intent(requireContext(), BillActivity::class.java)
-        intent.putExtra("bill_data", bill)
-        intent.putExtra("from_sale_fragment", true)
-        startActivity(intent)
+    override fun navigateToInvoiceActivity(invoice: Invoice) {
+            println(invoice.InvoiceDetails.size)
+            val intent = Intent(requireContext(), InvoiceActivity::class.java)
+            intent.putExtra("invoice_data", invoice)
+            intent.putExtra("from_sale_fragment", true)
+            startActivity(intent)
     }
 
-    override fun navigateToSelectDishActivity(order: Order?) {
-        val intent = Intent(requireContext(), SelectDishActivity::class.java)
-        intent.putExtra("order_data", order)
+    override fun navigateToSelectDishActivity(invoice: Invoice?) {
+        val intent = Intent(requireContext(), SelectInventoryActivity::class.java)
+        intent.putExtra("order_data", invoice)
         startActivity(intent)
     }
 }

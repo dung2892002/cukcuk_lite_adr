@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         }
     }
 
+
     override fun openActivity(activityClass: Class<*>) {
         val intent = Intent(this, activityClass)
         startActivity(intent)

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    style="@style/LinearBase"
+    tools:context=".mvp_modules.sale.views.SelectInventoryActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/BaseToolbar"
+        app:menu="@menu/menu_select_dish">
+
+        <TextView
+            android:id="@+id/txtToolbarTitle"
+            style="@style/BaseToolbar.Title"
+            android:text="Chọn món"
+            tools:ignore="HardcodedText" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerListDishSelect"
+        style="@style/List_Dish_Select"
+        tools:ignore="InefficientWeight" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#ffffffff"/>
+    <View style="@style/Line"/>
+
+    <LinearLayout style="@style/List_Dish_Select_OrderValue">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            style="@style/List_Dish_Select_OrderValue_Image"
+            android:src="@drawable/ic_table"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnOpenInputTable"
+            style="@style/List_Dish_Select_OrderValue_Detail"
+            android:text="5"
+            tools:ignore="HardcodedText" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            style="@style/List_Dish_Select_OrderValue_Image"
+            android:src="@drawable/user_icon" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnOpenInputPeople"
+            style="@style/List_Dish_Select_OrderValue_Detail"
+            android:text="5"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tổng tiền"
+            android:textSize="20sp"
+            tools:ignore="HardcodedText" />
+
+
+        <TextView
+            android:id="@+id/txtOrderTotalPrice"
+            style="@style/List_Dish_Select_TotalPrice"
+            android:text="60.000"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+    <LinearLayout
+        style="@style/List_Dish_Select_Footer">
+
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btnOpenMic"
+            style="@style/List_Dish_Select_Footer_Button"
+            android:src="@drawable/ic_microphone"
+            tools:ignore="HardcodedText" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSaveOrder"
+            style="@style/List_Dish_Select_Footer_Button.Weight3"
+            android:text="CẤT"
+            tools:ignore="HardcodedText" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCreateBill"
+            style="@style/List_Dish_Select_Footer_Button.Weight3.Submit"
+            android:text="THU TIỀN"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+    <View style="@style/Line"/>
+
+</LinearLayout>
