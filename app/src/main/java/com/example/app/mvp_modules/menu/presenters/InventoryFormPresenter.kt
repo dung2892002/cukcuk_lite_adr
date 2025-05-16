@@ -1,7 +1,7 @@
 package com.example.app.mvp_modules.menu.presenters
 
 import com.example.app.entities.Inventory
-import com.example.app.entities.SeverResponse
+import com.example.app.dto.SeverResponse
 import com.example.app.mvp_modules.menu.contracts.InventoryFormContract
 import java.util.UUID
 import kotlin.random.Random

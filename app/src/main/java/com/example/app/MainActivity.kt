@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.app.databinding.ActivityMainBinding
 import com.example.app.mvp_modules.menu.views.MenuFragment
 import com.example.app.mvp_modules.sale.views.SaleFragment
-import com.example.app.mvp_modules.statistic.StatisticFragment
+import com.example.app.mvp_modules.statistic.views.StatisticFragment
 import androidx.core.view.size
 import androidx.core.view.get
 import com.example.app.databinding.NavHeaderBinding
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         val fragment = when (title) {
             "Bán hàng" -> SaleFragment()
             "Thực đơn" -> MenuFragment()
-            "Thống kê" -> StatisticFragment()
+            "Doanh thu" -> StatisticFragment()
             else -> null
         }
 

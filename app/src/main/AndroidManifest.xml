@@ -14,7 +14,10 @@
         android:theme="@style/Theme.App"
         tools:targetApi="31">
         <activity
-            android:name=".mvp_modules.sale.views.SelectInventoryActivity"
+            android:name=".mvp_modules.statistic.views.StatisticByInventoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mvp_modules.sale.views.InvoiceFormActivity"
             android:exported="false" />
         <activity
             android:name=".mvp_modules.sale.views.InvoiceActivity"

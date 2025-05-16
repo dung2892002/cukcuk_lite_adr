@@ -21,7 +21,7 @@ import com.example.app.R
 import com.example.app.databinding.ActivityUnitBinding
 import com.example.app.datas.CukcukDbHelper
 import com.example.app.datas.repositories.UnitRepository
-import com.example.app.entities.SeverResponse
+import com.example.app.dto.SeverResponse
 import com.example.app.entities.Unit
 import com.example.app.mvp_modules.menu.adapters.ListUnitAdapter
 import com.example.app.mvp_modules.menu.contracts.UnitContract

@@ -1,20 +1,25 @@
 package com.example.app.mvp_modules.sale.contracts
 
 import com.example.app.entities.Invoice
-import com.example.app.entities.SeverResponse
+import com.example.app.dto.SeverResponse
 
 interface SaleContract {
     interface View{
-        fun showDataOrders(data: MutableList<Invoice>)
+        fun showDataInvoices(data: MutableList<Invoice>)
         fun navigateToInvoiceActivity(invoice: Invoice)
-        fun navigateToSelectDishActivity(invoice: Invoice?)
+        fun navigateToSelectInventoryActivity(invoice: Invoice?)
     }
 
     interface Presenter{
 //        fun openDishForm(dish: Dish?)
-        fun fetchData()
-        fun createBill(invoice: Invoice)
-        fun deleteOrder(invoice: Invoice) : SeverResponse
-        fun handleNavigateSelectDish(invoice: Invoice?)
+        fun fetchData() : MutableList<Invoice>
+        fun paymentInvoice(invoice: Invoice)
+        fun handleNavigateSelectInventory(invoice: Invoice?)
+        fun handleDeleteInvoice(invoice: Invoice) : SeverResponse
+    }
+
+    interface Model{
+        fun getAllInvoiceNotPayment() : MutableList<Invoice>
+        fun deleteInvoice(invoiceId: String): Boolean
     }
 }

@@ -3,18 +3,32 @@ package com.example.app.datas.repositories
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import com.example.app.datas.CukcukDbHelper
+import com.example.app.entities.Inventory
 import com.example.app.entities.Invoice
 import com.example.app.entities.InvoiceDetail
+import com.example.app.utils.getBoolean
 import com.example.app.utils.getDateTime
 import com.example.app.utils.getDouble
 import com.example.app.utils.getInt
 import com.example.app.utils.getString
 import com.example.app.utils.getUUID
+import java.util.Locale
 import java.util.UUID
 
 @SuppressLint("Recycle")
 class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
     private val db = dbHelper.readableDatabase
+
+    fun getNewInvoiceNo() : String {
+        var count = 0
+        val query = "SELECT COUNT(*) FROM Invoice WHERE PaymentStatus = 1"
+        val cursor = db.rawQuery(query, null)
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(0)
+        }
+        cursor.close()
+        return String.format(Locale.US, "%05d", count + 1)
+    }
 
 
     fun getListInvoiceNotPayment() : MutableList<Invoice> {
@@ -50,7 +64,62 @@ class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
         return invoices
     }
 
-    fun getInvoiceDetail(invoiceId: UUID): Invoice? {
+    fun getListInvoicesDetail(invoiceId: UUID) : MutableList<InvoiceDetail> {
+        val invoicesDetail = mutableListOf<InvoiceDetail>()
+        val query = "SELECT * FROM InvoiceDetail WHERE InvoiceID = ? ORDER BY SortOrder"
+        val cursor = db.rawQuery(query, arrayOf(invoiceId.toString()))
+
+        while (cursor.moveToNext()) {
+            val invoiceDetail = InvoiceDetail(
+                InvoiceDetailID = cursor.getUUID("InvoiceDetailID"),
+                InvoiceDetailType = cursor.getInt("InvoiceDetailType"),
+                InvoiceID = cursor.getUUID("InvoiceID"),
+                InventoryID = cursor.getUUID("InventoryID"),
+                InventoryName = cursor.getString("InventoryName"),
+                UnitID = cursor.getUUID("UnitID"),
+                UnitName = cursor.getString("UnitName"),
+                Quantity = cursor.getDouble("Quantity"),
+                UnitPrice = cursor.getDouble("UnitPrice"),
+                Amount = cursor.getDouble("Amount"),
+                Description = cursor.getString("Description"),
+                SortOrder = cursor.getInt("SortOrder"),
+                CreatedDate = cursor.getDateTime("CreatedDate"),
+                CreatedBy = cursor.getString("CreatedBy"),
+                ModifiedDate = cursor.getDateTime("ModifiedDate"),
+                ModifiedBy = cursor.getString("ModifiedBy")
+            )
+            invoicesDetail.add(invoiceDetail)
+        }
+
+        cursor.close()
+        return invoicesDetail
+    }
+
+    fun deleteInvoice(invoiceId: String) : Boolean {
+        return try {
+            db.beginTransaction()
+            db.delete(
+                "InvoiceDetail",
+                "InvoiceID = ?",
+                arrayOf(invoiceId)
+            )
+            db.delete(
+                "Invoice",
+                "InvoiceID = ?",
+                arrayOf(invoiceId)
+            )
+
+            db.setTransactionSuccessful()
+            true
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            false
+        } finally {
+            db.endTransaction()
+        }
+    }
+
+    fun getInvoiceById(invoiceId: UUID): Invoice? {
         var invoice: Invoice? = null
         val invoiceQuery = "SELECT * FROM Invoice WHERE InvoiceID = ?"
         val cursor = db.rawQuery(invoiceQuery, arrayOf(invoiceId.toString()))
@@ -108,10 +177,46 @@ class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
         return invoice
     }
 
+    fun getAllInventoryInactive() : MutableList<Inventory> {
+        val query = "SELECT i.*, u.UnitName " +
+                "FROM Inventory i " +
+                "JOIN Unit u " +
+                "ON i.UnitID = u.UnitId " +
+                "WHERE i.Inactive = 1"
+
+        val cursor = db.rawQuery(query,null)
+
+        val inventoryList = mutableListOf<Inventory>()
+
+        while (cursor.moveToNext()) {
+            val inventory = Inventory(
+                InventoryID = cursor.getUUID("InventoryID"),
+                InventoryCode = cursor.getString("InventoryCode"),
+                InventoryName = cursor.getString("InventoryName"),
+                InventoryType = cursor.getInt("InventoryType"),
+                Price = cursor.getDouble("Price"),
+                Description = cursor.getString("Description"),
+                Inactive = cursor.getBoolean("Inactive"),
+                CreatedBy = cursor.getString("CreatedBy"),
+                ModifiedBy = cursor.getString("ModifiedBy"),
+                CreatedDate = cursor.getDateTime("CreatedDate"),
+                ModifiedDate = cursor.getDateTime("ModifiedDate"),
+                Color = cursor.getString("Color"),
+                IconFileName = cursor.getString("IconFileName"),
+                UseCount = cursor.getInt("UseCount"),
+                UnitID = cursor.getUUID("UnitID"),
+                UnitName = cursor.getString("UnitName")
+            )
+
+            inventoryList.add(inventory)
+        }
+        cursor.close()
+        return inventoryList
+    }
+
     fun createInvoice(invoice: Invoice): Boolean {
         return try {
             db.beginTransaction()
-            invoice.InvoiceID = UUID.randomUUID()
             insertInvoice(invoice)
 
             invoice.InvoiceDetails.forEachIndexed { index, detail ->
@@ -137,10 +242,9 @@ class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
     fun updateInvoice(invoice: Invoice): Boolean {
         return try {
             db.beginTransaction()
-
             updateInvoiceOnly(invoice)
-
             deleteInvoiceDetails(invoice.InvoiceID!!)
+
             invoice.InvoiceDetails.forEachIndexed { index, detail ->
                 detail.InvoiceDetailID = UUID.randomUUID()
                 insertInvoiceDetail(
@@ -280,7 +384,7 @@ class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
     }
 
     private fun deleteInvoiceDetails(detailId: UUID) {
-        db.delete("InvoiceDetail", "InvoiceDetailID = ?", arrayOf(detailId.toString()))
+        db.delete("InvoiceDetail", "InvoiceID = ?", arrayOf(detailId.toString()))
     }
 
 }

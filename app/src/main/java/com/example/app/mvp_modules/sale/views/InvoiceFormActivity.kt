@@ -15,23 +15,27 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.ActivitySelectInventoryBinding
-import com.example.app.entities.InventorySelect
+import com.example.app.datas.CukcukDbHelper
+import com.example.app.datas.repositories.InvoiceRepository
+import com.example.app.dto.InventorySelect
 import com.example.app.entities.Invoice
-import com.example.app.entities.SeverResponse
+import com.example.app.dto.SeverResponse
 import com.example.app.mvp_modules.calculator.CalculatorDialogFragment
 import com.example.app.mvp_modules.calculator.CalculatorDialogOrderFragment
 import com.example.app.mvp_modules.sale.adapters.ListSelectInventoryAdapter
-import com.example.app.mvp_modules.sale.contracts.SelectInventoryContract
-import com.example.app.mvp_modules.sale.presenters.SelectInventoryPresenter
+import com.example.app.mvp_modules.sale.contracts.InvoiceFormContract
+import com.example.app.mvp_modules.sale.models.InvoiceFormModel
+import com.example.app.mvp_modules.sale.models.InvoiceModel
+import com.example.app.mvp_modules.sale.presenters.InvoiceFormPresenter
 import com.example.app.utils.FormatDisplay
 import java.time.LocalDateTime
 import java.util.UUID
 
-class SelectInventoryActivity : AppCompatActivity(), SelectInventoryContract.View {
+class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
     private lateinit var binding: ActivitySelectInventoryBinding
-    private lateinit var presenter: SelectInventoryContract.Presenter
+    private lateinit var presenter: InvoiceFormContract.Presenter
     private lateinit var invoice: Invoice
-    private var dishesSelect = mutableListOf<InventorySelect>()
+    private var inventoriesSelect = mutableListOf<InventorySelect>()
     private lateinit var adapter: ListSelectInventoryAdapter
     private var positionIndex = 0
 
@@ -42,18 +46,22 @@ class SelectInventoryActivity : AppCompatActivity(), SelectInventoryContract.Vie
         binding = ActivitySelectInventoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = SelectInventoryPresenter(this)
+        val db = CukcukDbHelper(this)
+        val repository = InvoiceRepository(db)
+        val model = InvoiceFormModel(repository)
+        presenter = InvoiceFormPresenter(this, model)
 
         setupToolbar()
         getDataOrder()
 
         binding.btnCreateBill.setOnClickListener {
-            createBill()
+            paymentInvoice()
         }
 
         binding.btnSaveOrder.setOnClickListener {
-            presenter.submitOrder(invoice)
+            presenter.submitInvoice(invoice, inventoriesSelect, false)
         }
+
 
         binding.btnOpenInputTable.setOnClickListener {
             openCalculatorTable()
@@ -86,10 +94,10 @@ class SelectInventoryActivity : AppCompatActivity(), SelectInventoryContract.Vie
     }
 
     override fun openCalculatorDish() {
-        val initValue = dishesSelect[positionIndex].quantity
+        val initValue = inventoriesSelect[positionIndex].quantity
         CalculatorDialogFragment.newInstance(initValue.toString(), "Nhập số lượng") { result ->
-            dishesSelect[positionIndex].quantity = result
-            presenter.calculatorTotalPrice(dishesSelect)
+            inventoriesSelect[positionIndex].quantity = result
+            presenter.calculatorTotalPrice(inventoriesSelect)
             adapter.notifyItemChanged(positionIndex)
         }.show(supportFragmentManager, null)
     }
@@ -105,17 +113,17 @@ class SelectInventoryActivity : AppCompatActivity(), SelectInventoryContract.Vie
             val createNewOrder = data?.getBooleanExtra("create_new_order", false) == true
             if (createNewOrder) {
                 finish() // Kết thúc activity hiện tại
-                startActivity(Intent(this, SelectInventoryActivity::class.java)) // Mở activity mới
+                startActivity(Intent(this, InvoiceFormActivity::class.java)) // Mở activity mới
             }
         }
     }
 
-    private fun createBill() {
+    private fun paymentInvoice() {
         if (invoice.Amount == 0.0) {
             Toast.makeText(this, "Vui lòng chọn món", Toast.LENGTH_SHORT).show()
             return
         }
-        presenter.createBill(dishesSelect, invoice)
+        presenter.paymentInvoice(inventoriesSelect, invoice)
     }
 
     private fun setupToolbar() {
@@ -133,12 +141,12 @@ class SelectInventoryActivity : AppCompatActivity(), SelectInventoryContract.Vie
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                finish()
+                navigateToSale()
                 true
             }
 
             R.id.btnSubmitSelectDishToolbar -> {
-                presenter.createBill(dishesSelect, invoice)
+                presenter.paymentInvoice(inventoriesSelect, invoice)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -152,10 +160,10 @@ class SelectInventoryActivity : AppCompatActivity(), SelectInventoryContract.Vie
 
     @SuppressLint("NewApi")
     private fun getDataOrder() {
-        val invoiceData = intent.getSerializableExtra("order_data") as Invoice?
+        val invoiceData = intent.getSerializableExtra("invoice_data") as Invoice?
         invoice = invoiceData
             ?: Invoice(
-                InvoiceID = UUID.randomUUID(),
+                InvoiceID = null,
                 InvoiceType = 1,
                 InvoiceNo = "",
                 InvoiceDate = LocalDateTime.now(),
@@ -179,7 +187,7 @@ class SelectInventoryActivity : AppCompatActivity(), SelectInventoryContract.Vie
         binding.btnOpenInputPeople.text = if (invoice.NumberOfPeople != 0) invoice.NumberOfPeople.toString() else ""
         binding.txtOrderTotalPrice.text = FormatDisplay.formatNumber(invoice.Amount.toString())
 
-        dishesSelect = presenter.handleDataDishSelect(invoice)
+        inventoriesSelect = presenter.handleDataInventorySelect(invoice)
         setupAdapter()
     }
 
@@ -192,32 +200,42 @@ class SelectInventoryActivity : AppCompatActivity(), SelectInventoryContract.Vie
 
 
     override fun closeActivity(response: SeverResponse) {
-        Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
-        if (response.isSuccess) finish()
+        if (response.isSuccess) {
+            navigateToSale()
+        } else {
+            Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun navigateToSale() {
+        val resultIntent = Intent()
+        resultIntent.putExtra("create_new_order", true)
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
     }
 
     private fun setupAdapter() {
-        adapter = ListSelectInventoryAdapter(this,dishesSelect).apply {
+        adapter = ListSelectInventoryAdapter(this,inventoriesSelect).apply {
             onClickItem = { dishSelect, position ->
-                dishesSelect[position].quantity++
-                presenter.calculatorTotalPrice(dishesSelect)
+                inventoriesSelect[position].quantity++
+                presenter.calculatorTotalPrice(inventoriesSelect)
             }
 
             onClickButtonAdd = { dishSelect, position ->
-                dishesSelect[position].quantity++
-                presenter.calculatorTotalPrice(dishesSelect)
+                inventoriesSelect[position].quantity++
+                presenter.calculatorTotalPrice(inventoriesSelect)
             }
 
             onClickButtonSubtract = { dishSelect, position ->
-                if (dishesSelect[position].quantity > 0) {
-                    dishesSelect[position].quantity--
-                    presenter.calculatorTotalPrice(dishesSelect)
+                if (inventoriesSelect[position].quantity > 0) {
+                    inventoriesSelect[position].quantity--
+                    presenter.calculatorTotalPrice(inventoriesSelect)
                 }
             }
 
             onClickButtonRemove = { dishSelect, position ->
-                dishesSelect[position].quantity = 0.0
-                presenter.calculatorTotalPrice(dishesSelect)
+                inventoriesSelect[position].quantity = 0.0
+                presenter.calculatorTotalPrice(inventoriesSelect)
             }
 
             onClickOpenCalculator = { dishSelect, position ->

@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app.R
-import com.example.app.entities.InventorySelect
+import com.example.app.dto.InventorySelect
 import com.example.app.utils.FormatDisplay
 import com.example.app.utils.ImageHelper
 import com.google.android.material.card.MaterialCardView

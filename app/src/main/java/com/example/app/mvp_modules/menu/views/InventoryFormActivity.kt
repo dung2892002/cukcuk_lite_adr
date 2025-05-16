@@ -287,11 +287,12 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
             inventory.Inactive = !binding.chkIsActiveDish.isChecked
         }
         val response = presenter.handleSubmitForm(inventory,isAddNew)
-        Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
         if (response.isSuccess) {
             setResult(RESULT_OK)
             finish()
             return
+        } else {
+            Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
         }
     }
 
