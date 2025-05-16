@@ -1,6 +1,6 @@
 package com.example.app.mvp_modules.menu.contracts
 
-import com.example.app.entities.SeverResponse
+import com.example.app.dto.SeverResponse
 import com.example.app.entities.Unit
 
 interface UnitContract {

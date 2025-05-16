@@ -1,7 +1,7 @@
 package com.example.app.mvp_modules.menu.contracts
 
 import com.example.app.entities.Inventory
-import com.example.app.entities.SeverResponse
+import com.example.app.dto.SeverResponse
 import java.util.UUID
 
 interface InventoryFormContract {

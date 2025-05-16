@@ -1,7 +1,7 @@
 package com.example.app.mvp_modules.menu.presenters
 
 import android.annotation.SuppressLint
-import com.example.app.entities.SeverResponse
+import com.example.app.dto.SeverResponse
 import com.example.app.entities.Unit
 import com.example.app.mvp_modules.menu.contracts.UnitContract
 import java.time.LocalDateTime

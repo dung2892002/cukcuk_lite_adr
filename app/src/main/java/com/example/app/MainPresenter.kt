@@ -23,7 +23,7 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
         when (itemId) {
             R.id.nav_sale -> view.switchFragment("Bán hàng")
             R.id.nav_menu -> view.switchFragment("Thực đơn")
-            R.id.nav_statistic -> view.switchFragment("Thống kê")
+            R.id.nav_statistic -> view.switchFragment("Doanh thu")
             R.id.nav_sync_data -> view.openActivity(SyncDataActivity::class.java)
             R.id.nav_setting -> view.openActivity(SettingActivity::class.java)
             R.id.nav_link_account -> view.openActivity(LinkAccountActivity::class.java)

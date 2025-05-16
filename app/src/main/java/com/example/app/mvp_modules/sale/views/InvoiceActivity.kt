@@ -9,25 +9,44 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.ActivityInvoiceBinding
+import com.example.app.datas.CukcukDbHelper
+import com.example.app.datas.repositories.InvoiceRepository
 import com.example.app.entities.Invoice
 import com.example.app.mvp_modules.calculator.CalculatorDialogBillActivityFragment
 import com.example.app.mvp_modules.sale.adapters.ListInvoiceDetailBillAdapter
-import com.example.app.mvp_modules.sale.contracts.InventoryContract
+import com.example.app.mvp_modules.sale.contracts.InvoiceContract
+import com.example.app.mvp_modules.sale.models.InvoiceModel
 import com.example.app.mvp_modules.sale.presenters.InvoicePresenter
 import com.example.app.utils.FormatDisplay
 
-class InvoiceActivity : AppCompatActivity(), InventoryContract.View {
+class InvoiceActivity : AppCompatActivity(), InvoiceContract.View {
     private lateinit var binding: ActivityInvoiceBinding
-    private lateinit var presenter: InventoryContract.Presenter
+    private lateinit var presenter: InvoiceContract.Presenter
     private lateinit var invoice : Invoice
     private lateinit var adapter: ListInvoiceDetailBillAdapter
     private var fromSaleFragment = false
+
+    private val invoiceFormLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val shouldReload = result.data?.getBooleanExtra("create_new_order", false) ?: false
+            if (shouldReload) {
+                // Trả kết quả cho SaleFragment
+                val resultIntent = Intent()
+                resultIntent.putExtra("create_new_order", true)
+                setResult(Activity.RESULT_OK, resultIntent)
+                finish()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,19 +55,21 @@ class InvoiceActivity : AppCompatActivity(), InventoryContract.View {
         binding = ActivityInvoiceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        presenter = InvoicePresenter(this)
+        val db = CukcukDbHelper(this)
+        val repository = InvoiceRepository(db)
+        val model = InvoiceModel(repository)
+        presenter = InvoicePresenter(this, model)
 
         setupToolbar()
-        getBillData()
+        getInvoiceData()
 
         binding.btnOpenCalculator.setOnClickListener {
             openCalculator()
         }
 
         binding.btnSubmitBill.setOnClickListener {
-            createBill()
+            paymentInvoice()
         }
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -66,12 +87,11 @@ class InvoiceActivity : AppCompatActivity(), InventoryContract.View {
         }.show(supportFragmentManager, null)
     }
 
-    override fun navigateCreateOrder(invoice: Invoice?) {
+    override fun navigateCreateInvoice(invoice: Invoice?) {
         if (fromSaleFragment) {
-            val intent = Intent(this, SelectInventoryActivity::class.java)
-            intent.putExtra("order_data", invoice)
-            startActivity(intent)
-            finish()
+            val intent = Intent(this, InvoiceFormActivity::class.java)
+            intent.putExtra("invoice_data", invoice)
+            invoiceFormLauncher.launch(intent)
         }
         else
         {
@@ -102,37 +122,40 @@ class InvoiceActivity : AppCompatActivity(), InventoryContract.View {
             }
 
             R.id.btnSubmitBillToolbar -> {
-                createBill()
+                paymentInvoice()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun createBill() {
+    private fun paymentInvoice() {
         val result = presenter.handlePaymentInvoice(invoice)
-        Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show()
         if (result.isSuccess) {
-            presenter.createOrder()
+            presenter.createInvoice()
+        } else {
+            Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun getBillData() {
+    private fun getInvoiceData() {
         invoice = intent.getSerializableExtra("invoice_data") as Invoice
         fromSaleFragment = intent.getSerializableExtra("from_sale_fragment") as Boolean
-        println(invoice.InvoiceDetails.size)
-        showDataBill()
+
+        invoice.InvoiceDetails = presenter.getInvoiceDetails(invoice)
+        invoice.InvoiceNo = presenter.getNewInvoiceNo()
+        showDataInvoice()
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showDataBill() {
+    private fun showDataInvoice() {
         binding.txtTotalPrice.text = FormatDisplay.formatNumber(invoice.Amount.toString())
         binding.txtMoneyGive.text = FormatDisplay.formatNumber(invoice.ReceiveAmount.toString())
         binding.txtReturnMoney.text = FormatDisplay.formatNumber(invoice.ReturnAmount.toString())
         binding.txtCreatedAt.text =  FormatDisplay.formatTo12HourWithCustomAMPM(invoice.CreatedDate.toString())
         binding.txtBillNumber.text = "Số: ${invoice.InvoiceNo}"
 
-        if (!invoice.TableName.isEmpty()) {
+        if (invoice.TableName.isEmpty()) {
             binding.groupNumberTable.visibility = View.GONE
         } else {
             binding.groupNumberTable.visibility = View.VISIBLE

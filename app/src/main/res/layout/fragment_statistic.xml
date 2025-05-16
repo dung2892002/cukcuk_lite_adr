@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".mvp_modules.statistic.StatisticFragment">
+    tools:context=".mvp_modules.statistic.views.StatisticFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

@@ -37,6 +37,7 @@
             tools:ignore="HardcodedText" />
 
         <TextView
+            android:id="@+id/txtButtonAddInvoice"
             style="@style/MenuTextNote.Button"
             android:text="Bấm vào đây hoặc dấu + để gọi món"
             tools:ignore="HardcodedText" />

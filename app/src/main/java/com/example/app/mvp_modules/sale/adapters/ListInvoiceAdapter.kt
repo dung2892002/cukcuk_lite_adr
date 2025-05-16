@@ -1,6 +1,12 @@
 package com.example.app.mvp_modules.sale.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.AbsoluteSizeSpan
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +18,21 @@ import com.example.app.R
 import com.example.app.entities.Invoice
 import com.example.app.utils.FormatDisplay
 
+@SuppressLint("NotifyDataSetChanged")
 class ListInvoiceAdapter(
     private val context: Context,
-    private val invoices: MutableList<Invoice>,
+    private var invoices: MutableList<Invoice>,
 ) : RecyclerView.Adapter<ListInvoiceAdapter.OrderViewHolder>()
 {
     var onClickButtonDelete: ((Invoice) -> Unit)? = null
     var onClickButtonCreateBill: ((Invoice) -> Unit)? = null
     var onItemClick:((Invoice) -> Unit)? = null
+
+
+    fun updateAdapter(newInvoices: MutableList<Invoice>) {
+        invoices = newInvoices
+        notifyDataSetChanged()
+    }
 
     inner class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val numberTable: TextView = itemView.findViewById<TextView>(R.id.txtItemNumberTable)
@@ -74,10 +87,65 @@ class ListInvoiceAdapter(
             holder.imageHasPeople.visibility = View.GONE
         }
         holder.totalPrice.text = FormatDisplay.formatNumber(invoice.Amount.toString())
-        holder.listDishes.text = invoice.ListItemName
+        holder.listDishes.text = spannableFromListItemName(invoice.ListItemName)
     }
 
     override fun getItemCount(): Int {
         return invoices.size
     }
+
+    private fun spannableFromListItemName(itemListName: String): SpannableStringBuilder {
+        val builder = SpannableStringBuilder()
+        val items = itemListName.split(", ")
+
+        items.forEachIndexed { index, item ->
+            val regex = Regex("(.+?)\\s*\\((\\d+(\\.\\d+)?)\\)")
+            val match = regex.find(item)
+
+            if (match != null) {
+                val itemName = match.groupValues[1]
+                val quantity = match.groupValues[2]
+
+                val startItem = builder.length
+                builder.append(itemName)
+                builder.setSpan(
+                    ForegroundColorSpan(Color.BLACK),
+                    startItem,
+                    builder.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                builder.setSpan(
+                    AbsoluteSizeSpan(14, true),
+                    startItem,
+                    builder.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+
+                builder.append(" ($quantity)")
+                val startQty = builder.length - " ($quantity)".length
+                builder.setSpan(
+                    ForegroundColorSpan(Color.BLUE),
+                    startQty,
+                    builder.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                builder.setSpan(
+                    AbsoluteSizeSpan(14, true),
+                    startQty,
+                    builder.length,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            } else {
+                builder.append(item)
+            }
+
+            if (index != items.lastIndex) {
+                builder.append(", ")
+            }
+        }
+
+        return builder
+    }
+
+
 }

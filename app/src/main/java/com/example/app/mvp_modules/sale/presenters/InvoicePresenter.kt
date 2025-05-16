@@ -1,23 +1,26 @@
 package com.example.app.mvp_modules.sale.presenters
 
-import com.example.app.entities.SeverResponse
+import com.example.app.dto.SeverResponse
 import com.example.app.entities.Invoice
-import com.example.app.mvp_modules.sale.contracts.InventoryContract
-import kotlin.random.Random
+import com.example.app.entities.InvoiceDetail
+import com.example.app.mvp_modules.sale.contracts.InvoiceContract
 
-class InvoicePresenter(private val view: InventoryContract.View) : InventoryContract.Presenter {
+class InvoicePresenter(private val view: InvoiceContract.View, private val model: InvoiceContract.Model) : InvoiceContract.Presenter {
     override fun handlePaymentInvoice(invoice: Invoice): SeverResponse {
-        println(invoice)
-        var response = SeverResponse(true, "Thu tiền thành công")
-        val intRandom = Random.Default.nextInt(100)
-        if (intRandom % 2 == 0) {
-            response.isSuccess = false
-            response.message = "Có lỗi xảy ra"
-        }
+        var response = SeverResponse(false, "Có lỗi xảy ra")
+        response.isSuccess = model.paymentInvoice(invoice)
         return response
     }
 
-    override fun createOrder() {
-        view.navigateCreateOrder(null)
+    override fun createInvoice() {
+        view.navigateCreateInvoice(null)
+    }
+
+    override fun getInvoiceDetails(invoice: Invoice): MutableList<InvoiceDetail> {
+        return model.getListInvoiceDetail(invoiceId = invoice.InvoiceID!!)
+    }
+
+    override fun getNewInvoiceNo(): String {
+        return model.getNewInvoiceNo()
     }
 }
