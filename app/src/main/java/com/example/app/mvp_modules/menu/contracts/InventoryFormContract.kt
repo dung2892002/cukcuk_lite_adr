@@ -18,11 +18,5 @@ interface InventoryFormContract {
         fun getInventory(inventoryId: UUID) : Inventory?
     }
 
-    interface Model{
-        fun getInventoryDetail(inventoryID: UUID) : Inventory?
-        fun createInventory(inventory: Inventory) : Boolean
-        fun updateInventory(inventory: Inventory) : Boolean
-        fun deleteInventory(inventory: Inventory) : Boolean
-        fun checkInventoryInInvoice(inventory: Inventory) : Boolean
-    }
+
 }

@@ -18,9 +18,4 @@ interface InvoiceContract {
         fun getNewInvoiceNo(): String
     }
 
-    interface Model {
-        fun getListInvoiceDetail(invoiceId: UUID) : MutableList<InvoiceDetail>
-        fun paymentInvoice(invoice: Invoice) : Boolean
-        fun getNewInvoiceNo(): String
-    }
 }

@@ -18,8 +18,4 @@ interface SaleContract {
         fun handleDeleteInvoice(invoice: Invoice) : SeverResponse
     }
 
-    interface Model{
-        fun getAllInvoiceNotPayment() : MutableList<Invoice>
-        fun deleteInvoice(invoiceId: String): Boolean
-    }
 }

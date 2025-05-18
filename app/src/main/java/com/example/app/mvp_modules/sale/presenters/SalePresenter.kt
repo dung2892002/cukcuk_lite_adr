@@ -1,16 +1,17 @@
 package com.example.app.mvp_modules.sale.presenters
 
 import android.annotation.SuppressLint
+import com.example.app.datas.repositories.InvoiceRepository
 import com.example.app.entities.Invoice
 import com.example.app.dto.SeverResponse
 import com.example.app.mvp_modules.sale.contracts.SaleContract
 import kotlin.random.Random
 
 class SalePresenter(private val view: SaleContract.View,
-    private val model: SaleContract.Model) : SaleContract.Presenter {
+    private val repository: InvoiceRepository) : SaleContract.Presenter {
     @SuppressLint("NewApi")
     override fun fetchData(): MutableList<Invoice> {
-        return model.getAllInvoiceNotPayment()
+        return repository.getListInvoiceNotPayment()
     }
 
     override fun paymentInvoice(invoice: Invoice) {
@@ -27,7 +28,7 @@ class SalePresenter(private val view: SaleContract.View,
         if (invoice.InvoiceID == null) {
             return response
         }
-        response.isSuccess =  model.deleteInvoice(invoice.InvoiceID.toString())
+        response.isSuccess =  repository.deleteInvoice(invoice.InvoiceID.toString())
         return response
     }
 }

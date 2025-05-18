@@ -27,7 +27,6 @@ import com.example.app.entities.Invoice
 import com.example.app.mvp_modules.sale.presenters.SalePresenter
 import com.example.app.mvp_modules.sale.adapters.ListInvoiceAdapter
 import com.example.app.mvp_modules.sale.contracts.SaleContract
-import com.example.app.mvp_modules.sale.models.SaleModel
 
 class SaleFragment : Fragment(), SaleContract.View {
     private lateinit var binding: FragmentSaleBinding
@@ -66,8 +65,7 @@ class SaleFragment : Fragment(), SaleContract.View {
 
         val db = CukcukDbHelper(requireContext())
         val repository = InvoiceRepository(db)
-        val model = SaleModel(repository)
-        presenter = SalePresenter(this, model)
+        presenter = SalePresenter(this, repository)
 
         setupToolbar()
         fetchData()

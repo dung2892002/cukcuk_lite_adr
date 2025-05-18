@@ -25,10 +25,4 @@ interface InvoiceFormContract {
         fun submitInvoice(invoice: Invoice, inventoriesSelect: MutableList<InventorySelect>, toPayment: Boolean)
     }
 
-    interface Model{
-        fun getListInvoiceDetail(invoiceId: UUID) : MutableList<InvoiceDetail>
-        fun getInventoriesInactive() : MutableList<Inventory>
-        fun createInvoice(invoice: Invoice) : Boolean
-        fun updateInvoice(invoice: Invoice) : Boolean
-    }
 }

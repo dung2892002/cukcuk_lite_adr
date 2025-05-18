@@ -1,12 +1,7 @@
 package com.example.app.mvp_modules.sale.presenters
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Color
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.AbsoluteSizeSpan
-import android.text.style.ForegroundColorSpan
+import com.example.app.datas.repositories.InvoiceRepository
 import com.example.app.entities.Inventory
 import com.example.app.dto.InventorySelect
 import com.example.app.entities.Invoice
@@ -16,12 +11,10 @@ import com.example.app.mvp_modules.sale.contracts.InvoiceFormContract
 import com.example.app.utils.FormatDisplay
 import java.time.LocalDateTime
 import java.util.UUID
-import kotlin.random.Random
-import kotlin.uuid.Uuid
 
 @SuppressLint("NewApi")
 class InvoiceFormPresenter(private val view: InvoiceFormContract.View,
-    private val model: InvoiceFormContract.Model) : InvoiceFormContract.Presenter {
+    private val repository: InvoiceRepository) : InvoiceFormContract.Presenter {
 
     override fun handleDataInventorySelect(invoice: Invoice): MutableList<InventorySelect> {
         var result = mutableListOf<InventorySelect>()
@@ -86,11 +79,11 @@ class InvoiceFormPresenter(private val view: InvoiceFormContract.View,
         invoice.ReceiveAmount = invoice.Amount
 
         val result = if (invoice.InvoiceID != null) {
-            model.updateInvoice(invoice)
+            repository.updateInvoice(invoice)
         } else {
             invoice.InvoiceID = UUID.randomUUID()
             response.message = invoice.InvoiceID.toString()
-            model.createInvoice(invoice)
+            repository.createInvoice(invoice)
         }
 
         if (!result) {
@@ -113,11 +106,11 @@ class InvoiceFormPresenter(private val view: InvoiceFormContract.View,
 
 
     private fun fetchInventories() : MutableList<Inventory> {
-        return model.getInventoriesInactive()
+        return repository.getAllInventoryInactive()
     }
 
     private fun getInvoiceDetails(invoiceID: UUID) : MutableList<InvoiceDetail> {
-        return model.getListInvoiceDetail(invoiceID)
+        return repository.getListInvoicesDetail(invoiceID)
     }
 
     private fun buildListItemName(invoiceDetails: List<InvoiceDetail>) : String {

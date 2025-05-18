@@ -14,7 +14,4 @@ interface MenuContract {
         fun fetchData()
     }
 
-    interface Model {
-        fun getAllInventories() : MutableList<Inventory>
-    }
 }

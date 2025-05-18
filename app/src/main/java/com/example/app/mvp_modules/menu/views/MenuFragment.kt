@@ -23,7 +23,6 @@ import com.example.app.datas.repositories.InventoryRepository
 import com.example.app.entities.Inventory
 import com.example.app.mvp_modules.menu.adapters.ListInventoryAdapter
 import com.example.app.mvp_modules.menu.contracts.MenuContract
-import com.example.app.mvp_modules.menu.models.MenuModel
 import com.example.app.mvp_modules.menu.presenters.MenuPresenter
 import java.util.UUID
 
@@ -42,9 +41,7 @@ class MenuFragment : Fragment(), MenuContract.View {
 
         val dbHelper = CukcukDbHelper(requireContext())
         val repository = InventoryRepository(dbHelper)
-        val model = MenuModel(repository)
-
-        presenter = MenuPresenter(this, model)
+        presenter = MenuPresenter(this, repository)
 
         setupToolbar()
         fetchData()

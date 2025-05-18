@@ -33,7 +33,6 @@ import com.example.app.entities.Unit
 import com.example.app.mvp_modules.calculator.CalculatorDialogFragment
 import com.example.app.mvp_modules.menu.adapters.ListColorAdapter
 import com.example.app.mvp_modules.menu.adapters.ListImageAdapter
-import com.example.app.mvp_modules.menu.models.InventoryFormModel
 import com.example.app.utils.FormatDisplay
 import com.example.app.utils.ImageHelper
 import java.time.LocalDateTime
@@ -73,8 +72,7 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
 
         val dbHelper = CukcukDbHelper(this)
         val repository = InventoryRepository(dbHelper)
-        val model = InventoryFormModel(repository)
-        presenter = InventoryFormPresenter(this, model)
+        presenter = InventoryFormPresenter(this, repository)
 
         getInventory()
         setupToolbar()

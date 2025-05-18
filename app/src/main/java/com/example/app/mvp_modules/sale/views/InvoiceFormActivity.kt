@@ -1,7 +1,6 @@
 package com.example.app.mvp_modules.sale.views
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.ComponentCaller
 import android.content.Intent
 import android.os.Bundle
@@ -24,12 +23,9 @@ import com.example.app.mvp_modules.calculator.CalculatorDialogFragment
 import com.example.app.mvp_modules.calculator.CalculatorDialogOrderFragment
 import com.example.app.mvp_modules.sale.adapters.ListSelectInventoryAdapter
 import com.example.app.mvp_modules.sale.contracts.InvoiceFormContract
-import com.example.app.mvp_modules.sale.models.InvoiceFormModel
-import com.example.app.mvp_modules.sale.models.InvoiceModel
 import com.example.app.mvp_modules.sale.presenters.InvoiceFormPresenter
 import com.example.app.utils.FormatDisplay
 import java.time.LocalDateTime
-import java.util.UUID
 
 class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
     private lateinit var binding: ActivitySelectInventoryBinding
@@ -48,8 +44,7 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
 
         val db = CukcukDbHelper(this)
         val repository = InvoiceRepository(db)
-        val model = InvoiceFormModel(repository)
-        presenter = InvoiceFormPresenter(this, model)
+        presenter = InvoiceFormPresenter(this, repository)
 
         setupToolbar()
         getDataOrder()
@@ -109,7 +104,7 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
         caller: ComponentCaller
     ) {
         super.onActivityResult(requestCode, resultCode, data, caller)
-        if (requestCode == 500 && resultCode == Activity.RESULT_OK) {
+        if (requestCode == 500 && resultCode == RESULT_OK) {
             val createNewOrder = data?.getBooleanExtra("create_new_order", false) == true
             if (createNewOrder) {
                 finish() // Kết thúc activity hiện tại
@@ -134,8 +129,8 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_select_dish, menu);
-        return true;
+        menuInflater.inflate(R.menu.menu_select_dish, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -210,7 +205,7 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
     private fun navigateToSale() {
         val resultIntent = Intent()
         resultIntent.putExtra("create_new_order", true)
-        setResult(Activity.RESULT_OK, resultIntent)
+        setResult(RESULT_OK, resultIntent)
         finish()
     }
 

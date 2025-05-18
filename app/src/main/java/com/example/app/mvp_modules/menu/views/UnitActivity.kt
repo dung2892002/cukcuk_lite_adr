@@ -25,7 +25,6 @@ import com.example.app.dto.SeverResponse
 import com.example.app.entities.Unit
 import com.example.app.mvp_modules.menu.adapters.ListUnitAdapter
 import com.example.app.mvp_modules.menu.contracts.UnitContract
-import com.example.app.mvp_modules.menu.models.UnitModel
 import com.example.app.mvp_modules.menu.presenters.UnitPresenter
 import java.time.LocalDateTime
 import java.util.UUID
@@ -71,8 +70,7 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
 
         val dbHelper = CukcukDbHelper(this)
         val repository = UnitRepository(dbHelper)
-        val model = UnitModel(repository)
-        presenter = UnitPresenter(this, model)
+        presenter = UnitPresenter(this, repository)
 
         units = presenter.getListUnit()
         setupToolbar()

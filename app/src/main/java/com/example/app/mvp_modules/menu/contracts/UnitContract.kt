@@ -15,10 +15,4 @@ interface UnitContract {
         fun handleSubmit(unit: Unit, isAddNew: Boolean)
         fun getListUnit() : MutableList<Unit>
     }
-
-    interface Model{
-        fun getAllUnit(): MutableList<Unit>
-        fun createUnit(unit: Unit) : Boolean
-        fun updateUnit(unit: Unit): Boolean
-    }
 }

@@ -1,7 +1,6 @@
 package com.example.app.mvp_modules.sale.views
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -22,7 +21,6 @@ import com.example.app.entities.Invoice
 import com.example.app.mvp_modules.calculator.CalculatorDialogBillActivityFragment
 import com.example.app.mvp_modules.sale.adapters.ListInvoiceDetailBillAdapter
 import com.example.app.mvp_modules.sale.contracts.InvoiceContract
-import com.example.app.mvp_modules.sale.models.InvoiceModel
 import com.example.app.mvp_modules.sale.presenters.InvoicePresenter
 import com.example.app.utils.FormatDisplay
 
@@ -36,13 +34,12 @@ class InvoiceActivity : AppCompatActivity(), InvoiceContract.View {
     private val invoiceFormLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val shouldReload = result.data?.getBooleanExtra("create_new_order", false) ?: false
+        if (result.resultCode == RESULT_OK) {
+            val shouldReload = result.data?.getBooleanExtra("create_new_order", false) == true
             if (shouldReload) {
-                // Trả kết quả cho SaleFragment
                 val resultIntent = Intent()
                 resultIntent.putExtra("create_new_order", true)
-                setResult(Activity.RESULT_OK, resultIntent)
+                setResult(RESULT_OK, resultIntent)
                 finish()
             }
         }
@@ -57,8 +54,7 @@ class InvoiceActivity : AppCompatActivity(), InvoiceContract.View {
 
         val db = CukcukDbHelper(this)
         val repository = InvoiceRepository(db)
-        val model = InvoiceModel(repository)
-        presenter = InvoicePresenter(this, model)
+        presenter = InvoicePresenter(this, repository)
 
         setupToolbar()
         getInvoiceData()
@@ -97,7 +93,7 @@ class InvoiceActivity : AppCompatActivity(), InvoiceContract.View {
         {
             val resultIntent = Intent()
             resultIntent.putExtra("create_new_order", true)
-            setResult(Activity.RESULT_OK, resultIntent)
+            setResult(RESULT_OK, resultIntent)
             finish()
         }
     }
@@ -110,8 +106,8 @@ class InvoiceActivity : AppCompatActivity(), InvoiceContract.View {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_bill, menu);
-        return true;
+        menuInflater.inflate(R.menu.menu_bill, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -1,5 +1,6 @@
 package com.example.app.mvp_modules.menu.presenters
 
+import com.example.app.datas.repositories.InventoryRepository
 import com.example.app.entities.Inventory
 import com.example.app.dto.SeverResponse
 import com.example.app.mvp_modules.menu.contracts.InventoryFormContract
@@ -8,7 +9,7 @@ import kotlin.random.Random
 
 class InventoryFormPresenter
     (private val view: InventoryFormContract.View,
-     private val model: InventoryFormContract.Model) : InventoryFormContract.Presenter {
+     private val repository: InventoryRepository) : InventoryFormContract.Presenter {
 
     override fun handleSubmitForm(inventory: Inventory, isAddNew: Boolean) : SeverResponse {
         var response = SeverResponse(true, "")
@@ -19,9 +20,9 @@ class InventoryFormPresenter
             return response
         }
         if (isAddNew) {
-            response.isSuccess = model.createInventory(inventory)
+            response.isSuccess = repository.createInventory(inventory)
         } else {
-            response.isSuccess = model.updateInventory(inventory)
+            response.isSuccess = repository.updateInventory(inventory)
         }
 
         if (!response.isSuccess) response.message = "Có lỗi xảy ra!"
@@ -32,7 +33,7 @@ class InventoryFormPresenter
     override fun handleDeleteInventory(inventory: Inventory): SeverResponse {
         var response = SeverResponse(true, "Xóa thành công")
 
-        var checked = model.checkInventoryInInvoice(inventory)
+        var checked = repository.checkInventoryIsInInvoice(inventory)
         if (checked) {
             response.isSuccess = false
             response.message = "Món ăn đã tồn tại trong 1 hóa đơn!"
@@ -40,12 +41,12 @@ class InventoryFormPresenter
             return response
         }
 
-        response.isSuccess = model.deleteInventory(inventory)
+        response.isSuccess = repository.deleteInventory(inventory)
         if (!response.isSuccess) response.message = "Có lỗi xảy ra!"
         return response
     }
 
     override fun getInventory(inventoryId: UUID): Inventory? {
-        return model.getInventoryDetail(inventoryId)
+        return repository.getInventoryById(inventoryId)
     }
 }
