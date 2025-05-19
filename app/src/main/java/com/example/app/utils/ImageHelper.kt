@@ -11,4 +11,12 @@ object ImageHelper {
 
         return drawable!!
     }
+
+    fun getDrawableImageOtherFromAssets(context: Context, imgName: String) : Drawable {
+        val assetManager = context.assets
+        val inputStream = assetManager.open("icons/$imgName") // thêm thư mục con
+        val drawable = Drawable.createFromStream(inputStream, null)
+
+        return drawable!!
+    }
 }

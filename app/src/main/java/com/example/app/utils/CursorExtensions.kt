@@ -15,7 +15,7 @@ fun Cursor.getBoolean(column: String): Boolean =
     getInt(getColumnIndexOrThrow(column)) != 0
 
 fun Cursor.getDateTime(column: String) : LocalDateTime =
-    DateTimeParser.parseToLocalDateTimeOrNow(getString(getColumnIndexOrThrow(column)))
+    DateTimeHelper.parseToLocalDateTimeOrNow(getString(getColumnIndexOrThrow(column)))
 
 fun Cursor.getInt(column: String) : Int =
     getInt(getColumnIndexOrThrow(column))

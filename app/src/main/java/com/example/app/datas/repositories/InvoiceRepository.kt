@@ -272,6 +272,7 @@ class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
                 put("ReceiveAmount", invoice.ReceiveAmount)
                 put("ReturnAmount", invoice.ReturnAmount)
                 put("RemainAmount", invoice.RemainAmount)
+                put("InvoiceNo", invoice.InvoiceNo)
                 put("PaymentStatus", 1)
                 put("ModifiedDate", invoice.ModifiedDate.toString())
                 put("ModifiedBy", invoice.ModifiedBy)

@@ -4,17 +4,21 @@ import android.annotation.SuppressLint
 import com.example.app.datas.CukcukDbHelper
 import com.example.app.dto.StatisticByInventory
 import com.example.app.dto.StatisticByTime
+import com.example.app.dto.StatisticOverview
+import com.example.app.utils.DateTimeHelper
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalAdjusters
 
 @SuppressLint("Recycle, NewApi")
 class StatisticRepository(private val dbHelper: CukcukDbHelper) {
     val db = dbHelper.readableDatabase!!
 
-    fun getStatisticOverview(): List<Double> {
-        val result = mutableListOf<Double>()
+    fun getStatisticOverview(): List<StatisticOverview> {
+        val result = mutableListOf<StatisticOverview>()
         val query = """
             SELECT 
                 SUM(CASE WHEN date(InvoiceDate) = date('now', '-1 day') THEN Amount ELSE 0 END) AS Yesterday,
@@ -34,6 +38,9 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
             WHERE PaymentStatus = 1
         """.trimIndent()
 
+        var colors = listOf<String>("#5AB4FD", "#5AB4FD", "#4CAF50", "#F44336", "#2196F3")
+        var icons = listOf<String>("ic-calendar-1.png", "ic-calendar-1.png", "ic-calendar-7.png", "ic-calendar-30.png", "ic-calendar-12.png",)
+
         val cursor = db.rawQuery(query, null)
         if (cursor.moveToFirst()) {
             val yesterday = cursor.getDouble(0)
@@ -41,11 +48,34 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
             val thisWeek = cursor.getDouble(2)
             val thisMonth = cursor.getDouble(3)
             val thisYear = cursor.getDouble(4)
-            result.add(yesterday)
-            result.add(today)
-            result.add(thisWeek)
-            result.add(thisMonth)
-            result.add(thisYear)
+
+            val now = LocalDateTime.now()
+
+            result.add(StatisticOverview("Hôm qua", yesterday,
+                DateTimeHelper.getStartOfDay(now.minusDays(1)),
+                DateTimeHelper.getEndOfDay(now.minusDays(1)),
+                colors[0], icons[0]
+            ))
+            result.add(StatisticOverview("Hôm nay", today,
+                DateTimeHelper.getStartOfDay(now),
+                DateTimeHelper.getEndOfDay(now),
+                colors[1], icons[1]
+            ))
+            result.add(StatisticOverview("Tuần này", thisWeek,
+                DateTimeHelper.getStartOfDay(now.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))),
+                DateTimeHelper.getEndOfDay(now.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY))),
+                colors[2], icons[2]
+            ))
+            result.add(StatisticOverview("Tháng này", thisMonth,
+                DateTimeHelper.getStartOfDay(now.withDayOfMonth(1)),
+                DateTimeHelper.getEndOfDay(now.with(TemporalAdjusters.lastDayOfMonth())),
+                colors[3], icons[3]
+            ))
+            result.add(StatisticOverview("Năm nay", thisYear,
+                DateTimeHelper.getStartOfDay(now.withDayOfYear(1)),
+                DateTimeHelper.getEndOfDay(now.with(TemporalAdjusters.lastDayOfYear())),
+                colors[4], icons[4]
+            ))
         }
         cursor.close()
         return result
@@ -80,7 +110,8 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
         cursor.close()
 
         val statistics = mutableListOf<StatisticByTime>()
-        for (i in 0..6) {
+        val daysBetween = ChronoUnit.DAYS.between(startOfWeek, endOfWeek)
+        for (i in 0..daysBetween) {
             val day = startOfWeek.toLocalDate().plusDays(i.toLong())
 
             val title = when (day.dayOfWeek) {
@@ -103,13 +134,16 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
             )
         }
 
+        if (totalAmount == 0.0) statistics.clear()
+
         return statistics
     }
 
-    fun getDailyStatisticOfMonth(year: Int, month: Int): List<StatisticByTime> {
-        val startDate = LocalDate.of(year, month, 1)
-        val endDate = startDate.withDayOfMonth(startDate.lengthOfMonth())
+    fun getDailyStatisticOfMonth(start: LocalDateTime, end: LocalDateTime): List<StatisticByTime> {
+        val startDate = start.toLocalDate()
+        val endDate = end.toLocalDate()
 
+        var totalAmount = 0.0
         val query = """
             SELECT
                  date(InvoiceDate) as day,
@@ -130,73 +164,85 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
             val day = LocalDate.parse(cursor.getString(0))
             val amount = cursor.getDouble(1)
             resultMap[day] = amount
+            totalAmount += amount
         }
 
         cursor.close()
 
         val statistics = mutableListOf<StatisticByTime>()
-        for (i in 1..startDate.lengthOfMonth()) {
-            val day = LocalDate.of(year, month, i)
+        var currentDay = startDate
+        while (!currentDay.isAfter(endDate)) {
             statistics.add(
                 StatisticByTime(
-                    Title = "Ngày $i",
-                    Amount = resultMap[day] ?: 0.0,
-                    TimeStart = day.atStartOfDay(),
-                    TimeEnd = day.atTime(LocalTime.MAX)
+                    Title = "Ngày ${currentDay.dayOfMonth}",
+                    Amount = resultMap[currentDay] ?: 0.0,
+                    TimeStart = currentDay.atStartOfDay(),
+                    TimeEnd = currentDay.atTime(LocalTime.MAX)
                 )
             )
+            currentDay = currentDay.plusDays(1)
         }
 
+        if (totalAmount == 0.0) statistics.clear()
         return statistics
     }
 
 
-    fun getMonthlyStatisticOfYear(year: Int): List<StatisticByTime> {
-        val startDate = LocalDate.of(year, 1, 1)
-        val endDate = LocalDate.of(year, 12, 31)
+    fun getMonthlyStatistic(start: LocalDateTime, end: LocalDateTime): List<StatisticByTime> {
+        val startDate = start.toLocalDate()
+        val endDate = end.toLocalDate()
+        var totalAmount = 0.0
 
         val query = """
-            SELECT
-                 strftime('%m', InvoiceDate) as month,
-                 SUM(Amount) as Amount
-            FROM Invoice
-            WHERE PaymentStatus = 1 AND date(InvoiceDate) BETWEEN ? AND ?
-            GROUP BY month
-            ORDER BY month
-        """.trimIndent()
+        SELECT
+             strftime('%Y-%m', InvoiceDate) as month,
+             SUM(Amount) as Amount
+        FROM Invoice
+        WHERE PaymentStatus = 1 AND date(InvoiceDate) BETWEEN ? AND ?
+        GROUP BY month
+        ORDER BY month
+    """.trimIndent()
 
         val cursor = db.rawQuery(
             query,
             arrayOf(startDate.toString(), endDate.toString())
         )
 
-        val resultMap = mutableMapOf<Int, Double>()
+        val resultMap = mutableMapOf<Pair<Int, Int>, Double>() // (year, month) -> amount
         while (cursor.moveToNext()) {
-            val month = cursor.getString(0).toInt()
+            val monthStr = cursor.getString(0) // e.g., "2024-05"
+            val parts = monthStr.split("-")
+            val year = parts[0].toInt()
+            val month = parts[1].toInt()
             val amount = cursor.getDouble(1)
-            resultMap[month] = amount
+            resultMap[Pair(year, month)] = amount
+            totalAmount += amount
         }
 
         cursor.close()
 
         val statistics = mutableListOf<StatisticByTime>()
-        for (month in 1..12) {
-            val firstDay = LocalDate.of(year, month, 1)
+        var current = startDate.withDayOfMonth(1)
+        while (!current.isAfter(endDate)) {
+            val firstDay = current.withDayOfMonth(1)
             val lastDay = firstDay.withDayOfMonth(firstDay.lengthOfMonth())
+            val key = Pair(firstDay.year, firstDay.monthValue)
 
             statistics.add(
                 StatisticByTime(
-                    Title = "Tháng $month",
-                    Amount = resultMap[month] ?: 0.0,
+                    Title = "Tháng ${firstDay.monthValue}",
+                    Amount = resultMap[key] ?: 0.0,
                     TimeStart = firstDay.atStartOfDay(),
                     TimeEnd = lastDay.atTime(LocalTime.MAX)
                 )
             )
+
+            current = current.plusMonths(1)
         }
 
+        if (totalAmount == 0.0) statistics.clear()
         return statistics
     }
-
 
     fun getStatisticByInventory(fromDate: LocalDateTime, toDate: LocalDateTime): List<StatisticByInventory> {
         val query = """
@@ -212,13 +258,16 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
             ORDER BY TotalAmount DESC
         """.trimIndent()
 
+
+        var colors = listOf<String>("#078CF8", "#4CAF50", "#F44336", "#FFC107", "#2196F3", "#3F66B5", "#BCBCBC")
+
         val cursor = db.rawQuery(
             query,
             arrayOf(fromDate.toLocalDate().toString(), toDate.toLocalDate().toString())
         )
 
         val list = mutableListOf<StatisticByInventory>()
-        var totalRevenue = 0.0
+        var totalAmount = 0.0
 
         var sortOrder = 1
         while (cursor.moveToNext()) {
@@ -226,7 +275,7 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
             val quantity = cursor.getDouble(1)
             val amount = cursor.getDouble(2)
             val unit = cursor.getString(3)
-            totalRevenue += amount
+            totalAmount += amount
 
             list.add(
                 StatisticByInventory(
@@ -235,16 +284,22 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
                     Amount = amount,
                     UnitName = unit,
                     Percentage = 0.0,
+                    Color = colors[sortOrder - 1],
                     SortOrder = sortOrder++
                 )
             )
         }
 
-        list.forEach {
-            it.Percentage = if (totalRevenue > 0) (it.Amount / totalRevenue * 100.0) else 0.0
+        cursor.close()
+
+        if (totalAmount == 0.0) {
+            list.clear()
+            return list
         }
 
-        cursor.close()
+        list.forEach {
+            it.Percentage = if (totalAmount > 0) (it.Amount / totalAmount * 100.0) else 0.0
+        }
 
         return list
     }

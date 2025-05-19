@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/statisticByInventoryItemColor"
+        style="@style/DishForm.Group.Last.Child.Button"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginEnd="10dp">
+        <TextView
+            android:id="@+id/statisticByInventoryItemSortOrder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:textSize="20sp"
+            android:text="1"
+            tools:ignore="HardcodedText" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingVertical="4dp">
+                <TextView
+                    android:id="@+id/statisticByInventoryItemInventoryName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bún đậu đầy đủ có dồi"
+                    tools:ignore="HardcodedText" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/statisticByInventoryItemQuantity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="4"
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:id="@+id/statisticByInventoryItemUnitName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:textColor="#999797"
+                        android:text="Suất"
+                        tools:ignore="HardcodedText" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/statisticByInventoryItemAmount"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:gravity="end|center_vertical"
+                android:layout_weight="1"
+                android:layout_marginEnd="10dp"
+                android:text="200.000"
+                tools:ignore="HardcodedText">
+
+            </TextView>
+        </LinearLayout>
+
+
+
+        <View style="@style/Line" android:id="@+id/statisticByInventoryLine"/>
+    </LinearLayout>
+
+</LinearLayout>

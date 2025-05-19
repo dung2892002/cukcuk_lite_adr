@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:background="#078cf8"
+        android:textColor="@color/white"
+        android:padding="6dp"
+        android:text="Thời gian"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/selectOverview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:padding="6dp"
+        android:text="Gần đây"
+        tools:ignore="HardcodedText" />
+    <View style="@style/Line" />
+
+    <TextView
+        android:id="@+id/selectCurrentWeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:padding="6dp"
+        android:text="Tuần này"
+        tools:ignore="HardcodedText" />
+    <View style="@style/Line" />
+
+    <TextView
+        android:id="@+id/selectPreviousWeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:padding="6dp"
+        android:text="Tuần trước"
+        tools:ignore="HardcodedText" />
+    <View style="@style/Line" />
+
+    <TextView
+        android:id="@+id/selectCurrentMonth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:padding="6dp"
+        android:text="Tháng này"
+        tools:ignore="HardcodedText" />
+    <View style="@style/Line" />
+
+    <TextView
+        android:id="@+id/selectPreviousMonth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:padding="6dp"
+        android:text="Tháng trước"
+        tools:ignore="HardcodedText" />
+    <View style="@style/Line" />
+
+    <TextView
+        android:id="@+id/selectCurrentYear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:padding="6dp"
+        android:text="Năm nay"
+        tools:ignore="HardcodedText" />
+    <View style="@style/Line" />
+
+    <TextView
+        android:id="@+id/selectPreviousYear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:padding="6dp"
+        android:text="Năm trước"
+        tools:ignore="HardcodedText" />
+    <View style="@style/Line" />
+
+    <TextView
+        android:id="@+id/selectDateToDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:padding="6dp"
+        android:text="Khác"
+        tools:ignore="HardcodedText" />
+    <View style="@style/Line" />
+
+</LinearLayout>

@@ -6,5 +6,6 @@ data class StatisticByInventory (
     var Amount: Double,
     var UnitName: String,
     var Percentage: Double,
-    var SortOrder: Int
+    var SortOrder: Int,
+    var Color: String
 )

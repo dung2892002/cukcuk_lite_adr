@@ -1,14 +1,38 @@
 package com.example.app.mvp_modules.statistic.views
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
+import com.example.app.databinding.FragmentStatisticBinding
+import com.example.app.datas.CukcukDbHelper
+import com.example.app.datas.repositories.StatisticRepository
+import com.example.app.dto.StatisticByInventory
+import com.example.app.dto.StatisticByTime
+import com.example.app.dto.StatisticOverview
+import com.example.app.mvp_modules.statistic.adapters.StatisticByInventoryAdapter
+import com.example.app.mvp_modules.statistic.adapters.StatisticByTimeAdapter
+import com.example.app.mvp_modules.statistic.adapters.StatisticOverviewAdapter
+import com.example.app.mvp_modules.statistic.contracts.StatisticContract
+import com.example.app.mvp_modules.statistic.presenters.StatisticPresenter
+import java.time.LocalDateTime
 
-class StatisticFragment : Fragment() {
-
+class StatisticFragment : Fragment(), StatisticContract.View {
+    private lateinit var binding: FragmentStatisticBinding
+    private lateinit var presenter: StatisticContract.Presenter
+    private var statisticsByTime = mutableListOf<StatisticByTime>()
+    private var statisticsByInventory = mutableListOf<StatisticByInventory>()
+    private var statisticOverview = mutableListOf<StatisticOverview>()
+    private lateinit var adapterByTime: StatisticByTimeAdapter
+    private lateinit var adapterByInventory: StatisticByInventoryAdapter
+    private lateinit var adapterOverview: StatisticOverviewAdapter
+    private lateinit var dialog: AlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +43,153 @@ class StatisticFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_statistic, container, false)
+        binding = FragmentStatisticBinding.inflate(inflater, container, false)
+
+        val db = CukcukDbHelper(requireContext())
+        val repository = StatisticRepository(db)
+        presenter = StatisticPresenter(this, repository)
+
+        presenter.statisticOverview()
+
+        binding.header.setOnClickListener {
+            showSelectTimeStatisticDialog()
+        }
+
+        return binding.root
     }
 
+    private fun showSelectTimeStatisticDialog() {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_select_time_statistic, null)
+        dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        dialogView.findViewById<TextView>(R.id.selectOverview).setOnClickListener {
+            dialog.dismiss()
+            presenter.statisticOverview()
+        }
+
+        dialogView.findViewById<TextView>(R.id.selectCurrentWeek).setOnClickListener {
+            closeDialog(false)
+            presenter.statisticCurrentWeek()
+        }
+
+        dialogView.findViewById<TextView>(R.id.selectPreviousWeek).setOnClickListener {
+            closeDialog(false)
+            presenter.statisticPreviousWeek()
+        }
+
+        dialogView.findViewById<TextView>(R.id.selectCurrentMonth).setOnClickListener {
+            closeDialog(true)
+            presenter.statisticCurrentMonth()
+        }
+
+        dialogView.findViewById<TextView>(R.id.selectPreviousMonth).setOnClickListener {
+            closeDialog(true)
+            presenter.statisticPreviousMonth()
+        }
+
+        dialogView.findViewById<TextView>(R.id.selectCurrentYear).setOnClickListener {
+            closeDialog(false)
+            presenter.statisticCurrentYear()
+        }
+
+        dialogView.findViewById<TextView>(R.id.selectPreviousYear).setOnClickListener {
+            closeDialog(false)
+            presenter.statisticPreviousYear()
+        }
+
+        dialogView.findViewById<TextView>(R.id.selectDateToDate).setOnClickListener {
+            closeDialog(false)
+            showDialogSelectDateToDate()
+        }
+
+        dialog.show()
+    }
+
+    private fun showDialogSelectDateToDate() {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_select_datetodate, null)
+        dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .setCancelable(true)
+            .create()
+
+        dialog.show()
+    }
+
+    private fun closeDialog(inMonthState: Boolean) {
+        dialog.dismiss()
+    }
+
+    private fun setupAdapterOverview() {
+        adapterOverview = StatisticOverviewAdapter(requireContext(), statisticOverview).apply {
+            onItemClick = {item, position ->
+                presenter.handleClickItemOverview(item, position)
+            }
+        }
+        binding.recyclerStatisticOverview.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerStatisticOverview.adapter = adapterOverview
+
+
+    }
+
+    private fun setupAdapterByTime() {
+        adapterByTime = StatisticByTimeAdapter(requireContext(), statisticsByTime).apply {
+            onItemClick = {item ->
+                presenter.handleNavigateByTime(item)
+            }
+        }
+        binding.recyclerStatisticByTime.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerStatisticByTime.adapter = adapterByTime
+    }
+
+
+    override fun showStatisticOverview(items: List<StatisticOverview>) {
+        statisticOverview = items.toMutableList()
+
+        binding.statisticLabel.text = "Gần đây"
+        binding.recyclerStatisticOverview.visibility = View.VISIBLE
+        binding.statisticByTime.visibility = View.GONE
+        binding.statisticByInventory.visibility = View.GONE
+
+        setupAdapterOverview()
+    }
+
+    override fun showStatisticByTime(
+        items: List<StatisticByTime>,
+        label: String,
+    ) {
+        statisticsByTime = items.toMutableList()
+
+        binding.statisticLabel.text = label
+        binding.recyclerStatisticOverview.visibility = View.GONE
+        binding.statisticByTime.visibility = View.VISIBLE
+        binding.statisticByInventory.visibility = View.GONE
+
+        if (statisticsByTime.isEmpty()) {
+            binding.statisticByTimeNoData.visibility = View.VISIBLE
+            binding.statisticByTimeHasData.visibility = View.GONE
+        } else {
+            binding.statisticByTimeNoData.visibility = View.GONE
+            binding.statisticByTimeHasData.visibility = View.VISIBLE
+            setupAdapterByTime()
+        }
+    }
+
+    override fun showStatisticByInventory(items: List<StatisticByInventory>) {
+    }
+
+    override fun navigateToStatisticInventoryActivity(
+        start: LocalDateTime,
+        end: LocalDateTime,
+        label: String,
+    ) {
+        var intent = Intent(requireContext(), StatisticByInventoryActivity::class.java)
+        intent.putExtra("date_start", start.toString())
+        intent.putExtra("date_end", end.toString())
+        intent.putExtra("time_label", label)
+
+        startActivity(intent)
+    }
 }

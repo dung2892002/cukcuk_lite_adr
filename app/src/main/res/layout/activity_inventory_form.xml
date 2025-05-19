@@ -112,6 +112,7 @@
 
                 <ImageView
                     style="@style/DishForm.Group.Last.Child.Button.Image"
+                    android:layout_height="48dp"
                     android:importantForAccessibility="no"
                     android:src="@drawable/ic_colors" />
             </com.google.android.material.card.MaterialCardView>
