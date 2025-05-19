@@ -19,7 +19,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.app.R
-import com.example.app.databinding.ActivityDishFormBinding
 import com.example.app.entities.Inventory
 import com.example.app.mvp_modules.menu.contracts.InventoryFormContract
 import com.example.app.mvp_modules.menu.presenters.InventoryFormPresenter
@@ -27,6 +26,7 @@ import java.util.UUID
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.app.databinding.ActivityInventoryFormBinding
 import com.example.app.datas.CukcukDbHelper
 import com.example.app.datas.repositories.InventoryRepository
 import com.example.app.entities.Unit
@@ -38,7 +38,7 @@ import com.example.app.utils.ImageHelper
 import java.time.LocalDateTime
 
 class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
-    private lateinit var binding: ActivityDishFormBinding
+    private lateinit var binding: ActivityInventoryFormBinding
     private lateinit var presenter: InventoryFormContract.Presenter
     @SuppressLint("NewApi")
     private var inventory: Inventory = Inventory(
@@ -67,7 +67,7 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        binding = ActivityDishFormBinding.inflate(layoutInflater)
+        binding = ActivityInventoryFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val dbHelper = CukcukDbHelper(this)

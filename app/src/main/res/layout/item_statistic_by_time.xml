@@ -1,38 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/LinearBase"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
+    style="@style/Statistic_Item_Vertical"
     android:paddingStart="6dp"
     tools:ignore="RtlSymmetry">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingVertical="6dp">
+    <LinearLayout style="@style/Statistic_Item_Group_Horizontal" android:paddingVertical="6dp">
         <TextView
             android:id="@+id/statisticByTimeItemLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/Statistic_Overview_Item_Label"
             android:text="Ngày 01"
-            android:gravity="center_vertical"
             tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/statisticByTimeItemAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/main_color"
+            style="@style/Statistic_Overview_Item_Amount"
             android:text="100.000"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,TextContrastCheck" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Statistic_Overview_Item_Icon"
             android:importantForAccessibility="no"
             android:src="@drawable/ic_arrow_right"/>
     </LinearLayout>

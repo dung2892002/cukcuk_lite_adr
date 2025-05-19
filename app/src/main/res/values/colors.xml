@@ -10,4 +10,7 @@
     <color name="dish_select_order_value">#e0e0e0</color>
     <color name="main_color">#078cf8</color>
     <color name="footer_select_dish">#E2EEFF</color>
+    <color name="header_statistic">#E7E7E7</color>
+    <color name="header_statistic_text">#A6A6A6</color>
+    <color name="header_statistic_inventory">#F5F7FA</color>
 </resources>

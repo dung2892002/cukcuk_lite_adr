@@ -1,59 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    style="@style/Statistic_Item">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/statisticOverviewItemColor"
-        style="@style/DishForm.Group.Last.Child.Button"
-        android:backgroundTint="#4CAF50"
-        android:layout_marginVertical="4dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginStart="10dp">
+        style="@style/Statistic_Item_ColorBlock">
 
-    <ImageView
-        android:id="@+id/statisticOverviewItemIcon"
-        style="@style/DishForm.Group.Last.Child.Button.Image"
-        android:layout_height="32dp"
-        android:layout_width="32dp"
-        android:importantForAccessibility="no"
-        android:src="@drawable/ic_calender_7" />
+        <ImageView
+            android:id="@+id/statisticOverviewItemIcon"
+            style="@style/Statistic_Item_ColorBlock_Icon"
+            android:importantForAccessibility="no"
+            android:src="@drawable/ic_calender_7"
+            tools:ignore="ImageContrastCheck" />
     </com.google.android.material.card.MaterialCardView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_vertical">
+    <LinearLayout style="@style/Statistic_Item_Group_Vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:paddingVertical="6dp">
+        <LinearLayout style="@style/Statistic_Item_Group_Horizontal">
             <TextView
                 android:id="@+id/statisticOverviewItemLabel"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                style="@style/Statistic_Overview_Item_Label"
                 tools:ignore="HardcodedText,NestedWeights"
-                android:gravity="center_vertical"
                 android:text="Hôm qua"/>
+
             <TextView
                 android:id="@+id/statisticOverviewItemAmount"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:textColor="@color/main_color"
+                style="@style/Statistic_Overview_Item_Amount"
                 android:text="150.000"
                 tools:ignore="HardcodedText" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                style="@style/Statistic_Overview_Item_Icon"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_arrow_right"/>
         </LinearLayout>

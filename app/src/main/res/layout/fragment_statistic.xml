@@ -1,123 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/gray"
+    style="@style/Statistic"
     tools:context=".mvp_modules.statistic.views.StatisticFragment">
 
 
     <LinearLayout
         android:id="@+id/header"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp"
-        android:background="#E7E7E7"
+        style="@style/Statistic_Header"
         tools:ignore="UselessParent">
+
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="#A6A6A6"
+            style="@style/Statistic_Header_Label"
             android:text="Thời gian"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,TextContrastCheck" />
 
         <TextView
             android:id="@+id/statisticLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Statistic_Header_Value"
             android:text="Gần đây"
             tools:ignore="HardcodedText" />
+
         <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="2dp"
-            android:layout_marginLeft="4dp"
-            android:src="@drawable/ic_triangle"
+           style="@style/Statistic_Header_Icon"
             android:tint="#A6A6A6"
-            tools:ignore="RtlHardcoded" />
+            tools:ignore="RtlHardcoded,ImageContrastCheck" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerStatisticOverview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffffff"
-        android:layout_margin="6dp"/>
+        style="@style/Recycler_Rounded"
+        android:visibility="visible"/>
 
     <LinearLayout
         android:id="@+id/statisticByTime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="6dp"
+        style="@style/Statistic_Body"
         android:visibility="gone">
 
         <LinearLayout
             android:id="@+id/statisticByTimeNoData"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
+            style="@style/Statistic_NoData"
             tools:ignore="UseCompoundDrawables">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/Statistic_NoData_Icon"
                 android:importantForAccessibility="no"
                 android:src="@drawable/ic_nav_statistic"/>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/Statistic_NoData_Icon"
                 android:text="Báo cáo doanh thu không có số liệu"
                 tools:ignore="HardcodedText" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/statisticByTimeHasData"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            style="@style/Statistic_NoData">
             <FrameLayout
                 android:id="@+id/chartByTime"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="#ffffff"
-                android:layout_marginBottom="10dp"/>
+                style="@style/Statistic_ChartBlock"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerStatisticByTime"
-                android:background="#ffffffff"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                style="@style/Recycler_Rounded"/>
         </LinearLayout>
-
-
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/statisticByInventory"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="6dp"
+        style="@style/Statistic_Body"
         android:visibility="gone">
 
         <FrameLayout
             android:id="@+id/chartByInventory"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="#ffffff"
-            android:layout_marginBottom="10dp"/>
+            style="@style/Statistic_ChartBlock"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerStatisticByInventory"
-            android:background="#ffffffff"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            style="@style/Recycler_Rounded"/>
 
     </LinearLayout>
 

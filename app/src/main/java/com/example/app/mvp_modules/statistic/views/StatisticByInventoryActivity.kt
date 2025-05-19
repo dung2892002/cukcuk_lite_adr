@@ -2,7 +2,6 @@ package com.example.app.mvp_modules.statistic.views
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
