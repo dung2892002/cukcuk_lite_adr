@@ -141,7 +141,7 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
             }
 
             R.id.btnSubmitSelectDishToolbar -> {
-                presenter.paymentInvoice(inventoriesSelect, invoice)
+                paymentInvoice()
                 true
             }
             else -> super.onOptionsItemSelected(item)

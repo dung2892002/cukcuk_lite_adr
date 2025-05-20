@@ -16,6 +16,7 @@ import com.example.app.dto.StatisticByInventory
 import com.example.app.mvp_modules.statistic.adapters.StatisticByInventoryAdapter
 import com.example.app.mvp_modules.statistic.contracts.StatisticByInventoryContract
 import com.example.app.mvp_modules.statistic.presenters.StatisticByInventoryPresenter
+import com.example.app.utils.ChartUtils
 import java.time.LocalDateTime
 
 class StatisticByInventoryActivity : AppCompatActivity(), StatisticByInventoryContract.View {
@@ -76,14 +77,14 @@ class StatisticByInventoryActivity : AppCompatActivity(), StatisticByInventoryCo
         presenter.statisticInventoryDateToDate(dateStart, dateEnd)
     }
 
-    override fun showDataRecycler(items: List<StatisticByInventory>) {
+    override fun showDataRecycler(items: List<StatisticByInventory>, totalAmount: Double) {
         statisticsData = items
         setupAdapter()
-        setupChart()
+        setupChart(items, totalAmount)
     }
 
-    private fun setupChart() {
-
+    private fun setupChart(items: List<StatisticByInventory>, totalAmount: Double) {
+        ChartUtils.setupPieChart(binding.chartByInventory, items, totalAmount)
     }
 
     private fun setupAdapter() {

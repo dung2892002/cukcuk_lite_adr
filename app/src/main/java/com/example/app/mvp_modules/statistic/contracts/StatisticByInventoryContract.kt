@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 interface StatisticByInventoryContract {
     interface View{
-        fun showDataRecycler(items: List<StatisticByInventory>)
+        fun showDataRecycler(items: List<StatisticByInventory>, totalAmount: Double)
     }
 
     interface Presenter{

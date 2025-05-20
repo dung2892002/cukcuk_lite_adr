@@ -13,6 +13,8 @@ class StatisticByInventoryPresenter(
         dateEnd: LocalDateTime,
     ) {
         val items = repository.getStatisticByInventory(dateStart, dateEnd)
-        view.showDataRecycler(items)
+        var totalAmount = 0.0
+        items.forEach { it -> totalAmount += it.Amount}
+        view.showDataRecycler(items,totalAmount)
     }
 }

@@ -34,27 +34,11 @@ class SaleFragment : Fragment(), SaleContract.View {
     private var invoices = mutableListOf<Invoice>()
     private lateinit var adapter: ListInvoiceAdapter
     private lateinit var dialog: AlertDialog
-    private lateinit var addFormLauncher: ActivityResultLauncher<Intent>
-    private lateinit var invoiceLauncher: ActivityResultLauncher<Intent>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        addFormLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                println("load lai data")
-                fetchData()
-                showDataInvoices(invoices)
-            }
-        }
-
-        invoiceLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                println("load lai data")
-                fetchData()
-                showDataInvoices(invoices)
-            }
-        }
+    override fun onResume() {
+        super.onResume()
+        fetchData()
+        showDataInvoices(invoices)
     }
 
     override fun onCreateView(
@@ -166,12 +150,12 @@ class SaleFragment : Fragment(), SaleContract.View {
         val intent = Intent(requireContext(), InvoiceActivity::class.java)
         intent.putExtra("invoice_data", invoice)
         intent.putExtra("from_sale_fragment", true)
-        invoiceLauncher.launch(intent)
+        startActivity(intent)
     }
 
     override fun navigateToSelectInventoryActivity(invoice: Invoice?) {
         val intent = Intent(requireContext(), InvoiceFormActivity::class.java)
         intent.putExtra("invoice_data", invoice)
-        addFormLauncher.launch(intent)
+        startActivity(intent)
     }
 }

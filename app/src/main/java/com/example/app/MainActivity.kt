@@ -1,4 +1,5 @@
 package com.example.app
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -20,11 +21,18 @@ import androidx.core.view.size
 import androidx.core.view.get
 import com.example.app.databinding.NavHeaderBinding
 import com.example.app.mvp_modules.login.LoginActivity
+import com.example.app.utils.LocaleHelper
 
 class MainActivity : AppCompatActivity(), MainContract.View {
     private lateinit var binding: ActivityMainBinding
     private lateinit var headerBinding: NavHeaderBinding
     private lateinit var presenter: MainContract.Presenter
+
+    override fun attachBaseContext(newBase: Context) {
+        val context = LocaleHelper.setLocale(newBase, "vi")
+        super.attachBaseContext(context)
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

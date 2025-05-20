@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.play.services.auth)
     implementation(libs.glide)
     implementation(libs.mpandroidchart)
+    implementation(libs.material.v1100)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

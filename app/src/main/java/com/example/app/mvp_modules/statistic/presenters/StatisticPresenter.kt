@@ -14,6 +14,10 @@ class StatisticPresenter (
     private val view: StatisticContract.View,
     private val repository: StatisticRepository) : StatisticContract.Presenter
 {
+    val weekDays = listOf("T2", "T3", "T4", "T5", "T6", "T7", "CN")
+    val daysInMonth = (1..31).map { it.toString() }
+    val months = listOf("T1", "T2", "T3", "T4", "T5", "T6", "T7", "T8", "T9", "T10", "T11", "T12")
+
     override fun statisticOverview() {
         val items = repository.getStatisticOverview()
         view.showStatisticOverview(items)
@@ -25,7 +29,7 @@ class StatisticPresenter (
         end = LocalDateTime.now()
         val items = repository.getDailyStatisticOfWeek(start, end)
 
-        view.showStatisticByTime(items, "Tuần này")
+        view.showStatisticByTime(items, "Tuần này", weekDays, 0)
     }
 
     override fun statisticPreviousWeek() {
@@ -34,7 +38,7 @@ class StatisticPresenter (
 
         val items = repository.getDailyStatisticOfWeek(start, end)
 
-        view.showStatisticByTime(items, "Tuần trước")
+        view.showStatisticByTime(items, "Tuần trước", weekDays, 0)
     }
 
     override fun statisticCurrentMonth() {
@@ -43,7 +47,7 @@ class StatisticPresenter (
 
         val items = repository.getDailyStatisticOfMonth(start, end)
 
-        view.showStatisticByTime(items, "Tháng này")
+        view.showStatisticByTime(items, "Tháng này", daysInMonth, 1)
     }
 
     override fun statisticPreviousMonth() {
@@ -51,7 +55,7 @@ class StatisticPresenter (
 
         val items = repository.getDailyStatisticOfMonth(start, end)
 
-        view.showStatisticByTime(items, "Tháng trước")
+        view.showStatisticByTime(items, "Tháng trước", daysInMonth, 1)
     }
 
     override fun statisticCurrentYear() {
@@ -61,7 +65,7 @@ class StatisticPresenter (
 
         val items = repository.getMonthlyStatistic(start, end)
 
-        view.showStatisticByTime(items, "Năm nay")
+        view.showStatisticByTime(items, "Năm nay", months, 2)
     }
 
     override fun statisticPreviousYear() {
@@ -69,13 +73,19 @@ class StatisticPresenter (
 
         val items = repository.getMonthlyStatistic(start, end)
 
-        view.showStatisticByTime(items, "Năm trước")
+        view.showStatisticByTime(items, "Năm trước",months, 2)
     }
 
     override fun statisticInventoryDateToDate(
         dateStart: LocalDateTime,
         dateEnd: LocalDateTime,
     ) {
+        val items = repository.getStatisticByInventory(dateStart, dateEnd)
+        var totalAmount = 0.0
+        items.forEach { it -> totalAmount += it.Amount }
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val label = dateStart.toLocalDate().format(formatter) + " - " + dateEnd.toLocalDate().format(formatter)
+        view.showStatisticByInventory(items,label, totalAmount)
     }
 
     override fun handleClickItemOverview(item: StatisticOverview,position: Int) {
@@ -96,9 +106,7 @@ class StatisticPresenter (
         return
     }
 
-    override fun handleNavigateByTime(
-        item: StatisticByTime,
-    ) {
+    override fun handleNavigateByTime(item: StatisticByTime) {
         if (item.Amount == 0.0) return
 
         var label = getLabel(item)

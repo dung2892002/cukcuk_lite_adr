@@ -74,7 +74,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     style="@style/ItemSelectDish_GroupEditQuantity_Button_Image_Add"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_add"/>
+                    android:src="@drawable/icon_add"/>
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>

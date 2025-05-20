@@ -5,7 +5,7 @@
     <item
         android:id="@+id/btnOpenForm"
         android:title="Cất"
-        android:icon="@drawable/ic_add"
+        android:icon="@drawable/icon_add"
         tools:ignore="HardcodedText"
         app:showAsAction="always"/>
 </menu>

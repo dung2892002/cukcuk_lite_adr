@@ -259,7 +259,7 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
         """.trimIndent()
 
 
-        var colors = listOf<String>("#078CF8", "#4CAF50", "#F44336", "#FFC107", "#2196F3", "#3F66B5", "#BCBCBC")
+        var colors = listOf<String>("#2196F3", "#4CAF50", "#F44336", "#FFC107", "#4B3FB5", "#001F54", "#BCBCBC")
 
         val cursor = db.rawQuery(
             query,

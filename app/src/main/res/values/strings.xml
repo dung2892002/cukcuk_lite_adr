@@ -8,4 +8,6 @@
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
     <string name="content_description">No</string>
+    <string name="label_ox_month">(Tháng)</string>
+    <string name="label_ox">(Ngày)</string>
 </resources>

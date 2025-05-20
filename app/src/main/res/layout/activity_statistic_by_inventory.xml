@@ -22,12 +22,15 @@
         android:text="Thứ 2 (19/05/2025)"
         tools:ignore="HardcodedText" />
 
-    <FrameLayout
-        android:id="@+id/chart"
-        style="@style/Statistic_ChartBlock"/>
+    <FrameLayout style="@style/Statistic_ChartBlock" android:layout_height="200dp" >
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chartByInventory"
+            style="@style/Statistic_ChartBlock"
+            android:layout_gravity="center_vertical"/>
+    </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
-        style="@style/Recycler_Rounded"/>
+        style="@style/Recycler_Rounded.Inventory"/>
 
 </LinearLayout>

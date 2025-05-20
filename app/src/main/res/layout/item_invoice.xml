@@ -105,7 +105,7 @@
                 <androidx.appcompat.widget.AppCompatImageView
                     style="@style/ItemOrder_Buttons_Icon"
                     android:importantForAccessibility="no"
-                    android:src="@drawable/ic_add" />
+                    android:src="@drawable/icon_add" />
 
                 <TextView
                     style="@style/ItemOrder_Buttons_Label"

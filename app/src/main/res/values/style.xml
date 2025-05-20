@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <style name="CustomDatePickerDialogTheme" parent="ThemeOverlay.AppCompat.Dialog">
+        <!-- Nền header ngày tháng -->
+        <item name="colorAccent">@color/main_color</item>  <!-- Màu chọn, highlight -->
+        <item name="android:headerBackground">@color/main_color</item> <!-- Header background -->
+        <item name="android:textColorPrimary">@android:color/black</item> <!-- Text màu đen -->
+        <item name="android:textColorSecondary">@android:color/black</item> <!-- Text phụ -->
+        <item name="android:datePickerDialogTheme">@style/CustomDatePickerDialogTheme</item>
+        <item name="colorPrimary">@color/main_color</item>
+        <item name="colorOnPrimary">@color/main_color</item>
+    </style>
+
+
+
     <style name="RoundedImage">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
@@ -1112,7 +1126,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:background">@color/gray</item>
+        <item name="android:background">#D1D1D1</item>
     </style>
 
     <style name="Statistic_Header">
@@ -1151,6 +1165,11 @@
         <item name="android:background">@drawable/radius_block</item>
     </style>
 
+    <style name="Recycler_Rounded.Inventory">
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
     <style name="Statistic_Body">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -1167,6 +1186,7 @@
     <style name="Statistic_NoData_Icon">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="layout_goneMarginTop">20dp</item>
     </style>
 
     <style name="Statistic_ChartBlock">
@@ -1244,6 +1264,7 @@
     <style name="Statistic_Item_ColorBlock.Inventory">
         <item name="android:layout_width">32dp</item>
         <item name="android:layout_height">32dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
     </style>
 
     <style name="Statistic_Item_ColorBlock_Inventory_Text">
@@ -1280,6 +1301,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/radius_block</item>
     </style>
 
     <style name="Dialog_Select_Time_Statistic_Item">

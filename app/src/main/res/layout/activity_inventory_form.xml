@@ -24,23 +24,24 @@
             style="@style/DishForm.Group.Label"
             android:text="Tên món"
 
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,TextContrastCheck" />
 
         <TextView
             style="@style/Required"
             android:text="*"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,TextContrastCheck" />
 
         <EditText
             android:id="@+id/edtDishName"
             style="@style/DishForm.Group.Input"
             android:hint="Nhập tên món"
             android:importantForAutofill="no"
-            tools:ignore="HardcodedText,TextFields" />
+            tools:ignore="HardcodedText,TextFields,TouchTargetSizeCheck,TextContrastCheck" />
 
         <ImageButton
             style="@style/DishForm.Group.Button"
-            android:importantForAccessibility="no" />
+            android:importantForAccessibility="no"
+            tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
 
     <View style="@style/Line" />
@@ -50,7 +51,7 @@
         <TextView
             style="@style/DishForm.Group.Label"
             android:text="Giá bán"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,TextContrastCheck" />
 
         <TextView
             android:id="@+id/txtPrice"
@@ -62,7 +63,8 @@
             android:id="@+id/btnUpdatePrice"
             style="@style/DishForm.Group.Button"
             android:importantForAccessibility="no"
-            android:src="@drawable/ic_arrow_right" />
+            android:src="@drawable/ic_arrow_right"
+            tools:ignore="TouchTargetSizeCheck" />
 
     </LinearLayout>
 
@@ -73,12 +75,12 @@
         <TextView
             style="@style/DishForm.Group.Label"
             android:text="Đơn vị tính"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,TextContrastCheck" />
 
         <TextView
             style="@style/Required"
             android:text="*"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,TextContrastCheck" />
 
         <TextView
             android:id="@+id/txtUnitName"
@@ -90,7 +92,8 @@
             android:id="@+id/btnEditUnit"
             style="@style/DishForm.Group.Button"
             android:importantForAccessibility="no"
-            android:src="@drawable/ic_arrow_right" />
+            android:src="@drawable/ic_arrow_right"
+            tools:ignore="TouchTargetSizeCheck" />
     </LinearLayout>
 
     <View style="@style/Line" />
@@ -104,7 +107,7 @@
             <TextView
                 style="@style/DishForm.Group.Label"
                 android:text="Màu sắc"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,TextContrastCheck" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/btnSelectColor"
@@ -125,7 +128,7 @@
             <TextView
                 style="@style/DishForm.Group.Label"
                 android:text="Biểu tượng"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText,TextContrastCheck" />
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/btnSelectImage"
@@ -147,12 +150,13 @@
         <TextView
             style="@style/DishForm.Group.Label"
             android:text="Trạng thái"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,TextContrastCheck" />
 
         <CheckBox
             android:id="@+id/chkIsActiveDish"
             android:layout_width="24dp"
-            android:layout_height="24dp" />
+            android:layout_height="24dp"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -178,7 +182,8 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnDelete"
             style="@style/DishForm.ButtonSubmit"
-            android:layout_width="180dp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="0dp"
@@ -189,6 +194,8 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSubmit"
             style="@style/DishForm.ButtonSubmit"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_marginStart="0dp"
             android:layout_marginEnd="0dp"
             android:layout_marginBottom="0dp"
