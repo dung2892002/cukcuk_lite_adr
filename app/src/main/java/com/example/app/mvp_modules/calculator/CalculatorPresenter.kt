@@ -4,6 +4,17 @@ class CalculatorPresenter(private val view: CalculatorContract.View) : Calculato
     private var input = ""
 
     override fun onButtonClicked(value: String) {
+        if (view.isFirstInput()) {
+            if (value.all { it.isDigit() } || value == "000") {
+                input = if (value == "000") "0" else value
+                view.setFirstInputDone()
+                view.updateDisplay(input)
+                return
+            } else {
+                view.setFirstInputDone()
+            }
+        }
+
         when (value) {
             "C" -> input = "0"
             "Xóa" -> {

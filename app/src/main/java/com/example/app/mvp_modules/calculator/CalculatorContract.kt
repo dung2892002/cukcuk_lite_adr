@@ -7,6 +7,9 @@ interface CalculatorContract {
         fun showError(message: String)
         fun close()
         fun onCalculateState(state: Boolean)
+        fun isFirstInput(): Boolean
+        fun setFirstInputDone()
+
     }
 
     interface Presenter {

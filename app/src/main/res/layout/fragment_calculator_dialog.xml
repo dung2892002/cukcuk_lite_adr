@@ -35,11 +35,12 @@
 
 
     <LinearLayout style="@style/Calculator.Body">
-        <TextView
+        <EditText
             android:id="@+id/tvDisplay"
             style="@style/Calculator.Body.Value"
+            android:importantForAutofill="no"
             android:text="0"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText,LabelFor,TextFields" />
 
         <GridLayout
             android:id="@+id/gridButtons"

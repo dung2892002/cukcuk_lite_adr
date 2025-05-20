@@ -39,11 +39,13 @@
             android:id="@+id/gridButtons"
             style="@style/CalculatorGrid.Column3">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <EditText
                 android:id="@+id/tvDisplay"
-                style="@style/Calculator.Body.Button.Light.Value"
+                style="@style/Calculator_Value"
+                android:importantForAutofill="no"
                 android:text="0"
-                tools:ignore="HardcodedText,TouchTargetSizeCheck,DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck,DuplicateSpeakableTextCheck" />
+                tools:ignore="HardcodedText,LabelFor,TextFields" />
+
 
             <androidx.appcompat.widget.AppCompatImageButton
                 style="@style/Calculator.Body.Button.Image"

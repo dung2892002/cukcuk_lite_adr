@@ -353,6 +353,8 @@
     </style>
 
     <style name="ItemSelectDish_ImageGroup" parent="DishForm.Group.Last.Child.Button">
+        <item name="android:layout_width">42dp</item>
+        <item name="android:layout_height">42dp</item>
         <item name="android:layout_marginStart">0dp</item>
         <item name="android:layout_marginEnd">10dp</item>
         <item name="android:backgroundTint">@color/color_30</item>
@@ -377,8 +379,8 @@
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_marginStart">6dp</item>
         <item name="android:layout_marginEnd">6dp</item>
-        <item name="android:backgroundTint">#ffffffff</item>
         <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/edittext_border</item>
     </style>
 
     <style name="ItemSelectDish_GroupEditQuantity_Value_Text">
@@ -390,8 +392,8 @@
     </style>
 
     <style name="ItemSelectDish_GroupEditQuantity_Button" parent="DishForm.Group.Last.Child.Button">
-        <item name="android:layout_width">40dp</item>
-        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_width">36dp</item>
+        <item name="android:layout_height">36dp</item>
         <item name="android:layout_margin">0dp</item>
         <item name="android:backgroundTint">#ffffffff</item>
     </style>
@@ -483,15 +485,17 @@
         <item name="android:backgroundTint">#ffffffff</item>
     </style>
 
-    <style name="Calculator.Body.Button.Light.Value" parent="Calculator.Body.Button">
-        <item name="android:background">@drawable/rounded_border_gray</item>
-        <item name="android:backgroundTint">#ffffffff</item>
+    <style name="Calculator_Value">
+        <item name="android:background">@drawable/edittext_border</item>
+        <item name="android:gravity">center_vertical|end</item>
         <item name="android:layout_columnWeight">1</item>
         <item name="android:layout_column">0</item>
         <item name="android:layout_columnSpan">2</item>
-        <item name="android:gravity">center_vertical|end</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:paddingStart">4dp</item>
         <item name="android:paddingEnd">4dp</item>
+        <item name="android:layout_marginEnd">6dp</item>
+        <item name="android:layout_height">40dp</item>
     </style>
 
     <style name="Calculator.Body.Button.Light.End" parent="Calculator.Body.Button.Light">

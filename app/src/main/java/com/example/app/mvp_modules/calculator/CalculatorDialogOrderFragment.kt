@@ -5,20 +5,24 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.EditText
 import android.widget.GridLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.toColorInt
 import androidx.fragment.app.DialogFragment
 import com.example.app.R
 
 class CalculatorDialogOrderFragment : DialogFragment(), CalculatorContract.View {
     private lateinit var presenter: CalculatorContract.Presenter
-    private lateinit var display: TextView
+    private lateinit var display: EditText
     private lateinit var buttonSubmit: Button
 
     private var initialValue = ""
     private var title = ""
+    private var isFirstInput = true
     private var onResultCallback: ((Double) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +51,12 @@ class CalculatorDialogOrderFragment : DialogFragment(), CalculatorContract.View 
 
         presenter.setInput(initialValue)
 
-        display.text = initialValue
+        display.setText(initialValue)
+        display.requestFocus()
+        display.selectAll()
+        display.showSoftInputOnFocus = false
+        display.isCursorVisible = false
+        display.highlightColor = "#BBCDE4".toColorInt()
 
         for (i in 0 until grid.childCount) {
             val view = grid.getChildAt(i)
@@ -82,8 +91,16 @@ class CalculatorDialogOrderFragment : DialogFragment(), CalculatorContract.View 
             .create()
     }
 
+    override fun isFirstInput(): Boolean {
+        return isFirstInput
+    }
+
+    override fun setFirstInputDone() {
+        isFirstInput = false
+    }
+
     override fun updateDisplay(value: String) {
-        display.text = value
+        display.setText(value)
     }
 
 
@@ -92,7 +109,7 @@ class CalculatorDialogOrderFragment : DialogFragment(), CalculatorContract.View 
     }
 
     override fun showError(message: String) {
-        display.text = message
+        display.setText(message)
     }
 
     override fun close() {

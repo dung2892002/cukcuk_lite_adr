@@ -18,7 +18,7 @@ import com.example.app.databinding.ActivityInvoiceBinding
 import com.example.app.datas.CukcukDbHelper
 import com.example.app.datas.repositories.InvoiceRepository
 import com.example.app.entities.Invoice
-import com.example.app.mvp_modules.calculator.CalculatorDialogBillActivityFragment
+import com.example.app.mvp_modules.calculator.CalculatorDialogInvoiceActivityFragment
 import com.example.app.mvp_modules.sale.adapters.ListInvoiceDetailBillAdapter
 import com.example.app.mvp_modules.sale.contracts.InvoiceContract
 import com.example.app.mvp_modules.sale.presenters.InvoicePresenter
@@ -75,7 +75,7 @@ class InvoiceActivity : AppCompatActivity(), InvoiceContract.View {
     }
 
     override fun openCalculator() {
-        CalculatorDialogBillActivityFragment.newInstance(invoice.ReceiveAmount.toString()) { result ->
+        CalculatorDialogInvoiceActivityFragment.newInstance(invoice.ReceiveAmount.toString()) { result ->
             invoice.ReceiveAmount = result.toDouble()
             invoice.ReturnAmount = invoice.ReceiveAmount - invoice.Amount
             binding.txtMoneyGive.text = FormatDisplay.formatNumber(result.toString())

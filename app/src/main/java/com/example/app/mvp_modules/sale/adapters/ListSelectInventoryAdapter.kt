@@ -10,6 +10,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
@@ -37,7 +38,7 @@ class ListSelectInventoryAdapter(
         val btnRemove: MaterialCardView = itemView.findViewById<MaterialCardView>(R.id.btnCheckQuantity)
         val btnAdd: MaterialCardView = itemView.findViewById<MaterialCardView>(R.id.btnAdd)
         val btnSubtract: MaterialCardView = itemView.findViewById<MaterialCardView>(R.id.btnSubtract)
-        val btnCalculator: MaterialCardView = itemView.findViewById<MaterialCardView>(R.id.btnOpenCalculator)
+        val btnCalculator: CardView = itemView.findViewById<MaterialCardView>(R.id.btnOpenCalculator)
 
         val editQuantity: LinearLayout = itemView.findViewById<LinearLayout>(R.id.groupEditQuantity)
         val dishColor: MaterialCardView = itemView.findViewById<MaterialCardView>(R.id.colorDishSelect)

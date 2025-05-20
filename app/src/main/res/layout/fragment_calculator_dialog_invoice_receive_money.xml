@@ -6,13 +6,14 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <TextView
+    <EditText
         android:id="@+id/tvDisplay"
         style="@style/Calculator.Body.Value"
+        android:importantForAutofill="no"
         android:text="0"
         android:layout_marginBottom="0dp"
         android:background="#ffffffff"
-        tools:ignore="HardcodedText" />
+        tools:ignore="Autofill,HardcodedText,LabelFor,TextFields" />
 
     <LinearLayout style="@style/Calculator.Body"
         android:background="#CACACA">
