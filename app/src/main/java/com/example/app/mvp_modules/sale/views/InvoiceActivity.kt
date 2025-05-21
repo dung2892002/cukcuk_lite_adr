@@ -75,7 +75,12 @@ class InvoiceActivity : AppCompatActivity(), InvoiceContract.View {
     }
 
     override fun openCalculator() {
-        CalculatorDialogInvoiceActivityFragment.newInstance(invoice.ReceiveAmount.toString()) { result ->
+        CalculatorDialogInvoiceActivityFragment.newInstance(
+            invoice.ReceiveAmount.toString(),
+            "Thu tiền",
+            "Số tiền",
+            0.0,
+            999999999.0) { result ->
             invoice.ReceiveAmount = result.toDouble()
             invoice.ReturnAmount = invoice.ReceiveAmount - invoice.Amount
             binding.txtMoneyGive.text = FormatDisplay.formatNumber(result.toString())

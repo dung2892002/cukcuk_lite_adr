@@ -430,8 +430,8 @@
     </style>
 
     <style name="Calculator.Header.Button" parent="BaseImage">
-        <item name="android:layout_width">30dp</item>
-        <item name="android:layout_height">30dp</item>
+        <item name="android:layout_width">20dp</item>
+        <item name="android:layout_height">20dp</item>
     </style>
 
     <style name="Calculator.Body">
@@ -445,7 +445,7 @@
     <style name="Calculator.Body.Value">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:gravity">end</item>
         <item name="android:padding">10dp</item>
         <item name="android:layout_marginBottom">16dp</item>
@@ -491,7 +491,7 @@
         <item name="android:layout_columnWeight">1</item>
         <item name="android:layout_column">0</item>
         <item name="android:layout_columnSpan">2</item>
-        <item name="android:textSize">24sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:paddingStart">4dp</item>
         <item name="android:paddingEnd">4dp</item>
         <item name="android:layout_marginEnd">6dp</item>

@@ -152,11 +152,16 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
     }
 
     override fun openCalculator() {
-        CalculatorDialogFragment.newInstance(inventory.Price.toString(), "Giá bán") { result ->
+        CalculatorDialogFragment.newInstance(
+            inventory.Price.toString(),
+            "Giá bán",
+            "Số tiền",
+            0.0,
+            999999999.0)
+        { result ->
             inventory.Price = result.toDouble()
             binding.txtPrice.text = FormatDisplay.formatNumber(result.toString())
         }.show(supportFragmentManager, null)
-
     }
 
     override fun openSelectUnitDish() {

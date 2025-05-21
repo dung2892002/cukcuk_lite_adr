@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/btnCloseCalculator"
             style="@style/Calculator.Header.Button"
             android:importantForAccessibility="no"
@@ -43,6 +43,9 @@
                 android:id="@+id/tvDisplay"
                 style="@style/Calculator_Value"
                 android:importantForAutofill="no"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:inputType="none"
                 android:text="0"
                 tools:ignore="HardcodedText,LabelFor,TextFields" />
 

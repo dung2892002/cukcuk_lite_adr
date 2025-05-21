@@ -1,7 +1,10 @@
 package com.example.app.mvp_modules.calculator
 
+import com.example.app.utils.FormatDisplay
+
 class CalculatorPresenter(private val view: CalculatorContract.View) : CalculatorContract.Presenter {
     private var input = ""
+    private var maxLengthValue = 0
 
     override fun onButtonClicked(value: String) {
         if (view.isFirstInput()) {
@@ -56,23 +59,27 @@ class CalculatorPresenter(private val view: CalculatorContract.View) : Calculato
                 view.onCalculateState(false)
             }
             "," -> {
-                input += "."
+                if (isValidDecimalInput(input)) input += "."
             }
             "Xong" -> {
                 view.showResult(input.toDouble())
-                view.close()
             }
             else -> {
                 if (input == "0") {
                     if (value == "0" || value == "000") return
                     input = value
                 } else {
-                    input += value
+                    if (!hasTwoDecimalPlaces(input) && checkMaxLengthInput())
+                        input += value
                 }
 
             }
         }
-        view.updateDisplay(input)
+        view.updateDisplay(formatOutput(input))
+    }
+
+    override fun setMaxValue(value: Double) {
+        maxLengthValue = FormatDisplay.formatExpression(value.toString()).length
     }
 
     override fun setInput(value: String) {
@@ -81,6 +88,32 @@ class CalculatorPresenter(private val view: CalculatorContract.View) : Calculato
 
     override fun close() {
         view.close()
+    }
+
+    private fun checkMaxLengthInput() : Boolean {
+        if (input.contains('+') || input.contains('-')) {
+            val last = Regex("(?=[+-])").split(input).last()
+            return last.length < maxLengthValue - 1
+        }
+        return input.length < maxLengthValue - 1
+
+    }
+
+    private fun formatOutput(input: String) : String {
+        return FormatDisplay.formatExpression(input)
+    }
+
+    private fun isValidDecimalInput(input: String) : Boolean {
+        for (char in input.reversed()) {
+            if (char == '.') return false
+            if (char == '+' || char == '-') return true
+        }
+        return true
+    }
+
+    fun hasTwoDecimalPlaces(input: String): Boolean {
+        val parts = Regex("(?=[+-])").split(input).last().split(Regex("\\."))
+        return parts.size == 2 && parts[1].length == 2
     }
 
     private fun evaluate(expr: String): String {
@@ -149,7 +182,14 @@ class CalculatorPresenter(private val view: CalculatorContract.View) : Calculato
             }
         }.parse()
 
-        val roundedResult = "%.2f".format(result)
+        var roundedResult = "%.2f".format(result)
+        while (roundedResult.last() == '0' && roundedResult.contains('.')) {
+            roundedResult = roundedResult.dropLast(1)
+        }
+
+        if (roundedResult.last() == '.') {
+            roundedResult = roundedResult.dropLast(1)
+        }
         return roundedResult
     }
 

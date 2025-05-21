@@ -15,6 +15,7 @@ interface CalculatorContract {
     interface Presenter {
         fun onButtonClicked(value: String)
         fun setInput(value: String)
+        fun setMaxValue(maxValue: Double)
         fun close()
     }
 }

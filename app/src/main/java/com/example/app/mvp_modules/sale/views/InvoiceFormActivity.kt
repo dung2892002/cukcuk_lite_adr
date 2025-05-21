@@ -20,7 +20,7 @@ import com.example.app.dto.InventorySelect
 import com.example.app.entities.Invoice
 import com.example.app.dto.SeverResponse
 import com.example.app.mvp_modules.calculator.CalculatorDialogFragment
-import com.example.app.mvp_modules.calculator.CalculatorDialogOrderFragment
+import com.example.app.mvp_modules.calculator.CalculatorDialogInvoiceFormFragment
 import com.example.app.mvp_modules.sale.adapters.ListSelectInventoryAdapter
 import com.example.app.mvp_modules.sale.contracts.InvoiceFormContract
 import com.example.app.mvp_modules.sale.presenters.InvoiceFormPresenter
@@ -74,7 +74,12 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
 
     override fun openCalculatorTable() {
         val initValue = if (!invoice.TableName.isEmpty()) invoice.TableName else "0"
-        CalculatorDialogOrderFragment.newInstance(initValue, "Nhập số bàn") { result ->
+        CalculatorDialogInvoiceFormFragment.newInstance(
+            initValue,
+            "Nhập số bàn",
+            "Số bàn",
+            0.0,
+            9999.0) { result ->
             invoice.TableName = FormatDisplay.formatNumber(result.toString())
             binding.btnOpenInputTable.text = FormatDisplay.formatNumber(result.toString())
         }.show(supportFragmentManager, null)
@@ -82,7 +87,12 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
 
     override fun openCalculatorPeople() {
         val initValue = if (invoice.NumberOfPeople != 0) invoice.NumberOfPeople.toString() else "0"
-        CalculatorDialogOrderFragment.newInstance(initValue, "Nhập số người") { result ->
+        CalculatorDialogInvoiceFormFragment.newInstance(
+            initValue,
+            "Nhập số người",
+            "Số người",
+            0.0,
+            9999.0) { result ->
             invoice.NumberOfPeople = result.toInt()
             binding.btnOpenInputPeople.text = FormatDisplay.formatNumber(result.toString())
         }.show(supportFragmentManager, null)
@@ -90,7 +100,11 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
 
     override fun openCalculatorDish() {
         val initValue = inventoriesSelect[positionIndex].quantity
-        CalculatorDialogFragment.newInstance(initValue.toString(), "Nhập số lượng") { result ->
+        CalculatorDialogFragment.newInstance(initValue.toString(),
+            "Nhập số lượng",
+            "Số lượng",
+            0.0,
+            9999.0) { result ->
             inventoriesSelect[positionIndex].quantity = result
             presenter.calculatorTotalPrice(inventoriesSelect)
             adapter.notifyItemChanged(positionIndex)

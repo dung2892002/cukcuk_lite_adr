@@ -7,38 +7,64 @@ import java.util.Locale
 object FormatDisplay {
     fun formatNumber(number: String): String {
         var resultValue = number
-        while (resultValue.last() == '0' && resultValue.contains('.')) {
-            resultValue = resultValue.dropLast(1)
-        }
 
-        if (resultValue.last() == '.') {
-            resultValue = resultValue.dropLast(1)
-        }
+        // Trường hợp kết thúc bằng dấu chấm, đánh dấu để giữ dấu ',' sau này
+        val endsWithDot = resultValue.endsWith(".")
 
-        return try {
-            val cleaned = resultValue.trimStart('0')
-            val doubleValue = cleaned.toDoubleOrNull() ?: return "0"
-
-            val symbols = DecimalFormatSymbols().apply {
-                groupingSeparator = '.'
-                decimalSeparator = ','
+        // Xoá số 0 không cần thiết sau dấu thập phân
+        if (resultValue.contains('.')) {
+            while (resultValue.endsWith("0")) {
+                resultValue = resultValue.dropLast(1)
             }
-
-            val formatter = DecimalFormat("#,##0.##", symbols)
-            formatter.format(doubleValue)
-
-        } catch (e: Exception) {
-            "0"
+            // Nếu còn dấu '.' ở cuối, tạm xoá để parse số
+            if (resultValue.endsWith(".")) {
+                resultValue = resultValue.dropLast(1)
+            }
         }
+
+        // Nếu chuỗi còn lại rỗng hoặc không hợp lệ
+        val doubleValue = resultValue.toDoubleOrNull() ?: return "0"
+
+        // Định dạng với dấu phẩy
+        val symbols = DecimalFormatSymbols().apply {
+            groupingSeparator = '.'
+            decimalSeparator = ','
+        }
+
+        val formatter = DecimalFormat("#,##0.##", symbols)
+        var formatted = formatter.format(doubleValue)
+
+        // Nếu ban đầu có dấu '.' ở cuối thì thêm dấu ',' ở cuối
+        if (endsWithDot) {
+            formatted += ","
+        }
+
+        return formatted
     }
 
-    fun formatDateTimeCompat(input: String): String {
-        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-        val outputFormat = SimpleDateFormat("dd/MM/yyyy (HH:mm)", Locale.getDefault())
+    fun formatExpression(expression: String): String {
+        if (expression.isBlank()) return ""
 
-        val date = inputFormat.parse(input)
-        return outputFormat.format(date!!)
+        val regex = Regex("(?=[+-])")
+        val parts = regex.split(expression).filter { it.isNotEmpty() }
+
+        val formattedParts = parts.map { part ->
+            val operator = if (part.startsWith('+') || part.startsWith('-')) part[0].toString() else ""
+            val number = if (operator.isNotEmpty()) part.substring(1) else part
+
+            val formattedNumber = if (number.isEmpty()) {
+                // Giữ nguyên chuỗi rỗng nếu không có số phía sau toán tử
+                ""
+            } else {
+                formatNumber(number)
+            }
+            operator + formattedNumber
+        }
+
+        return formattedParts.joinToString("")
     }
+
+
 
     fun formatTo12HourWithCustomAMPM(input: String): String {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
