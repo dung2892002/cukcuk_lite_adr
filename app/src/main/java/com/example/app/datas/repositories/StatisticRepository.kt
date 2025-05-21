@@ -15,8 +15,8 @@ import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 
 @SuppressLint("Recycle, NewApi")
-class StatisticRepository(private val dbHelper: CukcukDbHelper) {
-    val db = dbHelper.readableDatabase!!
+class StatisticRepository(dbHelper: CukcukDbHelper) {
+    private val db = dbHelper.readableDatabase!!
 
     fun getStatisticOverview(): List<StatisticOverview> {
         val result = mutableListOf<StatisticOverview>()
@@ -40,7 +40,7 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
         """.trimIndent()
 
         var colors = listOf<String>("#5AB4FD", "#5AB4FD", "#4CAF50", "#F44336", "#2196F3")
-        var icons = listOf<String>("ic-calendar-1.png", "ic-calendar-1.png", "ic-calendar-7.png", "ic-calendar-30.png", "ic-calendar-12.png",)
+        var icons = listOf<String>("ic-calendar-1.png", "ic-calendar-1.png", "ic-calendar-7.png", "ic-calendar-30.png", "ic-calendar-12.png")
 
         var cursor: Cursor? = null
         try {

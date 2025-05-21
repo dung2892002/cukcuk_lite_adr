@@ -22,6 +22,7 @@ class ListUnitAdapter(
 {
     var onUnitSelected: ((Unit) -> kotlin.Unit)? = null
     var onClickEditButton: ((Unit) -> kotlin.Unit)? = null
+    var onHoldUnit: ((Unit, View) -> kotlin.Unit)? = null
 
     fun updateData(newUnits: MutableList<Unit>) {
         this.units = newUnits
@@ -39,6 +40,12 @@ class ListUnitAdapter(
                 onUnitSelected?.invoke(selected)
                 this@ListUnitAdapter.selectedUnit = selected
                 notifyDataSetChanged()
+            }
+
+            view.setOnLongClickListener {
+                val selected = units[adapterPosition]
+                onHoldUnit?.invoke(selected, it)
+                true
             }
         }
 

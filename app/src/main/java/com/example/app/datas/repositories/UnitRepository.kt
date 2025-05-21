@@ -6,15 +6,71 @@ import android.database.Cursor
 import com.example.app.datas.CukcukDbHelper
 import com.example.app.entities.Unit
 import com.example.app.utils.getBoolean
-import com.example.app.utils.getDateTime
 import com.example.app.utils.getString
 import com.example.app.utils.getUUID
 import java.util.UUID
 
-class UnitRepository(private val dbHelper: CukcukDbHelper) {
+@SuppressLint("Recycle")
+class UnitRepository(dbHelper: CukcukDbHelper) {
     private val db = dbHelper.readableDatabase
 
-    @SuppressLint("Recycle")
+    fun checkUseByInventory(unitId: UUID) : Boolean {
+        val query = """
+            SELECT 1 FROM Inventory i WHERE i.UnitID = ? LIMIT 1
+        """.trimIndent()
+
+        var exists = false
+        var cursor: Cursor? = null
+
+        try {
+            cursor = db.rawQuery(query, arrayOf(unitId.toString()))
+            exists = cursor.moveToFirst()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+        } finally {
+            cursor?.close()
+        }
+
+        return exists
+    }
+
+    fun checkExistUnitName(name: String, unitId: UUID?): Boolean {
+        val query: String
+        val args: Array<String>
+
+        if (unitId == null) {
+            query = """
+            SELECT 1 FROM Unit u
+            WHERE u.UnitName = ?
+            LIMIT 1
+        """.trimIndent()
+            args = arrayOf(name)
+        } else {
+            query = """
+            SELECT 1 FROM Unit u
+            WHERE u.UnitName = ? AND u.UnitID != ?
+            LIMIT 1
+        """.trimIndent()
+            args = arrayOf(name, unitId.toString())
+        }
+
+        var exists = false
+        var cursor: Cursor? = null
+
+        try {
+            cursor = db.rawQuery(query, args)
+            exists = cursor.moveToFirst()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+        } finally {
+            cursor?.close()
+        }
+
+        return exists
+    }
+
+
     fun getAllUnit() : MutableList<Unit> {
         val units = mutableListOf<Unit>()
 
@@ -99,4 +155,18 @@ class UnitRepository(private val dbHelper: CukcukDbHelper) {
         }
     }
 
+    fun deleteUnit(unitId: UUID) : Boolean {
+        return try {
+            val result = db.delete(
+                "Unit",
+                "UnitID = ?",
+                arrayOf(unitId.toString())
+            )
+            result > 0
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+            false
+        }
+    }
 }

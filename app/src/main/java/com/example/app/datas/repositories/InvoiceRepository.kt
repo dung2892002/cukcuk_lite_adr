@@ -17,7 +17,7 @@ import java.util.Locale
 import java.util.UUID
 
 @SuppressLint("Recycle")
-class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
+class InvoiceRepository(dbHelper: CukcukDbHelper) {
     private val db = dbHelper.readableDatabase
 
     fun getNewInvoiceNo() : String {

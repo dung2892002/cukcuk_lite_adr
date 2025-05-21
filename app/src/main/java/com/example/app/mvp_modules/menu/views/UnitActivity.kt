@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -29,6 +30,7 @@ import com.example.app.mvp_modules.menu.presenters.UnitPresenter
 import java.time.LocalDateTime
 import java.util.UUID
 
+@Suppress("DEPRECATION")
 @SuppressLint("NewApi")
 class UnitActivity : AppCompatActivity(), UnitContract.View {
     private lateinit var binding: ActivityUnitBinding
@@ -90,17 +92,43 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
 
     private fun setupAdapter() {
         adapter = ListUnitAdapter(this, units, unitSelected).apply {
-            onUnitSelected = { unitDish ->
-                unitSelected = unitDish
+            onUnitSelected = { unit ->
+                unitSelected = unit
             }
 
-            onClickEditButton = { unitDish ->
-                unitEdited = unitDish
+            onClickEditButton = { unit ->
+                unitEdited = unit
                 openFormPopup(isAddNew = false)
+            }
+
+            onHoldUnit = { unit, view ->
+                showContextMenu()
             }
         }
         binding.recyclerListUnitDish.layoutManager = LinearLayoutManager(this)
         binding.recyclerListUnitDish.adapter = adapter
+    }
+
+    private fun showContextMenu() {
+        adapter.onHoldUnit = { unit, view ->
+            unitEdited = unit
+
+            val popup = PopupMenu(this, view)
+            popup.menuInflater.inflate(R.menu.menu_unit_context, popup.menu)
+
+            popup.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.menu_delete_unit -> {
+                        presenter.handleDelete(unit)
+                        true
+                    }
+                    else -> false
+                }
+            }
+
+            popup.show()
+        }
+
     }
 
     private fun setupToolbar() {
@@ -110,9 +138,11 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
         supportActionBar?.title = ""
     }
 
+
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_dish_unit_activity, menu);
-        return true;
+        menuInflater.inflate(R.menu.menu_dish_unit_activity, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -154,9 +184,9 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
             .create()
 
         if (isAddNew) {
-            txtLabelDialogUnitDish.text = "Thêm đơn vị tính"
+            txtLabelDialogUnitDish.text = getString(R.string.label_form_unit_add)
         } else {
-            txtLabelDialogUnitDish.text = "Sửa đơn vị tính"
+            txtLabelDialogUnitDish.text = getString(R.string.label_form_unit_update)
             edtUnitName.setText(unitEdited.UnitName)
         }
 
@@ -170,8 +200,9 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
 
         btnSubmit.setOnClickListener {
             val value = edtUnitName.text.toString()
-            unitEdited.UnitName = value
-            presenter.handleSubmit(unitEdited, isAddNew)
+            var newUnit = unitEdited.copy()
+            newUnit.UnitName = value
+            presenter.handleSubmit(newUnit, isAddNew)
         }
 
         dialog.show()
@@ -190,6 +221,16 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
             if (unit.UnitID == unitSelected.UnitID) {
                 unitSelected.UnitName = unit.UnitName
             }
+        }
+    }
+
+    override fun onDelete(response: SeverResponse) {
+        if (response.isSuccess) {
+            units = presenter.getListUnit()
+            adapter.updateData(units)
+            updateSelectedData()
+        } else {
+            Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -11,4 +11,6 @@
     <string name="label_ox_month">(Tháng)</string>
     <string name="label_ox">(Ngày)</string>
     <string name="inventory_inactive">Ngừng bán</string>
+    <string name="label_form_unit_update">Sửa đơn vị tính</string>
+    <string name="label_form_unit_add">Thêm đơn vị tính</string>
 </resources>

@@ -5,18 +5,15 @@ import android.content.ContentValues
 import android.database.Cursor
 import com.example.app.datas.CukcukDbHelper
 import com.example.app.entities.Inventory
-import com.example.app.entities.Unit
 import com.example.app.utils.getBoolean
-import com.example.app.utils.getDateTime
 import com.example.app.utils.getDouble
-import com.example.app.utils.getInt
 import com.example.app.utils.getString
 import com.example.app.utils.getUUID
 import java.util.UUID
 
 
 @SuppressLint("Recycle")
-class InventoryRepository(private val dbHelper: CukcukDbHelper) {
+class InventoryRepository(dbHelper: CukcukDbHelper) {
     private val db = dbHelper.readableDatabase
 
     fun getAllInventory() : MutableList<Inventory> {

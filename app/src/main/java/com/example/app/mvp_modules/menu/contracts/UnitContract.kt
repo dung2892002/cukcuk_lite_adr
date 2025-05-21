@@ -7,12 +7,14 @@ interface UnitContract {
     interface View{
         fun onClose()
         fun onSubmit(response: SeverResponse, isAddNew: Boolean)
+        fun onDelete(response: SeverResponse)
         fun onChangeUnitInventory()
     }
 
     interface Presenter {
         fun handleUpdateUnitInventory(unit: Unit)
         fun handleSubmit(unit: Unit, isAddNew: Boolean)
+        fun handleDelete(unit: Unit)
         fun getListUnit() : MutableList<Unit>
     }
 }
