@@ -2,6 +2,7 @@ package com.example.app.datas.repositories
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
+import android.database.Cursor
 import com.example.app.datas.CukcukDbHelper
 import com.example.app.entities.Inventory
 import com.example.app.entities.Invoice
@@ -21,77 +22,118 @@ class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
 
     fun getNewInvoiceNo() : String {
         var count = 0
-        val query = "SELECT COUNT(*) FROM Invoice WHERE PaymentStatus = 1"
-        val cursor = db.rawQuery(query, null)
-        if (cursor.moveToFirst()) {
-            count = cursor.getInt(0)
+        val query = """
+            SELECT COUNT(*) FROM Invoice WHERE PaymentStatus = 1
+        """.trimIndent()
+        var cursor: Cursor? = null
+        try {
+            cursor = db.rawQuery(query, null)
+            if (cursor.moveToFirst()) {
+                count = cursor.getInt(0)
+            }
         }
-        cursor.close()
+        catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+        }
+        finally {
+            cursor?.close()
+        }
+
         return String.format(Locale.US, "%05d", count + 1)
     }
 
 
     fun getListInvoiceNotPayment() : MutableList<Invoice> {
         val invoices = mutableListOf<Invoice>()
-        val query = "SELECT * FROM Invoice WHERE PaymentStatus = 0 ORDER BY InvoiceDate DESC"
-        val cursor = db.rawQuery(query, null)
+        val query = """
+            SELECT InvoiceID, InvoiceDate, Amount, NumberOfPeople, TableName, ListItemName, InvoiceDate, ReceiveAmount
+            FROM Invoice 
+            WHERE PaymentStatus = 0 
+            ORDER BY InvoiceDate DESC
+        """.trimIndent()
 
-        while (cursor.moveToNext()) {
-            val invoice = Invoice(
-                InvoiceID = cursor.getUUID("InvoiceID"),
-                InvoiceType = cursor.getInt("InvoiceType"),
-                InvoiceNo = cursor.getString("InvoiceNo"),
-                InvoiceDate = cursor.getDateTime("InvoiceDate"),
-                Amount = cursor.getDouble("Amount"),
-                ReceiveAmount = cursor.getDouble("ReceiveAmount"),
-                ReturnAmount = cursor.getDouble("ReturnAmount"),
-                RemainAmount = cursor.getDouble("RemainAmount"),
-                JournalMemo = cursor.getString("JournalMemo"),
-                PaymentStatus = cursor.getInt("PaymentStatus"),
-                NumberOfPeople = cursor.getInt("NumberOfPeople"),
-                TableName = cursor.getString("TableName"),
-                ListItemName = cursor.getString("ListItemName"),
-                CreatedDate = cursor.getDateTime("CreatedDate"),
-                CreatedBy = cursor.getString("CreatedBy"),
-                ModifiedDate = cursor.getDateTime("ModifiedDate"),
-                ModifiedBy = cursor.getString("ModifiedBy"),
-                InvoiceDetails = mutableListOf()
-            )
-            invoices.add(invoice)
+        var cursor: Cursor? = null
+        try {
+            cursor = db.rawQuery(query, null)
+            while (cursor.moveToNext()) {
+                val invoice = Invoice(
+                    InvoiceID = cursor.getUUID("InvoiceID"),
+                    InvoiceType = 0,
+                    InvoiceNo = "",
+                    InvoiceDate = cursor.getDateTime("InvoiceDate"),
+                    Amount = cursor.getDouble("Amount"),
+                    ReceiveAmount = cursor.getDouble("ReceiveAmount"),
+                    ReturnAmount = 0.0,
+                    RemainAmount = 0.0,
+                    JournalMemo = "",
+                    PaymentStatus = 0,
+                    NumberOfPeople = cursor.getInt("NumberOfPeople"),
+                    TableName = cursor.getString("TableName"),
+                    ListItemName = cursor.getString("ListItemName"),
+                    CreatedDate = null,
+                    CreatedBy = "",
+                    ModifiedDate = null,
+                    ModifiedBy = "",
+                    InvoiceDetails = mutableListOf()
+                )
+                invoices.add(invoice)
+            }
         }
-
-        cursor.close()
+        catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+        }
+        finally {
+            cursor?.close()
+        }
         return invoices
     }
 
     fun getListInvoicesDetail(invoiceId: UUID) : MutableList<InvoiceDetail> {
         val invoicesDetail = mutableListOf<InvoiceDetail>()
-        val query = "SELECT * FROM InvoiceDetail WHERE InvoiceID = ? ORDER BY SortOrder"
-        val cursor = db.rawQuery(query, arrayOf(invoiceId.toString()))
+        val query = """
+            SELECT 
+                InvoiceDetailID, InvoiceID, InventoryID, InventoryName, UnitID, UnitName,
+                Quantity, UnitPrice, Amount, SortOrder
+            FROM InvoiceDetail 
+            WHERE InvoiceID = ? 
+            ORDER BY SortOrder
+        """.trimIndent()
 
-        while (cursor.moveToNext()) {
-            val invoiceDetail = InvoiceDetail(
-                InvoiceDetailID = cursor.getUUID("InvoiceDetailID"),
-                InvoiceDetailType = cursor.getInt("InvoiceDetailType"),
-                InvoiceID = cursor.getUUID("InvoiceID"),
-                InventoryID = cursor.getUUID("InventoryID"),
-                InventoryName = cursor.getString("InventoryName"),
-                UnitID = cursor.getUUID("UnitID"),
-                UnitName = cursor.getString("UnitName"),
-                Quantity = cursor.getDouble("Quantity"),
-                UnitPrice = cursor.getDouble("UnitPrice"),
-                Amount = cursor.getDouble("Amount"),
-                Description = cursor.getString("Description"),
-                SortOrder = cursor.getInt("SortOrder"),
-                CreatedDate = cursor.getDateTime("CreatedDate"),
-                CreatedBy = cursor.getString("CreatedBy"),
-                ModifiedDate = cursor.getDateTime("ModifiedDate"),
-                ModifiedBy = cursor.getString("ModifiedBy")
-            )
-            invoicesDetail.add(invoiceDetail)
+        var cursor: Cursor? = null
+
+        try {
+            cursor = db.rawQuery(query, arrayOf(invoiceId.toString()))
+            while (cursor.moveToNext()) {
+                val invoiceDetail = InvoiceDetail(
+                    InvoiceDetailID = cursor.getUUID("InvoiceDetailID"),
+                    InvoiceDetailType = 0,
+                    InvoiceID = cursor.getUUID("InvoiceID"),
+                    InventoryID = cursor.getUUID("InventoryID"),
+                    InventoryName = cursor.getString("InventoryName"),
+                    UnitID = cursor.getUUID("UnitID"),
+                    UnitName = cursor.getString("UnitName"),
+                    Quantity = cursor.getDouble("Quantity"),
+                    UnitPrice = cursor.getDouble("UnitPrice"),
+                    Amount = cursor.getDouble("Amount"),
+                    Description = "",
+                    SortOrder = cursor.getInt("SortOrder"),
+                    CreatedDate = null,
+                    CreatedBy = "",
+                    ModifiedDate = null,
+                    ModifiedBy = ""
+                )
+                invoicesDetail.add(invoiceDetail)
+            }
         }
-
-        cursor.close()
+        catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+        }
+        finally {
+            cursor?.close()
+        }
         return invoicesDetail
     }
 
@@ -113,6 +155,7 @@ class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
             true
         } catch (ex: Exception) {
             ex.printStackTrace()
+            println(ex)
             false
         } finally {
             db.endTransaction()
@@ -178,39 +221,52 @@ class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
     }
 
     fun getAllInventoryInactive() : MutableList<Inventory> {
-        val query = "SELECT i.*, u.UnitName " +
-                "FROM Inventory i " +
-                "JOIN Unit u " +
-                "ON i.UnitID = u.UnitId " +
-                "WHERE i.Inactive = 1"
+        val query =""" 
+            SELECT 
+                i.InventoryID, i.InventoryName, i.Price,
+                i.Inactive, i.Color, i.IconFileName,
+                u.UnitId, u.UnitName
+            FROM 
+                Inventory i
+                JOIN Unit u ON i.UnitID = u.UnitId
+            WHERE i.Inactive = 1
+        """
 
-        val cursor = db.rawQuery(query,null)
-
+        var cursor: Cursor? = null
         val inventoryList = mutableListOf<Inventory>()
 
-        while (cursor.moveToNext()) {
-            val inventory = Inventory(
-                InventoryID = cursor.getUUID("InventoryID"),
-                InventoryCode = cursor.getString("InventoryCode"),
-                InventoryName = cursor.getString("InventoryName"),
-                InventoryType = cursor.getInt("InventoryType"),
-                Price = cursor.getDouble("Price"),
-                Description = cursor.getString("Description"),
-                Inactive = cursor.getBoolean("Inactive"),
-                CreatedBy = cursor.getString("CreatedBy"),
-                ModifiedBy = cursor.getString("ModifiedBy"),
-                CreatedDate = cursor.getDateTime("CreatedDate"),
-                ModifiedDate = cursor.getDateTime("ModifiedDate"),
-                Color = cursor.getString("Color"),
-                IconFileName = cursor.getString("IconFileName"),
-                UseCount = cursor.getInt("UseCount"),
-                UnitID = cursor.getUUID("UnitID"),
-                UnitName = cursor.getString("UnitName")
-            )
+        try {
+            cursor = db.rawQuery(query,null)
+            while (cursor.moveToNext()) {
+                val inventory = Inventory(
+                    InventoryID = cursor.getUUID("InventoryID"),
+                    InventoryCode = "",
+                    InventoryName = cursor.getString("InventoryName"),
+                    InventoryType = 0,
+                    Price = cursor.getDouble("Price"),
+                    Description = "",
+                    Inactive = cursor.getBoolean("Inactive"),
+                    CreatedBy = "",
+                    ModifiedBy = "",
+                    CreatedDate = null,
+                    ModifiedDate = null,
+                    Color = cursor.getString("Color"),
+                    IconFileName = cursor.getString("IconFileName"),
+                    UseCount = 0,
+                    UnitID = cursor.getUUID("UnitID"),
+                    UnitName = cursor.getString("UnitName")
+                )
 
-            inventoryList.add(inventory)
+                inventoryList.add(inventory)
+            }
         }
-        cursor.close()
+        catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+        }
+        finally {
+            cursor?.close()
+        }
         return inventoryList
     }
 
@@ -233,6 +289,7 @@ class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
             true
         } catch (ex: Exception) {
             ex.printStackTrace()
+            println(ex)
             false
         } finally {
             db.endTransaction()
@@ -259,6 +316,7 @@ class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
             true
         } catch (ex: Exception) {
             ex.printStackTrace()
+            println(ex)
             false
         } finally {
             db.endTransaction()
@@ -282,6 +340,7 @@ class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
             true
         } catch (ex: Exception) {
             ex.printStackTrace()
+            println(ex)
             false
         } finally {
             db.endTransaction()
@@ -289,6 +348,7 @@ class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
     }
 
 
+    //ham con k can try-catch
     private fun insertInvoice(invoice: Invoice) {
         val values = ContentValues().apply {
             put("InvoiceID", invoice.InvoiceID.toString())
@@ -312,6 +372,7 @@ class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
         db.insert("Invoice", null, values)
     }
 
+    //ham con k can try-catch
     private fun insertInvoiceDetail(detail: InvoiceDetail) {
         val values = ContentValues().apply {
             put("InvoiceDetailID", detail.InvoiceDetailID.toString())
@@ -334,6 +395,7 @@ class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
         db.insert("InvoiceDetail", null, values)
     }
 
+    //ham con k can try-catch
     private fun updateInvoiceOnly(invoice: Invoice) {
         val values = ContentValues().apply {
             put("InvoiceType", invoice.InvoiceType)

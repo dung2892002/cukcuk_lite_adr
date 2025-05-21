@@ -1,6 +1,7 @@
 package com.example.app.datas.repositories
 
 import android.annotation.SuppressLint
+import android.database.Cursor
 import com.example.app.datas.CukcukDbHelper
 import com.example.app.dto.StatisticByInventory
 import com.example.app.dto.StatisticByTime
@@ -41,43 +42,53 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
         var colors = listOf<String>("#5AB4FD", "#5AB4FD", "#4CAF50", "#F44336", "#2196F3")
         var icons = listOf<String>("ic-calendar-1.png", "ic-calendar-1.png", "ic-calendar-7.png", "ic-calendar-30.png", "ic-calendar-12.png",)
 
-        val cursor = db.rawQuery(query, null)
-        if (cursor.moveToFirst()) {
-            val yesterday = cursor.getDouble(0)
-            val today = cursor.getDouble(1)
-            val thisWeek = cursor.getDouble(2)
-            val thisMonth = cursor.getDouble(3)
-            val thisYear = cursor.getDouble(4)
+        var cursor: Cursor? = null
+        try {
+            cursor = db.rawQuery(query, null)
+            if (cursor.moveToFirst()) {
+                val yesterday = cursor.getDouble(0)
+                val today = cursor.getDouble(1)
+                val thisWeek = cursor.getDouble(2)
+                val thisMonth = cursor.getDouble(3)
+                val thisYear = cursor.getDouble(4)
 
-            val now = LocalDateTime.now()
+                val now = LocalDateTime.now()
 
-            result.add(StatisticOverview("Hôm qua", yesterday,
-                DateTimeHelper.getStartOfDay(now.minusDays(1)),
-                DateTimeHelper.getEndOfDay(now.minusDays(1)),
-                colors[0], icons[0]
-            ))
-            result.add(StatisticOverview("Hôm nay", today,
-                DateTimeHelper.getStartOfDay(now),
-                DateTimeHelper.getEndOfDay(now),
-                colors[1], icons[1]
-            ))
-            result.add(StatisticOverview("Tuần này", thisWeek,
-                DateTimeHelper.getStartOfDay(now.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))),
-                DateTimeHelper.getEndOfDay(now.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY))),
-                colors[2], icons[2]
-            ))
-            result.add(StatisticOverview("Tháng này", thisMonth,
-                DateTimeHelper.getStartOfDay(now.withDayOfMonth(1)),
-                DateTimeHelper.getEndOfDay(now.with(TemporalAdjusters.lastDayOfMonth())),
-                colors[3], icons[3]
-            ))
-            result.add(StatisticOverview("Năm nay", thisYear,
-                DateTimeHelper.getStartOfDay(now.withDayOfYear(1)),
-                DateTimeHelper.getEndOfDay(now.with(TemporalAdjusters.lastDayOfYear())),
-                colors[4], icons[4]
-            ))
+                result.add(StatisticOverview("Hôm qua", yesterday,
+                    DateTimeHelper.getStartOfDay(now.minusDays(1)),
+                    DateTimeHelper.getEndOfDay(now.minusDays(1)),
+                    colors[0], icons[0]
+                ))
+                result.add(StatisticOverview("Hôm nay", today,
+                    DateTimeHelper.getStartOfDay(now),
+                    DateTimeHelper.getEndOfDay(now),
+                    colors[1], icons[1]
+                ))
+                result.add(StatisticOverview("Tuần này", thisWeek,
+                    DateTimeHelper.getStartOfDay(now.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))),
+                    DateTimeHelper.getEndOfDay(now.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY))),
+                    colors[2], icons[2]
+                ))
+                result.add(StatisticOverview("Tháng này", thisMonth,
+                    DateTimeHelper.getStartOfDay(now.withDayOfMonth(1)),
+                    DateTimeHelper.getEndOfDay(now.with(TemporalAdjusters.lastDayOfMonth())),
+                    colors[3], icons[3]
+                ))
+                result.add(StatisticOverview("Năm nay", thisYear,
+                    DateTimeHelper.getStartOfDay(now.withDayOfYear(1)),
+                    DateTimeHelper.getEndOfDay(now.with(TemporalAdjusters.lastDayOfYear())),
+                    colors[4], icons[4]
+                ))
+            }
         }
-        cursor.close()
+        catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+        }
+        finally {
+            cursor?.close()
+        }
+
         return result
     }
 
@@ -94,20 +105,28 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
             ORDER BY day
         """.trimIndent()
 
-        val cursor = db.rawQuery(
-            query,
-            arrayOf(startOfWeek.toLocalDate().toString(), endOfWeek.toLocalDate().toString())
-        )
+        var cursor: Cursor? = null
 
         val resultMap = mutableMapOf<LocalDate, Double>()
-        while (cursor.moveToNext()) {
-            val day = LocalDate.parse(cursor.getString(0))
-            val amount = cursor.getDouble(1)
-            resultMap[day] = amount
-            totalAmount += amount
+        try {
+            cursor = db.rawQuery(
+                query,
+                arrayOf(startOfWeek.toLocalDate().toString(), endOfWeek.toLocalDate().toString())
+            )
+            while (cursor.moveToNext()) {
+                val day = LocalDate.parse(cursor.getString(0))
+                val amount = cursor.getDouble(1)
+                resultMap[day] = amount
+                totalAmount += amount
+            }
         }
-
-        cursor.close()
+        catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+        }
+        finally {
+            cursor?.close()
+        }
 
         val statistics = mutableListOf<StatisticByTime>()
         val daysBetween = ChronoUnit.DAYS.between(startOfWeek, endOfWeek)
@@ -154,20 +173,28 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
             ORDER BY day
         """.trimIndent()
 
-        val cursor = db.rawQuery(
-            query,
-            arrayOf(startDate.toString(), endDate.toString())
-        )
+        var cursor: Cursor? = null
 
         val resultMap = mutableMapOf<LocalDate, Double>()
-        while (cursor.moveToNext()) {
-            val day = LocalDate.parse(cursor.getString(0))
-            val amount = cursor.getDouble(1)
-            resultMap[day] = amount
-            totalAmount += amount
+        try {
+            cursor = db.rawQuery(
+                query,
+                arrayOf(startDate.toString(), endDate.toString())
+            )
+            while (cursor.moveToNext()) {
+                val day = LocalDate.parse(cursor.getString(0))
+                val amount = cursor.getDouble(1)
+                resultMap[day] = amount
+                totalAmount += amount
+            }
         }
-
-        cursor.close()
+        catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+        }
+        finally {
+            cursor?.close()
+        }
 
         val statistics = mutableListOf<StatisticByTime>()
         var currentDay = startDate
@@ -194,32 +221,39 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
         var totalAmount = 0.0
 
         val query = """
-        SELECT
-             strftime('%Y-%m', InvoiceDate) as month,
-             SUM(Amount) as Amount
-        FROM Invoice
-        WHERE PaymentStatus = 1 AND date(InvoiceDate) BETWEEN ? AND ?
-        GROUP BY month
-        ORDER BY month
-    """.trimIndent()
+            SELECT
+                 strftime('%Y-%m', InvoiceDate) as month,
+                 SUM(Amount) as Amount
+            FROM Invoice
+            WHERE PaymentStatus = 1 AND date(InvoiceDate) BETWEEN ? AND ?
+            GROUP BY month
+            ORDER BY month
+        """.trimIndent()
 
-        val cursor = db.rawQuery(
-            query,
-            arrayOf(startDate.toString(), endDate.toString())
-        )
-
+        var cursor: Cursor? = null
         val resultMap = mutableMapOf<Pair<Int, Int>, Double>() // (year, month) -> amount
-        while (cursor.moveToNext()) {
-            val monthStr = cursor.getString(0) // e.g., "2024-05"
-            val parts = monthStr.split("-")
-            val year = parts[0].toInt()
-            val month = parts[1].toInt()
-            val amount = cursor.getDouble(1)
-            resultMap[Pair(year, month)] = amount
-            totalAmount += amount
+        try {
+            cursor = db.rawQuery(
+                query,
+                arrayOf(startDate.toString(), endDate.toString())
+            )
+            while (cursor.moveToNext()) {
+                val monthStr = cursor.getString(0) // e.g., "2024-05"
+                val parts = monthStr.split("-")
+                val year = parts[0].toInt()
+                val month = parts[1].toInt()
+                val amount = cursor.getDouble(1)
+                resultMap[Pair(year, month)] = amount
+                totalAmount += amount
+            }
         }
-
-        cursor.close()
+        catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+        }
+        finally {
+            cursor?.close()
+        }
 
         val statistics = mutableListOf<StatisticByTime>()
         var current = startDate.withDayOfMonth(1)
@@ -260,37 +294,43 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
 
 
         var colors = listOf<String>("#2196F3", "#4CAF50", "#F44336", "#FFC107", "#4B3FB5", "#001F54", "#BCBCBC")
-
-        val cursor = db.rawQuery(
-            query,
-            arrayOf(fromDate.toLocalDate().toString(), toDate.toLocalDate().toString())
-        )
-
         val list = mutableListOf<StatisticByInventory>()
         var totalAmount = 0.0
-
         var sortOrder = 1
-        while (cursor.moveToNext()) {
-            val name = cursor.getString(0)
-            val quantity = cursor.getDouble(1)
-            val amount = cursor.getDouble(2)
-            val unit = cursor.getString(3)
-            totalAmount += amount
 
-            list.add(
-                StatisticByInventory(
-                    InventoryName = name,
-                    Quantity = quantity,
-                    Amount = amount,
-                    UnitName = unit,
-                    Percentage = 0.0,
-                    Color = colors[sortOrder - 1],
-                    SortOrder = sortOrder++
-                )
+        var cursor: Cursor? = null
+        try {
+            cursor = db.rawQuery(
+                query,
+                arrayOf(fromDate.toLocalDate().toString(), toDate.toLocalDate().toString())
             )
-        }
+            while (cursor.moveToNext()) {
+                val name = cursor.getString(0)
+                val quantity = cursor.getDouble(1)
+                val amount = cursor.getDouble(2)
+                val unit = cursor.getString(3)
+                totalAmount += amount
 
-        cursor.close()
+                list.add(
+                    StatisticByInventory(
+                        InventoryName = name,
+                        Quantity = quantity,
+                        Amount = amount,
+                        UnitName = unit,
+                        Percentage = 0.0,
+                        Color = colors[sortOrder - 1],
+                        SortOrder = sortOrder++
+                    )
+                )
+            }
+        }
+        catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+        }
+        finally {
+            cursor?.close()
+        }
 
         if (totalAmount == 0.0) {
             list.clear()
@@ -303,6 +343,4 @@ class StatisticRepository(private val dbHelper: CukcukDbHelper) {
 
         return list
     }
-
-
 }

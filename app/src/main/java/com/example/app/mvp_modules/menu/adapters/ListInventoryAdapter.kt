@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.graphics.toColorInt
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +28,7 @@ class ListInventoryAdapter(
         val dishPrice: TextView = itemView.findViewById<TextView>(R.id.txtDishPriceDetail)
         val dishImage: ImageView = itemView.findViewById<ImageView>(R.id.imgDishDetail)
         val dishColor: MaterialCardView = itemView.findViewById<MaterialCardView>(R.id.colorDishDetail)
+        val inActive: TextView = itemView.findViewById<TextView>(R.id.inventoryInactive)
 
         init {
             itemView.setOnClickListener {
@@ -55,6 +57,7 @@ class ListInventoryAdapter(
             append("Giá bán: ")
             append(FormatDisplay.formatNumber(inventory.Price.toString()))
         }
+        holder.inActive.visibility = if(inventory.Inactive) View.GONE else View.VISIBLE
         holder.dishColor.backgroundTintList = ColorStateList.valueOf(inventory.Color.toColorInt())
         holder.dishImage.setImageDrawable(ImageHelper.getDrawableImageFromAssets(context,inventory.IconFileName))
     }

@@ -15,5 +15,6 @@
     <color name="header_statistic_inventory">#F5F7FA</color>
     <color name="statistic_background_color">#E4E4E4</color>
     <color name="select_all">#BBCDE4</color>
+    <color name="text_not_inactive">#943737</color>
     <color name="tt">#001F54</color>
 </resources>

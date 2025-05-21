@@ -153,7 +153,7 @@ class InvoiceActivity : AppCompatActivity(), InvoiceContract.View {
         binding.txtTotalPrice.text = FormatDisplay.formatNumber(invoice.Amount.toString())
         binding.txtMoneyGive.text = FormatDisplay.formatNumber(invoice.ReceiveAmount.toString())
         binding.txtReturnMoney.text = FormatDisplay.formatNumber(invoice.ReturnAmount.toString())
-        binding.txtCreatedAt.text =  FormatDisplay.formatTo12HourWithCustomAMPM(invoice.CreatedDate.toString())
+        binding.txtCreatedAt.text =  FormatDisplay.formatTo12HourWithCustomAMPM(invoice.InvoiceDate.toString())
         binding.txtBillNumber.text = "Số: ${invoice.InvoiceNo}"
 
         if (invoice.TableName.isEmpty()) {

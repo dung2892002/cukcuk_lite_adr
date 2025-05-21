@@ -20,14 +20,12 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
 
 object ChartUtils {
     @SuppressLint("DefaultLocale")
     fun setupPieChart(pieChart: PieChart, items: List<StatisticByInventory>, totalAmount: Double) {
-        val sorted = items.sortedByDescending { it.Percentage }
-        val mainParts = sorted.take(6)
-        val otherParts = sorted.drop(6)
+        val mainParts = items.take(6)
+        val otherParts = items.drop(6)
         val otherTotal = otherParts.sumOf { it.Percentage }
 
         val entries = mutableListOf<PieEntry>()
@@ -54,8 +52,8 @@ object ChartUtils {
 
         dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
         dataSet.xValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-        dataSet.valueLinePart1Length = 0.5f
-        dataSet.valueLinePart2Length = 0.3f
+        dataSet.valueLinePart1Length = 0.4f
+        dataSet.valueLinePart2Length = 0.2f
         dataSet.valueLineColor = Color.BLACK
         dataSet.valueLineWidth = 1f
 

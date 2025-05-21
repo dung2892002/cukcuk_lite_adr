@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/ItemBase">
 
     <com.google.android.material.card.MaterialCardView
@@ -22,11 +23,25 @@
             android:text="Bò húc"
             tools:ignore="HardcodedText" />
 
-        <TextView style="@style/BaseText"
-            android:id="@+id/txtDishPriceDetail"
-            android:text="Giá bán 12.000"
-            tools:ignore="HardcodedText"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView style="@style/BaseText"
+                android:id="@+id/txtDishPriceDetail"
+                android:text="Giá bán 12.000"
+                tools:ignore="HardcodedText"/>
+
+            <TextView
+                android:id="@+id/inventoryInactive"
+                style="@style/Inventory_Not_Inactive"
+                android:text="@string/inventory_inactive" />
+        </LinearLayout>
+
+
     </LinearLayout>
+
 
     <ImageView
         style="@style/BaseImage"

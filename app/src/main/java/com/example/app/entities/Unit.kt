@@ -9,8 +9,8 @@ data class Unit(
     var UnitName: String,
     var Description: String,
     var Inactive: Boolean,
-    var CreatedDate: LocalDateTime,
+    var CreatedDate: LocalDateTime?,
     var CreatedBy: String,
-    var ModifiedDate: LocalDateTime,
+    var ModifiedDate: LocalDateTime?,
     var ModifiedBy: String
 ) : Serializable

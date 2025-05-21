@@ -18,9 +18,9 @@ data class Invoice(
     var NumberOfPeople: Int,
     var TableName: String,
     var ListItemName: String,
-    var CreatedDate: LocalDateTime,
+    var CreatedDate: LocalDateTime?,
     var CreatedBy: String,
-    var ModifiedDate: LocalDateTime,
+    var ModifiedDate: LocalDateTime?,
     var ModifiedBy: String,
     var InvoiceDetails: MutableList<InvoiceDetail> = mutableListOf<InvoiceDetail>()
 ) : Serializable

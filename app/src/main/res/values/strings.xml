@@ -10,4 +10,5 @@
     <string name="content_description">No</string>
     <string name="label_ox_month">(Tháng)</string>
     <string name="label_ox">(Ngày)</string>
+    <string name="inventory_inactive">Ngừng bán</string>
 </resources>

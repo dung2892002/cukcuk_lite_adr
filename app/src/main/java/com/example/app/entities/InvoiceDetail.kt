@@ -17,8 +17,8 @@ data class InvoiceDetail(
     var Amount: Double,
     var Description: String,
     var SortOrder: Int,
-    var CreatedDate: LocalDateTime,
+    var CreatedDate: LocalDateTime?,
     var CreatedBy: String,
-    var ModifiedDate: LocalDateTime,
+    var ModifiedDate: LocalDateTime?,
     var ModifiedBy: String
 ) : Serializable
