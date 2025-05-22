@@ -17,7 +17,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.app.MainActivity
+import com.example.app.mvp_modules.MainActivity
 import com.example.app.R
 import com.example.app.databinding.ActivityLoginAccountBinding
 import com.example.app.mvp_modules.login.screens.AppInfo

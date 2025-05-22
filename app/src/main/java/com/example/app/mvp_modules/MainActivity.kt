@@ -1,4 +1,5 @@
-package com.example.app
+package com.example.app.mvp_modules
+
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -13,14 +14,15 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.get
+import androidx.core.view.size
+import com.example.app.R
 import com.example.app.databinding.ActivityMainBinding
+import com.example.app.databinding.NavHeaderBinding
+import com.example.app.mvp_modules.login.LoginActivity
 import com.example.app.mvp_modules.menu.views.MenuFragment
 import com.example.app.mvp_modules.sale.views.SaleFragment
 import com.example.app.mvp_modules.statistic.views.StatisticFragment
-import androidx.core.view.size
-import androidx.core.view.get
-import com.example.app.databinding.NavHeaderBinding
-import com.example.app.mvp_modules.login.LoginActivity
 import com.example.app.utils.LocaleHelper
 
 class MainActivity : AppCompatActivity(), MainContract.View {

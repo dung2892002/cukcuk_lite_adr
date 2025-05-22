@@ -5,7 +5,6 @@ import com.example.app.entities.Inventory
 import com.example.app.dto.SeverResponse
 import com.example.app.mvp_modules.menu.contracts.InventoryFormContract
 import java.util.UUID
-import kotlin.random.Random
 
 class InventoryFormPresenter
     (private val view: InventoryFormContract.View,
@@ -19,6 +18,13 @@ class InventoryFormPresenter
             response.message = "Tên món ăn không được để trống"
             return response
         }
+
+        if (inventory.UnitID == null) {
+            response.isSuccess = false
+            response.message = "Đơn vị tính không được để trống"
+            return response
+        }
+
         if (isAddNew) {
             response.isSuccess = repository.createInventory(inventory)
         } else {

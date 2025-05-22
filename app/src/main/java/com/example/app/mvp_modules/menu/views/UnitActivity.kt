@@ -117,9 +117,25 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
         adapter.onHoldUnit = { unit, view ->
             unitEdited = unit
 
-            val popup = PopupMenu(this, view)
+            val contextWrapper = androidx.appcompat.view.ContextThemeWrapper(this, R.style.ContextMenuStyle)
+            val popup = PopupMenu(contextWrapper, view)
             popup.menuInflater.inflate(R.menu.menu_unit_context, popup.menu)
 
+            try {
+                val fields = popup.javaClass.declaredFields
+                for (field in fields) {
+                    if ("mPopup" == field.name) {
+                        field.isAccessible = true
+                        val menuPopupHelper = field.get(popup)
+                        val classPopupHelper = Class.forName(menuPopupHelper.javaClass.name)
+                        val setForceIcons = classPopupHelper.getMethod("setForceShowIcon", Boolean::class.javaPrimitiveType)
+                        setForceIcons.invoke(menuPopupHelper, true)
+                        break
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
@@ -138,11 +154,11 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
 
     @SuppressLint("SetTextI18n")
     private fun openDialogConfirmDelete(unit: Unit) {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_confirm_delete_unit, null)
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_confirm_delete, null)
         val content = dialogView.findViewById<TextView>(R.id.content)
-        val btnClose = dialogView.findViewById<ImageButton>(R.id.btnCloseDeleteUnitDialog)
-        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancelDeleteUnit)
-        val btnSubmit = dialogView.findViewById<Button>(R.id.btnAcceptDeleteUnit)
+        val btnClose = dialogView.findViewById<ImageButton>(R.id.btnCloseDeleteDialog)
+        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancelDelete)
+        val btnSubmit = dialogView.findViewById<Button>(R.id.btnAcceptDelete)
 
         dialog = AlertDialog.Builder(this)
             .setView(dialogView)

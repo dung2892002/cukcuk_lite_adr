@@ -2,14 +2,20 @@ package com.example.app.mvp_modules.sale.views
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -105,26 +111,33 @@ class SaleFragment : Fragment(), SaleContract.View {
     }
 
     private fun openDialogDelete(invoice: Invoice) {
-        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_delete_invoice, null)
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_delete, null)
+        val content = dialogView.findViewById<TextView>(R.id.content)
+        val btnClose = dialogView.findViewById<ImageButton>(R.id.btnCloseDeleteDialog)
+        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancelDelete)
+        val btnSubmit = dialogView.findViewById<Button>(R.id.btnAcceptDelete)
         dialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
             .setCancelable(false)
             .create()
 
-        dialogView.findViewById<ImageButton>(R.id.btnExitDeleteOrderDialog).setOnClickListener {
+        val message = "Bạn có chắc muốn hủy các món đã chọn không?"
+
+        content.text = message
+
+        btnClose.setOnClickListener {
             dialog.dismiss()
         }
 
-        dialogView.findViewById<AppCompatButton>(R.id.btnCancelDeleteOrder).setOnClickListener {
+        btnCancel.setOnClickListener {
             dialog.dismiss()
         }
 
-        dialogView.findViewById<AppCompatButton>(R.id.btnAcceptDeleteOrder).setOnClickListener {
+        btnSubmit.setOnClickListener {
             val result = presenter.handleDeleteInvoice(invoice)
             if (result.isSuccess) {
                 invoices = presenter.fetchData()
                 adapter.updateAdapter(invoices)
-                println("Xoa thanh cong")
                 dialog.dismiss()
             } else {
                 Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()

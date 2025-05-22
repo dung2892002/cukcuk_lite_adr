@@ -12,8 +12,8 @@
         <item name="colorOnPrimary">@color/main_color</item>
     </style>
 
-    <style name="ContextMenuStyle" parent="Widget.AppCompat.PopupMenu">
-        <item name="android:popupBackground">@color/white</item>
+    <style name="ContextMenuStyle">
+        <item name="android:background">#ffffffff</item>
     </style>
 
 

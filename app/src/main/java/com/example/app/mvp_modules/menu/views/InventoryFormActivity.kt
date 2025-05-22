@@ -3,11 +3,17 @@ package com.example.app.mvp_modules.menu.views
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -40,6 +46,7 @@ import java.time.LocalDateTime
 class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
     private lateinit var binding: ActivityInventoryFormBinding
     private lateinit var presenter: InventoryFormContract.Presenter
+    private lateinit var dialog: AlertDialog
     @SuppressLint("NewApi")
     private var inventory: Inventory = Inventory(
         InventoryID = UUID.randomUUID(),
@@ -106,7 +113,7 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
         }
 
         binding.btnDelete.setOnClickListener {
-            deleteDish()
+            openDialogConfirmDelete(inventory)
         }
 
         unitDishLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -124,6 +131,51 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
             insets
         }
     }
+    @SuppressLint("SetTextI18n")
+    private fun openDialogConfirmDelete(inventory: Inventory) {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_confirm_delete, null)
+        val content = dialogView.findViewById<TextView>(R.id.content)
+        val btnClose = dialogView.findViewById<ImageButton>(R.id.btnCloseDeleteDialog)
+        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancelDelete)
+        val btnSubmit = dialogView.findViewById<Button>(R.id.btnAcceptDelete)
+
+        dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        val inventoryName = inventory.InventoryName
+        val message = "Bạn có chắc muốn xóa món $inventoryName không?"
+
+        val spannable = SpannableString(message)
+        val start = message.indexOf(inventoryName)
+        val end = start + inventoryName.length
+
+        spannable.setSpan(
+            StyleSpan(Typeface.BOLD),
+            start,
+            end,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        content.text = spannable
+
+
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnSubmit.setOnClickListener {
+            dialog.dismiss()
+            deleteDish()
+        }
+
+        dialog.show()
+    }
 
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
@@ -133,8 +185,8 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_inventory_form, menu);
-        return true;
+        menuInflater.inflate(R.menu.menu_inventory_form, menu)
+        return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

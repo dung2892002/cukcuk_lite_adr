@@ -15,7 +15,7 @@
             tools:ignore="HardcodedText" />
 
         <ImageButton
-            android:id="@+id/btnCloseDeleteUnitDialog"
+            android:id="@+id/btnCloseDeleteDialog"
             style="@style/ForgetPassword.Toolbar.CloseIcon"
             android:src="@drawable/quit_icon"
             android:contentDescription="no"
@@ -24,19 +24,17 @@
 
     <TextView
         android:id="@+id/content"
-        style="@style/ForgetPassword.TextContent"
-        android:text="Bạn có chắc muốn hủy các món đã chọn không?"
-        tools:ignore="HardcodedText" />
+        style="@style/ForgetPassword.TextContent"/>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         style="@style/ForgetPassword.Footer">
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnCancelDeleteUnit"
+            android:id="@+id/btnCancelDelete"
             style="@style/ForgetPassword.Footer.ButtonNext"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btnAcceptDeleteUnit"
+            app:layout_constraintEnd_toStartOf="@+id/btnAcceptDelete"
             app:layout_constraintBottom_toBottomOf="parent"
             android:text="Không"
             android:textColor="#FF0000"
@@ -46,7 +44,7 @@
             android:layout_height="40dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnAcceptDeleteUnit"
+            android:id="@+id/btnAcceptDelete"
             style="@style/ForgetPassword.Footer.ButtonNext"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

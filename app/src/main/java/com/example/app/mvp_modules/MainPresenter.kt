@@ -1,6 +1,7 @@
-package com.example.app
+package com.example.app.mvp_modules
 
 import android.content.Context
+import com.example.app.R
 import com.example.app.mvp_modules.app_info.AppInfoActivity
 import com.example.app.mvp_modules.link_account.LinkAccountActivity
 import com.example.app.mvp_modules.login.LoginActivity

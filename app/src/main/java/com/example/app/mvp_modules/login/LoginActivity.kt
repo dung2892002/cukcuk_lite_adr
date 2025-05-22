@@ -10,7 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.app.MainActivity
+import com.example.app.mvp_modules.MainActivity
 import com.example.app.R
 import com.example.app.databinding.ActivityLoginBinding
 import com.example.app.mvp_modules.login_with_account.LoginAccountActivity

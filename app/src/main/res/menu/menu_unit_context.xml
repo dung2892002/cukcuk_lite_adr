@@ -5,7 +5,7 @@
         android:id="@+id/menu_delete_unit"
         android:iconTint="@color/color_3"
         android:title="Xóa đơn vị tính"
-        android:icon="@android:drawable/ic_menu_delete"
-        app:showAsAction="ifRoom"
+        android:icon="@drawable/outline_close_24"
+        app:showAsAction="ifRoom|withText"
         tools:ignore="HardcodedText,UnusedAttribute" />
 </menu>
