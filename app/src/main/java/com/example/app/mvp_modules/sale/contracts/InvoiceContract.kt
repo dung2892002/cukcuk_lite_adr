@@ -3,12 +3,11 @@ package com.example.app.mvp_modules.sale.contracts
 import com.example.app.entities.Invoice
 import com.example.app.entities.InvoiceDetail
 import com.example.app.dto.SeverResponse
-import java.util.UUID
 
 interface InvoiceContract {
     interface View{
         fun openCalculator()
-        fun navigateCreateInvoice(invoice: Invoice?)
+        fun navigateInvoiceForm(invoice: Invoice?)
     }
 
     interface Presenter{

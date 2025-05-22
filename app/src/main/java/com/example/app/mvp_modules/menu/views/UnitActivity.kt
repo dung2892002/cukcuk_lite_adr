@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.ActivityUnitBinding
 import com.example.app.datas.CukcukDbHelper
+import com.example.app.datas.repositories.SyncRepository
 import com.example.app.datas.repositories.UnitRepository
 import com.example.app.dto.SeverResponse
 import com.example.app.entities.Unit
@@ -76,7 +77,8 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
 
         val dbHelper = CukcukDbHelper(this)
         val repository = UnitRepository(dbHelper)
-        presenter = UnitPresenter(this, repository)
+        val syncRepository = SyncRepository(dbHelper)
+        presenter = UnitPresenter(this, repository, syncRepository)
 
         units = presenter.getListUnit()
         setupToolbar()

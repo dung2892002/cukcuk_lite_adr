@@ -9,6 +9,7 @@ import com.example.app.entities.InvoiceDetail
 import com.example.app.dto.SeverResponse
 import com.example.app.mvp_modules.sale.contracts.InvoiceFormContract
 import com.example.app.utils.FormatDisplay
+import com.example.app.utils.SyncHelper
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -54,6 +55,8 @@ class InvoiceFormPresenter(private val view: InvoiceFormContract.View,
             return
         }
 
+        val lastInvoicesDetail = if (invoice.InvoiceID != null) repository.getListInvoicesDetail(invoice.InvoiceID!!) else mutableListOf<InvoiceDetail>()
+
         invoice.InvoiceDetails = inventoriesSelect.filter {it.quantity > 0}.mapIndexed { index , it->
             InvoiceDetail(
                 InvoiceDetailID = null,
@@ -78,16 +81,23 @@ class InvoiceFormPresenter(private val view: InvoiceFormContract.View,
         invoice.ListItemName = buildListItemName(invoice.InvoiceDetails)
         invoice.ReceiveAmount = invoice.Amount
 
-        val result = if (invoice.InvoiceID != null) {
-            repository.updateInvoice(invoice)
+        if (invoice.InvoiceID != null) {
+            response.isSuccess = repository.updateInvoice(invoice)
+            if (response.isSuccess) {
+                SyncHelper.deleteInvoiceDetail(lastInvoicesDetail)
+                SyncHelper.createInvoiceDetail(invoice.InvoiceDetails)
+            }
         } else {
             invoice.InvoiceID = UUID.randomUUID()
             response.message = invoice.InvoiceID.toString()
-            repository.createInvoice(invoice)
+            response.isSuccess = repository.createInvoice(invoice)
+            if (response.isSuccess) {
+                SyncHelper.insertSync("Invoice", invoice.InvoiceID!!)
+                SyncHelper.createInvoiceDetail(invoice.InvoiceDetails)
+            }
         }
 
-        if (!result) {
-            response.isSuccess = false
+        if (!response.isSuccess) {
             response.message = "Có lỗi xảy ra!"
         }
 

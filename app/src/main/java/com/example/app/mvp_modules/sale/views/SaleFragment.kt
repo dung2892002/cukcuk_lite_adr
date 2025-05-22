@@ -1,12 +1,7 @@
 package com.example.app.mvp_modules.sale.views
 
-import android.app.Activity
 import android.content.Intent
-import android.graphics.Typeface
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -17,10 +12,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -62,7 +54,7 @@ class SaleFragment : Fragment(), SaleContract.View {
         showDataInvoices(invoices)
 
         binding.txtButtonAddInvoice.setOnClickListener {
-            presenter.handleNavigateSelectInventory(null)
+            presenter.handleNavigateInvoiceForm(null)
         }
 
         return binding.root
@@ -80,7 +72,7 @@ class SaleFragment : Fragment(), SaleContract.View {
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 return when (menuItem.itemId) {
                     R.id.action_custom -> {
-                        presenter.handleNavigateSelectInventory(null)
+                        presenter.handleNavigateInvoiceForm(null)
                         true
                     }
                     else -> false
@@ -96,7 +88,7 @@ class SaleFragment : Fragment(), SaleContract.View {
     private fun setupAdapter() {
         adapter = ListInvoiceAdapter(requireContext(), invoices).apply {
             onItemClick = { order ->
-                presenter.handleNavigateSelectInventory(order)
+                presenter.handleNavigateInvoiceForm(order)
             }
 
             onClickButtonDelete = { order ->
@@ -138,6 +130,14 @@ class SaleFragment : Fragment(), SaleContract.View {
             if (result.isSuccess) {
                 invoices = presenter.fetchData()
                 adapter.updateAdapter(invoices)
+                if (invoices.isEmpty()) {
+                    binding.fragmentStateEmptyOrder.visibility = View.VISIBLE
+                    binding.recyclerListOrder.visibility = View.GONE
+                }
+                else {
+                    binding.fragmentStateEmptyOrder.visibility = View.GONE
+                    binding.recyclerListOrder.visibility = View.VISIBLE
+                }
                 dialog.dismiss()
             } else {
                 Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
@@ -166,7 +166,7 @@ class SaleFragment : Fragment(), SaleContract.View {
         startActivity(intent)
     }
 
-    override fun navigateToSelectInventoryActivity(invoice: Invoice?) {
+    override fun navigateToInvoiceFormActivity(invoice: Invoice?) {
         val intent = Intent(requireContext(), InvoiceFormActivity::class.java)
         intent.putExtra("invoice_data", invoice)
         startActivity(intent)

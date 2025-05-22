@@ -4,6 +4,7 @@ import com.example.app.datas.repositories.InventoryRepository
 import com.example.app.entities.Inventory
 import com.example.app.dto.SeverResponse
 import com.example.app.mvp_modules.menu.contracts.InventoryFormContract
+import com.example.app.utils.SyncHelper
 import java.util.UUID
 
 class InventoryFormPresenter
@@ -26,9 +27,12 @@ class InventoryFormPresenter
         }
 
         if (isAddNew) {
+            inventory.InventoryID = UUID.randomUUID()
             response.isSuccess = repository.createInventory(inventory)
+            if (response.isSuccess) SyncHelper.insertSync("Inventory", inventory.InventoryID!!)
         } else {
             response.isSuccess = repository.updateInventory(inventory)
+            if (response.isSuccess) SyncHelper.updateSync("Inventory", inventory.InventoryID!!)
         }
 
         if (!response.isSuccess) response.message = "Có lỗi xảy ra!"
@@ -49,6 +53,9 @@ class InventoryFormPresenter
 
         response.isSuccess = repository.deleteInventory(inventory)
         if (!response.isSuccess) response.message = "Có lỗi xảy ra!"
+        else {
+            SyncHelper.deleteSync("Inventory", inventory.InventoryID!!)
+        }
         return response
     }
 

@@ -24,6 +24,7 @@ import com.example.app.mvp_modules.sale.contracts.InvoiceContract
 import com.example.app.mvp_modules.sale.presenters.InvoicePresenter
 import com.example.app.utils.FormatDisplay
 
+@Suppress("DEPRECATION")
 class InvoiceActivity : AppCompatActivity(), InvoiceContract.View {
     private lateinit var binding: ActivityInvoiceBinding
     private lateinit var presenter: InvoiceContract.Presenter
@@ -88,7 +89,7 @@ class InvoiceActivity : AppCompatActivity(), InvoiceContract.View {
         }.show(supportFragmentManager, null)
     }
 
-    override fun navigateCreateInvoice(invoice: Invoice?) {
+    override fun navigateInvoiceForm(invoice: Invoice?) {
         if (fromSaleFragment) {
             val intent = Intent(this, InvoiceFormActivity::class.java)
             intent.putExtra("invoice_data", invoice)

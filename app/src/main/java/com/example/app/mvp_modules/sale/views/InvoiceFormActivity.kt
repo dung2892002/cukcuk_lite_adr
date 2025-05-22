@@ -27,6 +27,7 @@ import com.example.app.mvp_modules.sale.presenters.InvoiceFormPresenter
 import com.example.app.utils.FormatDisplay
 import java.time.LocalDateTime
 
+@Suppress("DEPRECATION")
 class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
     private lateinit var binding: ActivitySelectInventoryBinding
     private lateinit var presenter: InvoiceFormContract.Presenter

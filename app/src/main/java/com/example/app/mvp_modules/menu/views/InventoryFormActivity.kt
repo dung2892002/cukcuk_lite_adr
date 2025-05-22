@@ -43,6 +43,7 @@ import com.example.app.utils.FormatDisplay
 import com.example.app.utils.ImageHelper
 import java.time.LocalDateTime
 
+@Suppress("DEPRECATION")
 class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
     private lateinit var binding: ActivityInventoryFormBinding
     private lateinit var presenter: InventoryFormContract.Presenter
@@ -223,7 +224,7 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
         unitDishLauncher.launch(intent)
     }
 
-    @SuppressLint("InflateParams")
+    @SuppressLint("InflateParams", "DiscouragedApi")
     private fun showColorPickerPopup() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_picker, null)
         val recyclerView = dialogView.findViewById<RecyclerView>(R.id.recyclerColorPicker)

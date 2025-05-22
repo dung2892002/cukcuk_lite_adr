@@ -2,12 +2,16 @@ package com.example.app
 
 import android.app.Application
 import android.content.Context
+import com.example.app.datas.CukcukDbHelper
+import com.example.app.utils.SyncHelper
 import java.io.FileOutputStream
 
 class CukcukApp : Application() {
     override fun onCreate() {
         super.onCreate()
         copyDatabaseIfNotExists(this)
+        SyncHelper.dbHelper = CukcukDbHelper(this)
+
     }
 
     private fun copyDatabaseIfNotExists(context: Context) {

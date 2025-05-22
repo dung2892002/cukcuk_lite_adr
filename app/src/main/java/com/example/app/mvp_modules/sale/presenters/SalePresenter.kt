@@ -5,7 +5,7 @@ import com.example.app.datas.repositories.InvoiceRepository
 import com.example.app.entities.Invoice
 import com.example.app.dto.SeverResponse
 import com.example.app.mvp_modules.sale.contracts.SaleContract
-import kotlin.random.Random
+import com.example.app.utils.SyncHelper
 
 class SalePresenter(private val view: SaleContract.View,
     private val repository: InvoiceRepository) : SaleContract.Presenter {
@@ -19,8 +19,8 @@ class SalePresenter(private val view: SaleContract.View,
     }
 
 
-    override fun handleNavigateSelectInventory(invoice: Invoice?) {
-        view.navigateToSelectInventoryActivity(invoice)
+    override fun handleNavigateInvoiceForm(invoice: Invoice?) {
+        view.navigateToInvoiceFormActivity(invoice)
     }
 
     override fun handleDeleteInvoice(invoice: Invoice): SeverResponse {
@@ -28,7 +28,12 @@ class SalePresenter(private val view: SaleContract.View,
         if (invoice.InvoiceID == null) {
             return response
         }
+        val invoicesDetail = repository.getListInvoicesDetail(invoice.InvoiceID!!)
         response.isSuccess =  repository.deleteInvoice(invoice.InvoiceID.toString())
+        if (response.isSuccess) {
+            SyncHelper.deleteInvoiceDetail(invoicesDetail)
+            SyncHelper.deleteSync("Invoice", invoice.InvoiceID!!)
+        }
         return response
     }
 }

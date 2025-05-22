@@ -43,8 +43,8 @@ class StatisticFragment : Fragment(), StatisticContract.View {
     private lateinit var adapterOverview: StatisticOverviewAdapter
     private lateinit var dialog: AlertDialog
     private lateinit var selectDateDialog: AlertDialog
-    private var selectedStartDate = LocalDate.now().withDayOfMonth(1) // đầu tháng
-    private var selectedEndDate = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()) // cuối tháng
+    private var selectedStartDate = LocalDate.now().withDayOfMonth(1)
+    private var selectedEndDate = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth())
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

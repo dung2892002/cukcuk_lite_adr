@@ -1,12 +1,16 @@
 package com.example.app.mvp_modules.menu.presenters
 
+import com.example.app.datas.repositories.SyncRepository
 import com.example.app.datas.repositories.UnitRepository
 import com.example.app.dto.SeverResponse
 import com.example.app.entities.Unit
 import com.example.app.mvp_modules.menu.contracts.UnitContract
+import com.example.app.utils.SyncHelper
+import java.util.UUID
 
 class UnitPresenter(private val view: UnitContract.View,
-                    private val repository: UnitRepository) : UnitContract.Presenter {
+                    private val repository: UnitRepository,
+                    private val syncRepository: SyncRepository) : UnitContract.Presenter {
 
     override fun getListUnit(): MutableList<Unit> {
         return repository.getAllUnit()
@@ -25,10 +29,17 @@ class UnitPresenter(private val view: UnitContract.View,
             return
         }
         if (isAddNew) {
+            unit.UnitID = UUID.randomUUID()
             response.isSuccess = repository.createUnit(unit)
+
+            if (response.isSuccess) SyncHelper.insertSync("Unit", unit.UnitID!!)
+
             view.onSubmit(response, true)
         } else {
             response.isSuccess = repository.updateUnit(unit)
+
+            if (response.isSuccess) SyncHelper.updateSync("Unit", unit.UnitID!!)
+
             view.onSubmit(response, false)
         }
     }
@@ -43,6 +54,7 @@ class UnitPresenter(private val view: UnitContract.View,
         }
 
         response.isSuccess = repository.deleteUnit(unit.UnitID!!)
+        if (response.isSuccess) SyncHelper.deleteSync("Unit", unit.UnitID!!)
         view.onDelete(response)
     }
 }

@@ -1,5 +1,6 @@
 package com.example.app.mvp_modules
 
+import android.annotation.SuppressLint
 import android.content.Context
 import com.example.app.R
 import com.example.app.mvp_modules.app_info.AppInfoActivity
@@ -40,6 +41,7 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
         view.closeDrawer()
     }
 
+    @SuppressLint("UseKtx")
     override fun logout(context: Context) {
         val sharedPref = context.getSharedPreferences("Auth", Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
