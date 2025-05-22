@@ -276,10 +276,8 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
             insertInvoice(invoice)
 
             invoice.InvoiceDetails.forEachIndexed { index, detail ->
-                detail.InvoiceDetailID = UUID.randomUUID()
                 insertInvoiceDetail(
                     detail.copy(
-                        InvoiceID = invoice.InvoiceID,
                         SortOrder = index + 1
                     )
                 )
@@ -296,21 +294,19 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         }
     }
 
-    fun updateInvoice(invoice: Invoice): Boolean {
+    fun updateInvoice(invoice: Invoice,
+                      newsDetail: MutableList<InvoiceDetail>,
+                      updatesDetail: MutableList<InvoiceDetail>,
+                      deletesDetail: MutableList<InvoiceDetail>): Boolean {
         return try {
             db.beginTransaction()
             updateInvoiceOnly(invoice)
-            deleteInvoiceDetails(invoice.InvoiceID!!)
-
-            invoice.InvoiceDetails.forEachIndexed { index, detail ->
-                detail.InvoiceDetailID = UUID.randomUUID()
-                insertInvoiceDetail(
-                    detail.copy(
-                        InvoiceID = invoice.InvoiceID,
-                        SortOrder = index + 1
-                    )
-                )
+            newsDetail.forEach { it ->
+                it.InvoiceID = invoice.InvoiceID
+                insertInvoiceDetail(it)
             }
+            updatesDetail.forEach { it -> updateInvoiceDetailToDb(it) }
+            deletesDetail.forEach { it -> deleteInvoiceDetailsToDb(it.InvoiceDetailID!!) }
 
             db.setTransactionSuccessful()
             true
@@ -445,9 +441,12 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
             arrayOf(detail.InvoiceDetailID.toString())
         )
     }
+    private fun deleteInvoiceDetailsToDb(detailId: UUID) {
+        db.delete("InvoiceDetail", "InvoiceDetailID = ?", arrayOf(detailId.toString()))
+    }
 
-    private fun deleteInvoiceDetails(detailId: UUID) {
-        db.delete("InvoiceDetail", "InvoiceID = ?", arrayOf(detailId.toString()))
+    private fun deleteInvoiceDetails(invoiceId: UUID) {
+        db.delete("InvoiceDetail", "InvoiceID = ?", arrayOf(invoiceId.toString()))
     }
 
 }

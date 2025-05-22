@@ -42,4 +42,10 @@ object SyncHelper {
             insertSync("InvoiceDetail", item.InvoiceDetailID!!)
         }
     }
+
+    fun updateInvoiceDetail(details: MutableList<InvoiceDetail>){
+        for (item in details) {
+            updateSync("InvoiceDetail", item.InvoiceDetailID!!)
+        }
+    }
 }
