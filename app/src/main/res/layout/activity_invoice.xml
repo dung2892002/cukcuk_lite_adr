@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         style="@style/BaseToolbar"
-        app:menu="@menu/menu_bill">
+        app:menu="@menu/menu_invoice">
 
         <TextView
             android:id="@+id/txtToolbarTitle"

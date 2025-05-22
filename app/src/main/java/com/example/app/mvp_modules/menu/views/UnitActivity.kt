@@ -2,7 +2,11 @@ package com.example.app.mvp_modules.menu.views
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -116,10 +120,12 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
             val popup = PopupMenu(this, view)
             popup.menuInflater.inflate(R.menu.menu_unit_context, popup.menu)
 
+
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.menu_delete_unit -> {
-                        presenter.handleDelete(unit)
+                        unitEdited = unit
+                        openDialogConfirmDelete(unit)
                         true
                     }
                     else -> false
@@ -128,8 +134,54 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
 
             popup.show()
         }
-
     }
+
+    @SuppressLint("SetTextI18n")
+    private fun openDialogConfirmDelete(unit: Unit) {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_confirm_delete_unit, null)
+        val content = dialogView.findViewById<TextView>(R.id.content)
+        val btnClose = dialogView.findViewById<ImageButton>(R.id.btnCloseDeleteUnitDialog)
+        val btnCancel = dialogView.findViewById<Button>(R.id.btnCancelDeleteUnit)
+        val btnSubmit = dialogView.findViewById<Button>(R.id.btnAcceptDeleteUnit)
+
+        dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        val unitName = unit.UnitName
+        val message = "Bạn có chắc muốn xóa đơn vị tính $unitName không?"
+
+        val spannable = SpannableString(message)
+        val start = message.indexOf(unitName)
+        val end = start + unitName.length
+
+        spannable.setSpan(
+            StyleSpan(Typeface.BOLD),
+            start,
+            end,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        content.text = spannable
+
+
+        btnClose.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        btnSubmit.setOnClickListener {
+            dialog.dismiss()
+            presenter.handleDelete(unit)
+        }
+
+        dialog.show()
+    }
+
 
     private fun setupToolbar() {
         setSupportActionBar(binding.toolbar)
@@ -141,7 +193,7 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_dish_unit_activity, menu)
+        menuInflater.inflate(R.menu.menu_inventory_unit_activity, menu)
         return true
     }
 
@@ -228,6 +280,9 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
         if (response.isSuccess) {
             units = presenter.getListUnit()
             adapter.updateData(units)
+            if (unitSelected.UnitID == unitEdited.UnitID) {
+                unitSelected.UnitID = null
+            }
             updateSelectedData()
         } else {
             Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
@@ -253,6 +308,10 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
     }
 
     override fun onChangeUnitInventory() {
+        if (unitSelected.UnitID == null) {
+            Toast.makeText(this, "Bạn chưa chọn đơn vị tính", Toast.LENGTH_SHORT).show()
+            return
+        }
         val resultIntent = Intent().apply {
             putExtra("unit_data", unitSelected)
         }

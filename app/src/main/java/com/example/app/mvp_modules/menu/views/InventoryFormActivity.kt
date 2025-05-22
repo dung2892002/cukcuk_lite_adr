@@ -133,7 +133,7 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_dish_form, menu);
+        menuInflater.inflate(R.menu.menu_inventory_form, menu);
         return true;
     }
 

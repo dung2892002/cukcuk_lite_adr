@@ -12,6 +12,9 @@
         <item name="colorOnPrimary">@color/main_color</item>
     </style>
 
+    <style name="ContextMenuStyle" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/white</item>
+    </style>
 
 
     <style name="RoundedImage">
@@ -310,8 +313,6 @@
 
     <style name="ItemUnitDish.Group" >
         <item name="android:orientation">horizontal</item>
-        <item name="android:paddingTop">10dp</item>
-        <item name="android:paddingBottom">10dp</item>
         <item name="android:paddingEnd">10dp</item>
         <item name="android:paddingStart">0dp</item>
     </style>
@@ -321,8 +322,8 @@
         <item name="android:layout_height">32dp</item>
         <item name="android:layout_marginStart">10dp</item>
         <item name="android:layout_marginEnd">10dp</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:layout_marginBottom">6dp</item>
     </style>
 
     <style name="ItemUnitDish_Group_Selected_Color" parent="DishForm.Group.Last.Child.Button">
@@ -339,7 +340,7 @@
 
     <style name="ItemUnitDish_UnitName">
         <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:textSize">18sp</item>
         <item name="android:gravity">center_vertical</item>

@@ -143,7 +143,7 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_select_dish, menu)
+        menuInflater.inflate(R.menu.menu_invoice_form, menu)
         return true
     }
 

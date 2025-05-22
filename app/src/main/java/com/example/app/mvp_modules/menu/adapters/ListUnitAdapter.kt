@@ -35,6 +35,19 @@ class ListUnitAdapter(
         val btnEdit: ImageButton = view.findViewById(R.id.btnEditUnit)
 
         init {
+            unitName.setOnLongClickListener {
+                val selected = units[adapterPosition]
+                onHoldUnit?.invoke(selected, it)
+                true
+            }
+
+            unitName.setOnClickListener {
+                val selected = units[adapterPosition]
+                onUnitSelected?.invoke(selected)
+                this@ListUnitAdapter.selectedUnit = selected
+                notifyDataSetChanged()
+            }
+
             view.setOnClickListener {
                 val selected = units[adapterPosition]
                 onUnitSelected?.invoke(selected)
@@ -42,10 +55,8 @@ class ListUnitAdapter(
                 notifyDataSetChanged()
             }
 
-            view.setOnLongClickListener {
-                val selected = units[adapterPosition]
-                onHoldUnit?.invoke(selected, it)
-                true
+            btnEdit.setOnClickListener {
+                onClickEditButton?.invoke(units[adapterPosition])
             }
         }
 
@@ -59,9 +70,6 @@ class ListUnitAdapter(
     override fun onBindViewHolder(holder: UnitViewHolder, position: Int) {
         println("Name: ${units[position].UnitName}")
         holder.unitName.text = units[position].UnitName
-        holder.btnEdit.setOnClickListener {
-            onClickEditButton?.invoke(units[position])
-        }
         if (units[position].UnitID == selectedUnit.UnitID) {
             holder.imgCheck.visibility = View.VISIBLE
         }
