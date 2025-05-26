@@ -52,8 +52,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             setupNavigation()
         }
 
-
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -141,7 +139,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         binding.main.addDrawerListener(toggle)
         toggle.syncState()
 
-        switchFragment("Bán hàng")
+        presenter.handleNavigationItemSelected(R.id.nav_sale)
     }
 
 }

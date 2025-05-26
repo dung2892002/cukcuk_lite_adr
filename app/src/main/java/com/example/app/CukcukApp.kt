@@ -10,7 +10,7 @@ class CukcukApp : Application() {
     override fun onCreate() {
         super.onCreate()
         copyDatabaseIfNotExists(this)
-        SyncHelper.dbHelper = CukcukDbHelper(this)
+        SyncHelper.init( CukcukDbHelper(this))
 
     }
 

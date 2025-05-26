@@ -274,15 +274,7 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         return try {
             db.beginTransaction()
             insertInvoice(invoice)
-
-            invoice.InvoiceDetails.forEachIndexed { index, detail ->
-                insertInvoiceDetail(
-                    detail.copy(
-                        SortOrder = index + 1
-                    )
-                )
-            }
-
+            insertInvoiceDetailRange(invoice.InvoiceDetails)
             db.setTransactionSuccessful()
             true
         } catch (ex: Exception) {
@@ -301,12 +293,9 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         return try {
             db.beginTransaction()
             updateInvoiceOnly(invoice)
-            newsDetail.forEach { it ->
-                it.InvoiceID = invoice.InvoiceID
-                insertInvoiceDetail(it)
-            }
-            updatesDetail.forEach { it -> updateInvoiceDetailToDb(it) }
-            deletesDetail.forEach { it -> deleteInvoiceDetailsToDb(it.InvoiceDetailID!!) }
+            insertInvoiceDetailRange(newsDetail)
+            updateInvoiceDetailRange(updatesDetail)
+            deleteInvoiceDetailRange(deletesDetail.map { it.InvoiceDetailID!! })
 
             db.setTransactionSuccessful()
             true
@@ -344,7 +333,6 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
     }
 
 
-    //ham con k can try-catch
     private fun insertInvoice(invoice: Invoice) {
         val values = ContentValues().apply {
             put("InvoiceID", invoice.InvoiceID.toString())
@@ -368,30 +356,31 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         db.insert("Invoice", null, values)
     }
 
-    //ham con k can try-catch
-    private fun insertInvoiceDetail(detail: InvoiceDetail) {
-        val values = ContentValues().apply {
-            put("InvoiceDetailID", detail.InvoiceDetailID.toString())
-            put("InvoiceDetailType", detail.InvoiceDetailType)
-            put("InvoiceID", detail.InvoiceID.toString())
-            put("InventoryID", detail.InventoryID.toString())
-            put("InventoryName", detail.InventoryName)
-            put("UnitID", detail.UnitID?.toString())
-            put("UnitName", detail.UnitName)
-            put("Quantity", detail.Quantity)
-            put("UnitPrice", detail.UnitPrice)
-            put("Amount", detail.Amount)
-            put("Description", detail.Description)
-            put("SortOrder", detail.SortOrder)
-            put("CreatedDate", detail.CreatedDate.toString())
-            put("CreatedBy", detail.CreatedBy)
-            put("ModifiedDate", detail.ModifiedDate.toString())
-            put("ModifiedBy", detail.ModifiedBy)
+    private fun insertInvoiceDetailRange(details: List<InvoiceDetail>) {
+        for (detail in details) {
+            val values = ContentValues().apply {
+                put("InvoiceDetailID", detail.InvoiceDetailID.toString())
+                put("InvoiceDetailType", detail.InvoiceDetailType)
+                put("InvoiceID", detail.InvoiceID.toString())
+                put("InventoryID", detail.InventoryID.toString())
+                put("InventoryName", detail.InventoryName)
+                put("UnitID", detail.UnitID?.toString())
+                put("UnitName", detail.UnitName)
+                put("Quantity", detail.Quantity)
+                put("UnitPrice", detail.UnitPrice)
+                put("Amount", detail.Amount)
+                put("Description", detail.Description)
+                put("SortOrder", detail.SortOrder)
+                put("CreatedDate", detail.CreatedDate.toString())
+                put("CreatedBy", detail.CreatedBy)
+                put("ModifiedDate", detail.ModifiedDate.toString())
+                put("ModifiedBy", detail.ModifiedBy)
+            }
+
+            db.insert("InvoiceDetail", null, values)
         }
-        db.insert("InvoiceDetail", null, values)
     }
 
-    //ham con k can try-catch
     private fun updateInvoiceOnly(invoice: Invoice) {
         val values = ContentValues().apply {
             put("InvoiceType", invoice.InvoiceType)
@@ -418,35 +407,74 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         )
     }
 
-    fun updateInvoiceDetailToDb(detail: InvoiceDetail) {
-        val values = ContentValues().apply {
-            put("InvoiceDetailType", detail.InvoiceDetailType)
-            put("InventoryID", detail.InventoryID.toString())
-            put("InventoryName", detail.InventoryName)
-            put("UnitID", detail.UnitID?.toString())
-            put("UnitName", detail.UnitName)
-            put("Quantity", detail.Quantity)
-            put("UnitPrice", detail.UnitPrice)
-            put("Amount", detail.Amount)
-            put("Description", detail.Description)
-            put("SortOrder", detail.SortOrder)
-            put("ModifiedDate", detail.ModifiedDate.toString())
-            put("ModifiedBy", detail.ModifiedBy)
+    private fun updateInvoiceDetailRange(details: List<InvoiceDetail>) {
+        val sql = """
+        UPDATE InvoiceDetail SET
+            InvoiceDetailType = ?,
+            InventoryID = ?,
+            InventoryName = ?,
+            UnitID = ?,
+            UnitName = ?,
+            Quantity = ?,
+            UnitPrice = ?,
+            Amount = ?,
+            Description = ?,
+            SortOrder = ?,
+            ModifiedDate = ?,
+            ModifiedBy = ?
+        WHERE InvoiceDetailID = ?
+    """.trimIndent()
+
+        val statement = db.compileStatement(sql)
+
+        try {
+            db.beginTransaction()
+            for (detail in details) {
+                statement.clearBindings()
+
+                statement.bindLong(1, detail.InvoiceDetailType.toLong())
+                statement.bindString(2, detail.InventoryID.toString())
+                statement.bindString(3, detail.InventoryName)
+                statement.bindString(4, detail.UnitID.toString())
+                statement.bindString(5, detail.UnitName )
+                statement.bindDouble(6, detail.Quantity)
+                statement.bindDouble(7, detail.UnitPrice)
+                statement.bindDouble(8, detail.Amount)
+                statement.bindString(9, detail.Description)
+                statement.bindLong(10, detail.SortOrder.toLong())
+                statement.bindString(11, detail.ModifiedDate.toString())
+                statement.bindString(12, detail.ModifiedBy )
+                statement.bindString(13, detail.InvoiceDetailID.toString())
+
+                statement.executeUpdateDelete()
+            }
+            db.setTransactionSuccessful()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+        } finally {
+            db.endTransaction()
         }
-
-        db.update(
-            "InvoiceDetail",
-            values,
-            "InvoiceDetailID = ?",
-            arrayOf(detail.InvoiceDetailID.toString())
-        )
-    }
-    private fun deleteInvoiceDetailsToDb(detailId: UUID) {
-        db.delete("InvoiceDetail", "InvoiceDetailID = ?", arrayOf(detailId.toString()))
     }
 
-    private fun deleteInvoiceDetails(invoiceId: UUID) {
-        db.delete("InvoiceDetail", "InvoiceID = ?", arrayOf(invoiceId.toString()))
+    private fun deleteInvoiceDetailRange(detailIds: List<UUID>) {
+        val sql = "DELETE FROM InvoiceDetail WHERE InvoiceDetailID = ?"
+        val statement = db.compileStatement(sql)
+
+        try {
+            db.beginTransaction()
+            for (id in detailIds) {
+                statement.clearBindings()
+                statement.bindString(1, id.toString())
+                statement.executeUpdateDelete()
+            }
+            db.setTransactionSuccessful()
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+        } finally {
+            db.endTransaction()
+        }
     }
 
 }

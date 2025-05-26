@@ -41,8 +41,7 @@
                 style="@style/ButtonMethodLogin.Text"
                 android:background="@drawable/rounded_textview"
                 android:backgroundTint="#006FCE"
-                android:text="
-                Đăng nhập bằng Facebook"
+                android:text="Đăng nhập bằng Facebook"
                 tools:ignore="HardcodedText" />
 
         </LinearLayout>

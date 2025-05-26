@@ -652,9 +652,10 @@
     </style>
 
     <style name="BaseNav.UserInfo.Avatar" parent="BaseImage">
-        <item name="android:layout_width">96dp</item>
-        <item name="android:layout_height">96dp</item>
+        <item name="android:layout_width">64dp</item>
+        <item name="android:layout_height">64dp</item>
         <item name="android:scaleType">centerCrop</item>
+        <item name="android:layout_marginTop">20dp</item>
     </style>
 
     <style name="BaseNav.UserInfo.FullName" parent="BaseText">
@@ -666,6 +667,7 @@
     <style name="BaseNav.UserInfo.Username" parent="BaseText">
         <item name="android:textColor">#ffffffff</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginBottom">10dp</item>
     </style>
 
 <!--    auth-->

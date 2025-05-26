@@ -1,6 +1,5 @@
 package com.example.app.mvp_modules.menu.presenters
 
-import com.example.app.datas.repositories.SyncRepository
 import com.example.app.datas.repositories.UnitRepository
 import com.example.app.dto.SeverResponse
 import com.example.app.entities.Unit
@@ -9,8 +8,7 @@ import com.example.app.utils.SyncHelper
 import java.util.UUID
 
 class UnitPresenter(private val view: UnitContract.View,
-                    private val repository: UnitRepository,
-                    private val syncRepository: SyncRepository) : UnitContract.Presenter {
+                    private val repository: UnitRepository) : UnitContract.Presenter {
 
     override fun getListUnit(): MutableList<Unit> {
         return repository.getAllUnit()

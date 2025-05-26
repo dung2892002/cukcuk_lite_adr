@@ -77,8 +77,7 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
 
         val dbHelper = CukcukDbHelper(this)
         val repository = UnitRepository(dbHelper)
-        val syncRepository = SyncRepository(dbHelper)
-        presenter = UnitPresenter(this, repository, syncRepository)
+        presenter = UnitPresenter(this, repository)
 
         units = presenter.getListUnit()
         setupToolbar()

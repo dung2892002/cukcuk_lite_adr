@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import com.example.app.datas.repositories.InvoiceRepository
 import com.example.app.entities.Inventory
 import com.example.app.dto.InventorySelect
+import com.example.app.dto.InvoiceDetailChangeResult
 import com.example.app.entities.Invoice
 import com.example.app.entities.InvoiceDetail
 import com.example.app.dto.SeverResponse
@@ -18,22 +19,32 @@ class InvoiceFormPresenter(private val view: InvoiceFormContract.View,
     private val repository: InvoiceRepository) : InvoiceFormContract.Presenter {
 
     override fun handleDataInventorySelect(invoice: Invoice): MutableList<InventorySelect> {
-        var result = mutableListOf<InventorySelect>()
         val inventories = fetchInventories()
 
         if (invoice.InvoiceID != null) {
             invoice.InvoiceDetails = getInvoiceDetails(invoice.InvoiceID!!)
         }
 
-        val quantityMap = invoice.InvoiceDetails.associateBy({ it.InventoryID }, { it.Quantity })
+        // Map để lấy quantity và sortOrder
+        val detailMap = invoice.InvoiceDetails.associateBy { it.InventoryID }
 
-        for (inventory in inventories) {
-            val quantity = quantityMap[inventory.InventoryID]
-            result.add(InventorySelect(inventory, quantity?:0.0))
+        // Gắn thêm thông tin SortOrder vào InventorySelect rồi mới sort
+        val tempList = inventories.map { inventory ->
+            val detail = detailMap[inventory.InventoryID]
+            Triple(
+                InventorySelect(inventory, detail?.Quantity ?: 0.0),
+                detail?.SortOrder ?: Int.MAX_VALUE, // Sắp xếp cuối nếu không có
+                detail != null
+            )
         }
 
-        return result
+        // Sắp xếp theo SortOrder tăng dần, ưu tiên các bản ghi có detail
+        return tempList
+            .sortedWith(compareBy({ it.second }, { !it.third })) // sortOrder trước, sau đó là có detail hay không
+            .map { it.first }
+            .toMutableList()
     }
+
 
     override fun calculatorTotalPrice(inventoriesSelect: MutableList<InventorySelect>) {
         var total = 0.0
@@ -57,23 +68,24 @@ class InvoiceFormPresenter(private val view: InvoiceFormContract.View,
         val lastInvoicesDetail = if (invoice.InvoiceID != null) repository.getListInvoicesDetail(invoice.InvoiceID!!) else mutableListOf<InvoiceDetail>()
         val filteredList = inventoriesSelect.filter { it.quantity > 0.0 }.toMutableList<InventorySelect>()
 
-        val (news, updates, deletes) = handleProcessInvoiceDetails(invoice, lastInvoicesDetail, filteredList)
+        val result = handleProcessInvoiceDetails(invoice, lastInvoicesDetail, filteredList)
 
-        invoice.ListItemName = buildListItemName(news + updates)
+        invoice.InvoiceDetails = (result.toCreate + result.toUpdate + result.unchanged).sortedBy { it.SortOrder }.toMutableList()
+        invoice.ListItemName = buildListItemName(invoice.InvoiceDetails)
         invoice.ReceiveAmount = invoice.Amount
 
         if (invoice.InvoiceID != null) {
-            response.isSuccess = repository.updateInvoice(invoice, news, updates, deletes)
+            response.isSuccess = repository.updateInvoice(invoice, result.toCreate, result.toUpdate, result.toDelete)
             if (response.isSuccess) {
                 SyncHelper.updateSync("Invoice", invoice.InvoiceID!!)
-                SyncHelper.deleteInvoiceDetail(deletes)
-                SyncHelper.createInvoiceDetail(news)
-                SyncHelper.updateInvoiceDetail(updates)
+                SyncHelper.deleteInvoiceDetail(result.toDelete)
+                SyncHelper.createInvoiceDetail(result.toCreate)
+                SyncHelper.updateInvoiceDetail(result.toUpdate)
             }
         } else {
             invoice.InvoiceID = UUID.randomUUID()
             response.message = invoice.InvoiceID.toString()
-            invoice.InvoiceDetails = news.map {
+            invoice.InvoiceDetails = result.toCreate.map {
                 it.copy(InvoiceID = invoice.InvoiceID)
             }.toMutableList()
             response.isSuccess = repository.createInvoice(invoice)
@@ -128,21 +140,24 @@ class InvoiceFormPresenter(private val view: InvoiceFormContract.View,
         invoice: Invoice,
         details: MutableList<InvoiceDetail>,
         inventorySelects: MutableList<InventorySelect>
-    ): Triple<MutableList<InvoiceDetail>, MutableList<InvoiceDetail>, MutableList<InvoiceDetail>> {
+    ): InvoiceDetailChangeResult {
 
-        val newDetails = mutableListOf<InvoiceDetail>()
-        val updateDetails = mutableListOf<InvoiceDetail>()
-        val deleteDetails = mutableListOf<InvoiceDetail>()
+        val toCreate = mutableListOf<InvoiceDetail>()
+        val toUpdate = mutableListOf<InvoiceDetail>()
+        val toDelete = mutableListOf<InvoiceDetail>()
+        val unchanged = mutableListOf<InvoiceDetail>()
 
         // Tạo map từ InventoryID để dễ tra cứu
         val currentDetailMap = details.associateBy { it.InventoryID }
         val selectedInventoryIds = inventorySelects.map { it.inventory.InventoryID }.toSet()
 
+        var sortOrder = 0
+
         // 1. Duyệt các mặt hàng đang được chọn (từ UI)
         for (it in inventorySelects) {
             val matchingDetail = currentDetailMap[it.inventory.InventoryID]
+            sortOrder++
             if (matchingDetail == null) {
-                // => Không tồn tại trước đó, là hàng mới
                 val newDetail = InvoiceDetail(
                     InvoiceDetailID = UUID.randomUUID(),
                     InvoiceDetailType = 0,
@@ -155,20 +170,30 @@ class InvoiceFormPresenter(private val view: InvoiceFormContract.View,
                     UnitPrice = it.inventory.Price,
                     Amount = it.quantity * it.inventory.Price,
                     Description = "",
-                    SortOrder = 0,
+                    SortOrder = sortOrder,
                     CreatedDate = LocalDateTime.now(),
                     ModifiedDate = LocalDateTime.now(),
                     CreatedBy = "",
                     ModifiedBy = ""
                 )
-                newDetails.add(newDetail)
+                toCreate.add(newDetail)
             } else {
                 if (matchingDetail.Quantity != it.quantity ) {
                     val updatedDetail = matchingDetail.copy(
                         Quantity = it.quantity,
-                        UnitPrice = it.inventory.Price
+                        UnitPrice = it.inventory.Price,
+                        SortOrder = sortOrder
                     )
-                    updateDetails.add(updatedDetail)
+                    toUpdate.add(updatedDetail)
+                }
+
+                else {
+                    val details = matchingDetail.copy(
+                        Quantity = it.quantity,
+                        UnitPrice = it.inventory.Price,
+                        SortOrder = sortOrder
+                    )
+                    unchanged.add(details)
                 }
             }
         }
@@ -176,11 +201,16 @@ class InvoiceFormPresenter(private val view: InvoiceFormContract.View,
         // 2. Tìm các chi tiết bị xóa (không còn trong danh sách chọn)
         for (detail in details) {
             if (detail.InventoryID !in selectedInventoryIds) {
-                deleteDetails.add(detail)
+                toDelete.add(detail)
             }
         }
 
-        return Triple(newDetails, updateDetails, deleteDetails)
+        return InvoiceDetailChangeResult(
+            toCreate = toCreate,
+            toUpdate = toUpdate,
+            toDelete = toDelete,
+            unchanged = unchanged
+        )
     }
 
 }

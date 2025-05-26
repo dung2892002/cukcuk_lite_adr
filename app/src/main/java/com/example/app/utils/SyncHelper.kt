@@ -6,46 +6,73 @@ import com.example.app.entities.InvoiceDetail
 import java.util.UUID
 
 object SyncHelper {
-    lateinit var dbHelper: CukcukDbHelper
+    private lateinit var syncRepository: SyncRepository
+
+    fun init(dbHelper: CukcukDbHelper) {
+        syncRepository = SyncRepository(dbHelper)
+    }
 
     fun insertSync(tableName: String, objectId: UUID) {
-        val syncRepo = SyncRepository(dbHelper)
-        syncRepo.create(tableName, objectId, action = 0)
+        syncRepository.create(tableName, objectId, 0)
     }
 
     fun updateSync(tableName: String, objectId: UUID) {
-        val syncRepo = SyncRepository(dbHelper)
-        val existingSyncId = syncRepo.getExistingSyncIdForCreateNewOrUpdate(tableName, objectId)
-        if (existingSyncId == null) syncRepo.create(tableName, objectId, 1)
+        val existingSyncId = syncRepository.getExistingSyncIdForCreateNewOrUpdate(tableName, objectId)
+        if (existingSyncId == null) syncRepository.create(tableName, objectId, 1)
     }
 
     fun deleteSync(tableName: String, objectId: UUID) {
-        val syncRepo = SyncRepository(dbHelper)
 
-        val existingSyncId = syncRepo.getExistingSyncIdForCreateNew(tableName, objectId)
+        val existingSyncId = syncRepository.getExistingSyncIdForCreateNew(tableName, objectId)
 
-        if (existingSyncId != null) syncRepo.delete(existingSyncId)
+        if (existingSyncId != null) syncRepository.delete(existingSyncId)
         else {
-            syncRepo.deleteDataBeforeCreateDeleteSync(tableName, objectId)
-            syncRepo.create(tableName, objectId, 2)
+            syncRepository.deleteDataBeforeCreateDeleteSync(tableName, objectId)
+            syncRepository.create(tableName, objectId, 2)
         }
     }
 
-    fun deleteInvoiceDetail(details: MutableList<InvoiceDetail>){
-        for (item in details) {
-            deleteSync("InvoiceDetail", item.InvoiceDetailID!!)
+    fun deleteSyncRange(tableName: String, objectIds: List<UUID>) {
+        val toDelete = mutableListOf<UUID>()
+        val toCreate = mutableListOf<UUID>()
+
+        for (objectId in objectIds) {
+            val existingSyncId = syncRepository.getExistingSyncIdForCreateNew(tableName, objectId)
+
+            if (existingSyncId != null) {
+                toDelete.add(existingSyncId)
+            } else {
+                syncRepository.deleteDataBeforeCreateDeleteSync(tableName, objectId)
+                toCreate.add(objectId)
+            }
+        }
+
+        if (toDelete.isNotEmpty()) {
+            syncRepository.deleteRange(toDelete)
+        }
+        if (toCreate.isNotEmpty()) {
+            syncRepository.createRange(tableName, toCreate, 2)
         }
     }
 
     fun createInvoiceDetail(details: MutableList<InvoiceDetail>){
-        for (item in details) {
-            insertSync("InvoiceDetail", item.InvoiceDetailID!!)
-        }
+        val ids = details.mapNotNull { it.InvoiceDetailID }
+        syncRepository.createRange("InvoiceDetail", ids, 0)
     }
 
-    fun updateInvoiceDetail(details: MutableList<InvoiceDetail>){
-        for (item in details) {
-            updateSync("InvoiceDetail", item.InvoiceDetailID!!)
+    fun deleteInvoiceDetail(details: List<InvoiceDetail>) {
+        val ids = details.mapNotNull { it.InvoiceDetailID }
+        deleteSyncRange("InvoiceDetail", ids)
+    }
+
+    fun updateInvoiceDetail(details: List<InvoiceDetail>) {
+        val ids = details.mapNotNull { it.InvoiceDetailID }
+        val existingIds = syncRepository.getExistingSyncIdsForCreateNewOrUpdate("InvoiceDetail", ids)
+
+        val toInsert = ids.filterNot { existingIds.contains(it) }
+
+        if (toInsert.isNotEmpty()) {
+            syncRepository.createRange("InvoiceDetail", toInsert, 1)
         }
     }
 }
