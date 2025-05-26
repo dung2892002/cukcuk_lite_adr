@@ -6,6 +6,7 @@ import android.database.Cursor
 import com.example.app.datas.CukcukDbHelper
 import com.example.app.entities.Unit
 import com.example.app.utils.getBoolean
+import com.example.app.utils.getDateTime
 import com.example.app.utils.getString
 import com.example.app.utils.getUUID
 import java.util.UUID
@@ -103,6 +104,40 @@ class UnitRepository(dbHelper: CukcukDbHelper) {
             cursor?.close()
         }
         return units
+    }
+
+    fun getUnitById(unitId: UUID) : Unit? {
+        var unit : Unit? = null
+
+        val query = """
+            SELECT * FROM Unit u
+            WHERE UnitID = ?
+        """.trimIndent()
+        var cursor: Cursor? = null
+
+        try {
+            cursor = db.rawQuery(query, arrayOf(unitId.toString()))
+            if (cursor.moveToFirst()) {
+                unit = Unit(
+                    UnitID = cursor.getUUID("UnitID"),
+                    UnitName = cursor.getString("UnitName"),
+                    Description = cursor.getString("Description"),
+                    Inactive = cursor.getBoolean("Inactive"),
+                    CreatedBy = cursor.getString("CreatedBy"),
+                    ModifiedBy = cursor.getString("ModifiedBy"),
+                    CreatedDate = cursor.getDateTime("CreatedDate"),
+                    ModifiedDate = cursor.getDateTime("ModifiedDate"),
+                )
+            }
+        }
+        catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+        }
+        finally {
+            cursor?.close()
+        }
+        return unit
     }
 
     fun createUnit(unit: Unit): Boolean {

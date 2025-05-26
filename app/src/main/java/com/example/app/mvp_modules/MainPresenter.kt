@@ -3,6 +3,8 @@ package com.example.app.mvp_modules
 import android.annotation.SuppressLint
 import android.content.Context
 import com.example.app.R
+import com.example.app.datas.CukcukDbHelper
+import com.example.app.datas.repositories.SyncRepository
 import com.example.app.mvp_modules.app_info.AppInfoActivity
 import com.example.app.mvp_modules.link_account.LinkAccountActivity
 import com.example.app.mvp_modules.login.LoginActivity
@@ -50,5 +52,10 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
             apply()
         }
         view.openActivity(LoginActivity::class.java)
+    }
+
+    override fun getSyncCount(): Int {
+        val repository = SyncRepository(CukcukDbHelper(view as Context))
+        return repository.countSync()
     }
 }

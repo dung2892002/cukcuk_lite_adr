@@ -3,13 +3,128 @@ package com.example.app.datas.repositories
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import androidx.core.database.getDoubleOrNull
 import com.example.app.datas.CukcukDbHelper
+import com.example.app.entities.SynchronizeData
+import com.example.app.utils.getDateTime
+import com.example.app.utils.getDateTimeOrNull
+import com.example.app.utils.getInt
+import com.example.app.utils.getString
+import com.example.app.utils.getUUID
 import java.time.LocalDateTime
 import java.util.UUID
 
-@SuppressLint("NewApi")
+
+@SuppressLint("NewApi", "Recycle")
 class SyncRepository(dbHelper: CukcukDbHelper) {
     private val db = dbHelper.readableDatabase
+
+    fun countSync(): Int {
+        val query = """
+            SELECT COUNT(*) FROM SynchronizeData WHERE TableName != "InvoiceDetail"
+        """.trimIndent()
+        var cursor: Cursor? = null
+        var countSync = 0
+        try {
+            cursor = db.rawQuery(query, null)
+            cursor.moveToFirst()
+            countSync = cursor.getInt(0)
+        }
+        catch(ex: Exception) {
+            ex.printStackTrace()
+        }
+        finally {
+            cursor?.close()
+        }
+
+        return countSync
+    }
+
+    fun getLastSyncTime() : LocalDateTime? {
+        val query = """
+            SELECT MAX(LastSyncTime) as LastTime FROM LastSyncTime
+        """.trimIndent()
+
+        var cursor: Cursor? = null
+        var lastSyncTime: LocalDateTime? = null
+
+        try {
+            cursor = db.rawQuery(query, null)
+            lastSyncTime = if (cursor.moveToFirst()) cursor.getDateTimeOrNull("LastTime")
+            else null
+        }
+        catch(ex: Exception) {
+            ex.printStackTrace()
+        }
+        finally {
+            cursor?.close()
+        }
+        return lastSyncTime
+    }
+
+    fun updateLastSyncTime(lastSyncTime: LocalDateTime) {
+        try {
+            val values = ContentValues().apply {
+                put("LastSyncTime", lastSyncTime.toString())
+            }
+
+            val rowsAffected = db.update(
+                "LastSyncTime",
+                values,
+                "GroupID = ?",
+                arrayOf("1")
+            )
+
+            if (rowsAffected == 0) {
+                values.put("GroupID", 1)
+                db.insert("LastSyncTime", null, values)
+            }
+
+        } catch (ex: Exception) {
+            ex.printStackTrace()
+            println(ex)
+        }
+    }
+
+
+    fun getAllSync() : MutableList<SynchronizeData> {
+        val query = """
+            SELECT SynchronizeID, TableName, ObjectID, "Action", CreatedDate FROM SynchronizeData
+        """.trimIndent()
+
+        val results = mutableListOf<SynchronizeData>()
+        var cursor: Cursor? = null
+
+        try {
+            cursor = db.rawQuery(query, null)
+            while (cursor.moveToNext()) {
+                val sync = SynchronizeData(
+                    SynchronizeID = cursor.getUUID("SynchronizeID"),
+                    TableName = cursor.getString("TableName"),
+                    ObjectID = cursor.getUUID("ObjectID"),
+                    Action = cursor.getInt("Action"),
+                    Data = "",
+                    CreatedDate = cursor.getDateTime("CreatedDate"),
+                    RefID = null,
+                    Unit = null,
+                    Inventory = null,
+                    Invoice = null,
+                    InvoiceDetail = null
+                )
+                results.add(sync)
+            }
+        }
+        catch (ex: Exception) {
+            println(ex)
+            ex.printStackTrace()
+        }
+        finally {
+            cursor?.close()
+        }
+
+        return results
+    }
 
     fun create(tableName: String, objectId: UUID, action: Int) {
         try {
@@ -83,8 +198,6 @@ class SyncRepository(dbHelper: CukcukDbHelper) {
             db.endTransaction()
         }
     }
-
-
 
     fun deleteDataBeforeCreateDeleteSync(tableName: String, objectId: UUID) {
         try {

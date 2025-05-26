@@ -36,6 +36,8 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
     private lateinit var adapter: ListSelectInventoryAdapter
     private var positionIndex = 0
 
+    private val REQUEST_CODE_INVOICE_ACTIVITY = 500
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -66,6 +68,7 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
         binding.btnOpenInputPeople.setOnClickListener {
             openCalculatorPeople()
         }
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -119,11 +122,12 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
         caller: ComponentCaller
     ) {
         super.onActivityResult(requestCode, resultCode, data, caller)
-        if (requestCode == 500 && resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE_INVOICE_ACTIVITY && resultCode == RESULT_OK) {
             val createNewOrder = data?.getBooleanExtra("create_new_order", false) == true
             if (createNewOrder) {
-                finish() // Kết thúc activity hiện tại
-                startActivity(Intent(this, InvoiceFormActivity::class.java)) // Mở activity mới
+                finish()
+                val intent = Intent(this, InvoiceFormActivity::class.java)
+                startActivity(intent)
             }
         }
     }
@@ -205,7 +209,7 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
         val intent = Intent(this, InvoiceActivity::class.java)
         intent.putExtra("invoice_data", invoice)
         intent.putExtra("from_sale_fragment", false)
-        startActivityForResult(intent, 500)
+        startActivityForResult(intent, REQUEST_CODE_INVOICE_ACTIVITY)
     }
 
 

@@ -1,19 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    style="@style/LinearBase"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     tools:context=".mvp_modules.sync_data.SyncDataActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="@style/BaseToolbar">
+    <LinearLayout
+        style="@style/LinearBase">
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            style="@style/BaseToolbar">
+
+            <TextView
+                android:id="@+id/toolbarTitle"
+                android:textColor="@android:color/white"
+                style="@style/BaseToolbar.Title" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <ImageView
+            style="@style/Sync_Image"
+            android:importantForAccessibility="no"
+            android:src="@drawable/image_sync_data" />
 
         <TextView
-            android:id="@+id/toolbarTitle"
-            android:textColor="@android:color/white"
-            style="@style/BaseToolbar.Title" />
+            android:id="@+id/lastSyncTime"
+            style="@style/Sync_LastSyncTime"/>
 
-    </androidx.appcompat.widget.Toolbar>
+        <LinearLayout
+            android:id="@+id/syncCountGroup"
+            style="@style/Sync_SyncCountGroup"
+            tools:ignore="UseCompoundDrawables">
 
-</LinearLayout>
+            <ImageView
+                style="@style/Sync_Icon"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_cloud_download"/>
+
+            <TextView
+                android:id="@+id/countSync"
+                style="@style/BaseText"
+                android:text="Bạn đang có 1 giao dch chưa được đồng bộ..."
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSync"
+            style="@style/DishForm.ButtonSubmit"
+            android:text="ĐỒNG BỘ NGAY"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+
+    <FrameLayout
+        style="@style/LoadingOverlay"
+        android:id="@+id/loadingOverlay">
+
+        <FrameLayout
+            style="@style/LoadingBlock">
+            <ProgressBar style="@style/Spinner" />
+        </FrameLayout>
+    </FrameLayout>
+</FrameLayout>

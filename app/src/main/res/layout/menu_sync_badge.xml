@@ -1,0 +1,7 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Menu_Badge">
+
+    <TextView
+        android:id="@+id/syncBadge"
+        style="@style/Menu_Badge_Value" />
+</LinearLayout>

@@ -16,5 +16,6 @@ interface MainContract {
         fun checkLogin(context: Context): Boolean
         fun handleNavigationItemSelected(itemId: Int)
         fun logout(context: Context)
+        fun getSyncCount() : Int
     }
 }

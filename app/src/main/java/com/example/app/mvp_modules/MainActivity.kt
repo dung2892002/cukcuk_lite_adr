@@ -1,5 +1,6 @@
 package com.example.app.mvp_modules
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -7,6 +8,8 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.AbsoluteSizeSpan
 import android.text.style.ForegroundColorSpan
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBar
@@ -29,11 +32,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     private lateinit var binding: ActivityMainBinding
     private lateinit var headerBinding: NavHeaderBinding
     private lateinit var presenter: MainContract.Presenter
+    private var syncBadge: TextView? = null
 
     override fun attachBaseContext(newBase: Context) {
         val context = LocaleHelper.setLocale(newBase, "vi")
         super.attachBaseContext(context)
     }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,7 +104,6 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     private fun setupNavigation() {
-
         headerBinding = NavHeaderBinding.bind(binding.navigationView.getHeaderView(0))
         "Lê Văn Dũng".also { headerBinding.txtNavHeaderFullName.text = it }
         "vandung2002ts@gmail.com".also { headerBinding.txtNavHeaderUsername.text = it }
@@ -115,9 +119,34 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             }
         }
 
+        handleShowSyncCount()
+
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             presenter.handleNavigationItemSelected(menuItem.itemId)
             true
+        }
+    }
+
+    @SuppressLint("InflateParams")
+    private fun handleShowSyncCount() {
+        val menuItem = binding.navigationView.menu.findItem(R.id.nav_sync_data)
+
+        val actionView = layoutInflater.inflate(R.layout.menu_sync_badge, null)
+        syncBadge = actionView.findViewById(R.id.syncBadge)
+        menuItem.actionView = actionView
+
+        updateSyncCount()
+    }
+
+    fun updateSyncCount() {
+        val count = presenter.getSyncCount()
+        syncBadge?.let {
+            if (count > 0) {
+                it.text = count.toString()
+                it.visibility = View.VISIBLE
+            } else {
+                it.visibility = View.GONE
+            }
         }
     }
 
@@ -128,13 +157,28 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        val toggle = ActionBarDrawerToggle(
+        val toggle = object : ActionBarDrawerToggle(
             this,
             binding.root,
             binding.mainToolbar,
             R.string.navigation_drawer_open,
             R.string.navigation_drawer_close
-        )
+        ){
+            var hasUpdated = false
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+                super.onDrawerSlide(drawerView, slideOffset)
+                if (!hasUpdated && slideOffset > 0f) {
+                    updateSyncCount()
+                    hasUpdated = true
+                }
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                super.onDrawerClosed(drawerView)
+                hasUpdated = false
+            }
+        }
 
         binding.main.addDrawerListener(toggle)
         toggle.syncState()

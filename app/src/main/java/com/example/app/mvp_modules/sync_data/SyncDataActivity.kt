@@ -1,16 +1,20 @@
 package com.example.app.mvp_modules.sync_data
 
 import android.os.Bundle
+import android.text.SpannableString
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.app.R
 import com.example.app.databinding.ActivitySyncDataBinding
+import com.example.app.datas.CukcukDbHelper
 
-class SyncDataActivity : AppCompatActivity() {
+class SyncDataActivity : AppCompatActivity(), SyncContract.View {
     private lateinit var binding: ActivitySyncDataBinding
+    private lateinit var presenter: SyncContract.Presenter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -18,7 +22,15 @@ class SyncDataActivity : AppCompatActivity() {
         binding = ActivitySyncDataBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val db = CukcukDbHelper(this)
+        presenter = SyncPresenter(this, db)
+
         setupToolbar()
+        presenter.getSyncData()
+
+        binding.btnSync.setOnClickListener {
+            presenter.handleSyncData()
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -28,7 +40,6 @@ class SyncDataActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
@@ -47,5 +58,25 @@ class SyncDataActivity : AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun showSyncData(
+        lastSyncTime: SpannableString,
+        countSync: SpannableString,
+    ) {
+        binding.lastSyncTime.text = lastSyncTime
+        binding.countSync.text = countSync
+    }
+
+    override fun toggleSyncCountGroup(state: Boolean) {
+        binding.syncCountGroup.visibility = if (state) View.VISIBLE else View.GONE
+    }
+
+    override fun showLoading() {
+        binding.loadingOverlay.visibility = View.VISIBLE
+    }
+
+    override fun hideLoading() {
+        binding.loadingOverlay.visibility = View.GONE
     }
 }

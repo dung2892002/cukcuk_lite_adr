@@ -43,7 +43,6 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         return String.format(Locale.US, "%05d", count + 1)
     }
 
-
     fun getListInvoiceNotPayment() : MutableList<Invoice> {
         val invoices = mutableListOf<Invoice>()
         val query = """
@@ -218,6 +217,48 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
             detailCursor.close()
         }
         return invoice
+    }
+
+    fun getInvoiceDetailById(invoiceDetailId: UUID): InvoiceDetail? {
+        var invoiceDetail: InvoiceDetail? = null
+        val invoiceQuery = "SELECT * FROM InvoiceDetail WHERE InvoiceDetailID = ?"
+        var cursor: Cursor? = null
+
+        try {
+            cursor = db.rawQuery(invoiceQuery, arrayOf(invoiceDetailId.toString()))
+            if (cursor.moveToFirst()) {
+                invoiceDetail = InvoiceDetail(
+                    InvoiceDetailID = cursor.getUUID("InvoiceDetailID"),
+                    InvoiceDetailType = cursor.getInt("InvoiceDetailType"),
+                    InvoiceID = cursor.getUUID("InvoiceID"),
+                    InventoryID = cursor.getUUID("InventoryID"),
+                    InventoryName = cursor.getString("InventoryName"),
+                    UnitID = cursor.getUUID("UnitID"),
+                    UnitName = cursor.getString("UnitName"),
+                    Quantity = cursor.getDouble("Quantity"),
+                    UnitPrice = cursor.getDouble("UnitPrice"),
+                    Amount = cursor.getDouble("Amount"),
+                    Description = cursor.getString("Description"),
+                    SortOrder = cursor.getInt("SortOrder"),
+                    CreatedDate = cursor.getDateTime("CreatedDate"),
+                    CreatedBy = cursor.getString("CreatedBy"),
+                    ModifiedDate = cursor.getDateTime("ModifiedDate"),
+                    ModifiedBy = cursor.getString("ModifiedBy")
+                )
+            }
+        }
+        catch (ex: Exception) {
+            println(ex)
+            ex.printStackTrace()
+        }
+        finally {
+            cursor?.close()
+        }
+
+
+
+
+        return invoiceDetail
     }
 
     fun getAllInventoryInactive() : MutableList<Inventory> {
