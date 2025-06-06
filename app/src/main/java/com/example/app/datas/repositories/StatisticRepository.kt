@@ -7,6 +7,8 @@ import com.example.app.dto.StatisticByInventory
 import com.example.app.dto.StatisticByTime
 import com.example.app.dto.StatisticOverview
 import com.example.app.utils.DateTimeHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -15,10 +17,9 @@ import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 
 @SuppressLint("Recycle, NewApi")
-class StatisticRepository(dbHelper: CukcukDbHelper) {
-    private val db = dbHelper.readableDatabase!!
-
-    fun getStatisticOverview(): List<StatisticOverview> {
+class StatisticRepository(private val dbHelper: CukcukDbHelper) {
+    suspend fun getStatisticOverview(): List<StatisticOverview> = withContext(Dispatchers.IO){
+        val db = dbHelper.readableDatabase
         val result = mutableListOf<StatisticOverview>()
         val query = """
             SELECT 
@@ -89,11 +90,12 @@ class StatisticRepository(dbHelper: CukcukDbHelper) {
             cursor?.close()
         }
 
-        return result
+        result
     }
 
 
-    fun getDailyStatisticOfWeek(startOfWeek: LocalDateTime, endOfWeek: LocalDateTime): List<StatisticByTime> {
+    suspend fun getDailyStatisticOfWeek(startOfWeek: LocalDateTime, endOfWeek: LocalDateTime): List<StatisticByTime> = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         var totalAmount = 0.0
         val query = """
             SELECT
@@ -155,10 +157,11 @@ class StatisticRepository(dbHelper: CukcukDbHelper) {
 
         if (totalAmount == 0.0) statistics.clear()
 
-        return statistics
+        statistics
     }
 
-    fun getDailyStatisticOfMonth(start: LocalDateTime, end: LocalDateTime): List<StatisticByTime> {
+    suspend fun getDailyStatisticOfMonth(start: LocalDateTime, end: LocalDateTime): List<StatisticByTime> = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val startDate = start.toLocalDate()
         val endDate = end.toLocalDate()
 
@@ -211,11 +214,11 @@ class StatisticRepository(dbHelper: CukcukDbHelper) {
         }
 
         if (totalAmount == 0.0) statistics.clear()
-        return statistics
+        statistics
     }
 
-
-    fun getMonthlyStatistic(start: LocalDateTime, end: LocalDateTime): List<StatisticByTime> {
+    suspend fun getMonthlyStatistic(start: LocalDateTime, end: LocalDateTime): List<StatisticByTime> = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val startDate = start.toLocalDate()
         val endDate = end.toLocalDate()
         var totalAmount = 0.0
@@ -275,10 +278,11 @@ class StatisticRepository(dbHelper: CukcukDbHelper) {
         }
 
         if (totalAmount == 0.0) statistics.clear()
-        return statistics
+        statistics
     }
 
-    fun getStatisticByInventory(fromDate: LocalDateTime, toDate: LocalDateTime): List<StatisticByInventory> {
+    suspend fun getStatisticByInventory(fromDate: LocalDateTime, toDate: LocalDateTime): List<StatisticByInventory> = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val query = """
             SELECT
                 d.InventoryName,
@@ -318,7 +322,7 @@ class StatisticRepository(dbHelper: CukcukDbHelper) {
                         Amount = amount,
                         UnitName = unit,
                         Percentage = 0.0,
-                        Color = colors[sortOrder - 1],
+                        Color = if (sortOrder > colors.size - 1) colors[colors.size - 1] else colors[sortOrder - 1],
                         SortOrder = sortOrder++
                     )
                 )
@@ -334,13 +338,13 @@ class StatisticRepository(dbHelper: CukcukDbHelper) {
 
         if (totalAmount == 0.0) {
             list.clear()
-            return list
+            list
         }
 
         list.forEach {
             it.Percentage = if (totalAmount > 0) (it.Amount / totalAmount * 100.0) else 0.0
         }
 
-        return list
+        list
     }
 }

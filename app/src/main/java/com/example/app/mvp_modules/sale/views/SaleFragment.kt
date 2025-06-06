@@ -16,6 +16,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.FragmentSaleBinding
@@ -25,6 +26,7 @@ import com.example.app.entities.Invoice
 import com.example.app.mvp_modules.sale.presenters.SalePresenter
 import com.example.app.mvp_modules.sale.adapters.ListInvoiceAdapter
 import com.example.app.mvp_modules.sale.contracts.SaleContract
+import kotlinx.coroutines.launch
 
 class SaleFragment : Fragment(), SaleContract.View {
     private lateinit var binding: FragmentSaleBinding
@@ -35,8 +37,10 @@ class SaleFragment : Fragment(), SaleContract.View {
 
     override fun onResume() {
         super.onResume()
-        fetchData()
-        showDataInvoices(invoices)
+        viewLifecycleOwner.lifecycleScope.launch {
+            invoices = presenter.fetchData()
+            showDataInvoices(invoices)
+        }
     }
 
     override fun onCreateView(
@@ -50,8 +54,10 @@ class SaleFragment : Fragment(), SaleContract.View {
         presenter = SalePresenter(this, repository)
 
         setupToolbar()
-        fetchData()
-        showDataInvoices(invoices)
+        viewLifecycleOwner.lifecycleScope.launch {
+            invoices = presenter.fetchData()
+            showDataInvoices(invoices)
+        }
 
         binding.txtButtonAddInvoice.setOnClickListener {
             presenter.handleNavigateInvoiceForm(null)
@@ -79,10 +85,6 @@ class SaleFragment : Fragment(), SaleContract.View {
                 }
             }
         }, viewLifecycleOwner)
-    }
-
-    private fun fetchData() {
-        invoices = presenter.fetchData()
     }
 
     private fun setupAdapter() {
@@ -126,21 +128,22 @@ class SaleFragment : Fragment(), SaleContract.View {
         }
 
         btnSubmit.setOnClickListener {
-            val result = presenter.handleDeleteInvoice(invoice)
-            if (result.isSuccess) {
-                invoices = presenter.fetchData()
-                adapter.updateAdapter(invoices)
-                if (invoices.isEmpty()) {
-                    binding.fragmentStateEmptyOrder.visibility = View.VISIBLE
-                    binding.recyclerListOrder.visibility = View.GONE
+            viewLifecycleOwner.lifecycleScope.launch {
+                val result = presenter.handleDeleteInvoice(invoice)
+                if (result.isSuccess) {
+                    invoices = presenter.fetchData()
+                    adapter.updateAdapter(invoices)
+                    if (invoices.isEmpty()) {
+                        binding.fragmentStateEmptyOrder.visibility = View.VISIBLE
+                        binding.recyclerListOrder.visibility = View.GONE
+                    } else {
+                        binding.fragmentStateEmptyOrder.visibility = View.GONE
+                        binding.recyclerListOrder.visibility = View.VISIBLE
+                    }
+                    dialog.dismiss()
+                } else {
+                    Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
                 }
-                else {
-                    binding.fragmentStateEmptyOrder.visibility = View.GONE
-                    binding.recyclerListOrder.visibility = View.VISIBLE
-                }
-                dialog.dismiss()
-            } else {
-                Toast.makeText(requireContext(), result.message, Toast.LENGTH_SHORT).show()
             }
         }
         dialog.show()

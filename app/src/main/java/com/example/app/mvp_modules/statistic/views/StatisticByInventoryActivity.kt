@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.ActivityStatisticByInventoryBinding
@@ -17,6 +18,7 @@ import com.example.app.mvp_modules.statistic.adapters.StatisticByInventoryAdapte
 import com.example.app.mvp_modules.statistic.contracts.StatisticByInventoryContract
 import com.example.app.mvp_modules.statistic.presenters.StatisticByInventoryPresenter
 import com.example.app.utils.ChartUtils
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 class StatisticByInventoryActivity : AppCompatActivity(), StatisticByInventoryContract.View {
@@ -40,7 +42,9 @@ class StatisticByInventoryActivity : AppCompatActivity(), StatisticByInventoryCo
         presenter = StatisticByInventoryPresenter(this, repository)
 
         setupToolbar()
-        getDateRequest()
+        lifecycleScope.launch {
+            getDateRequest()
+        }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -68,7 +72,7 @@ class StatisticByInventoryActivity : AppCompatActivity(), StatisticByInventoryCo
     }
 
     @SuppressLint("NewApi")
-    private fun getDateRequest() {
+    private suspend fun getDateRequest() {
         dateStart = LocalDateTime.parse(intent.getStringExtra("date_start"))
         dateEnd = LocalDateTime.parse(intent.getStringExtra("date_end"))
         timeLabel = intent.getStringExtra("time_label")!!

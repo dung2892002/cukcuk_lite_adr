@@ -12,10 +12,10 @@ interface SaleContract {
 
     interface Presenter{
 //        fun openDishForm(dish: Dish?)
-        fun fetchData() : MutableList<Invoice>
+        suspend fun fetchData() : MutableList<Invoice>
         fun paymentInvoice(invoice: Invoice)
         fun handleNavigateInvoiceForm(invoice: Invoice?)
-        fun handleDeleteInvoice(invoice: Invoice) : SeverResponse
+        suspend fun handleDeleteInvoice(invoice: Invoice) : SeverResponse
     }
 
 }

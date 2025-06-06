@@ -24,6 +24,7 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
     }
 
     override fun handleNavigationItemSelected(itemId: Int) {
+        view.closeDrawer()
         when (itemId) {
             R.id.nav_sale -> view.switchFragment("Bán hàng")
             R.id.nav_menu -> view.switchFragment("Thực đơn")
@@ -39,8 +40,6 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
             R.id.nav_rating -> view.showToast("Rating app")
             R.id.nav_logout -> logout(view as Context)
         }
-
-        view.closeDrawer()
     }
 
     @SuppressLint("UseKtx")
@@ -54,7 +53,7 @@ class MainPresenter(private val view: MainContract.View) : MainContract.Presente
         view.openActivity(LoginActivity::class.java)
     }
 
-    override fun getSyncCount(): Int {
+    override suspend fun getSyncCount(): Int {
         val repository = SyncRepository(CukcukDbHelper(view as Context))
         return repository.countSync()
     }

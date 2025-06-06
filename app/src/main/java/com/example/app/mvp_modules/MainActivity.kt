@@ -19,6 +19,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.get
 import androidx.core.view.size
+import androidx.lifecycle.lifecycleScope
 import com.example.app.R
 import com.example.app.databinding.ActivityMainBinding
 import com.example.app.databinding.NavHeaderBinding
@@ -27,6 +28,7 @@ import com.example.app.mvp_modules.menu.views.MenuFragment
 import com.example.app.mvp_modules.sale.views.SaleFragment
 import com.example.app.mvp_modules.statistic.views.StatisticFragment
 import com.example.app.utils.LocaleHelper
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), MainContract.View {
     private lateinit var binding: ActivityMainBinding
@@ -129,16 +131,18 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     @SuppressLint("InflateParams")
     private fun handleShowSyncCount() {
-        val menuItem = binding.navigationView.menu.findItem(R.id.nav_sync_data)
+        lifecycleScope.launch {
+            val menuItem = binding.navigationView.menu.findItem(R.id.nav_sync_data)
 
-        val actionView = layoutInflater.inflate(R.layout.menu_sync_badge, null)
-        syncBadge = actionView.findViewById(R.id.syncBadge)
-        menuItem.actionView = actionView
+            val actionView = layoutInflater.inflate(R.layout.menu_sync_badge, null)
+            syncBadge = actionView.findViewById(R.id.syncBadge)
+            menuItem.actionView = actionView
 
-        updateSyncCount()
+            updateSyncCount()
+        }
     }
 
-    fun updateSyncCount() {
+    suspend fun updateSyncCount() {
         val count = presenter.getSyncCount()
         syncBadge?.let {
             if (count > 0) {
@@ -169,8 +173,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
                 super.onDrawerSlide(drawerView, slideOffset)
                 if (!hasUpdated && slideOffset > 0f) {
-                    updateSyncCount()
-                    hasUpdated = true
+                    lifecycleScope.launch {
+                        updateSyncCount()
+                        hasUpdated = true
+                    }
                 }
             }
 

@@ -12,16 +12,16 @@ object SyncHelper {
         syncRepository = SyncRepository(dbHelper)
     }
 
-    fun insertSync(tableName: String, objectId: UUID) {
+    suspend fun insertSync(tableName: String, objectId: UUID) {
         syncRepository.create(tableName, objectId, 0)
     }
 
-    fun updateSync(tableName: String, objectId: UUID) {
+    suspend fun updateSync(tableName: String, objectId: UUID) {
         val existingSyncId = syncRepository.getExistingSyncIdForCreateNewOrUpdate(tableName, objectId)
         if (existingSyncId == null) syncRepository.create(tableName, objectId, 1)
     }
 
-    fun deleteSync(tableName: String, objectId: UUID) {
+    suspend fun deleteSync(tableName: String, objectId: UUID) {
 
         val existingSyncId = syncRepository.getExistingSyncIdForCreateNew(tableName, objectId)
 
@@ -32,7 +32,7 @@ object SyncHelper {
         }
     }
 
-    fun deleteSyncRange(tableName: String, objectIds: List<UUID>) {
+    suspend fun deleteSyncRange(tableName: String, objectIds: List<UUID>) {
         val toDelete = mutableListOf<UUID>()
         val toCreate = mutableListOf<UUID>()
 
@@ -55,17 +55,17 @@ object SyncHelper {
         }
     }
 
-    fun createInvoiceDetail(details: MutableList<InvoiceDetail>){
+    suspend fun createInvoiceDetail(details: MutableList<InvoiceDetail>){
         val ids = details.mapNotNull { it.InvoiceDetailID }
         syncRepository.createRange("InvoiceDetail", ids, 0)
     }
 
-    fun deleteInvoiceDetail(details: List<InvoiceDetail>) {
+    suspend fun deleteInvoiceDetail(details: List<InvoiceDetail>) {
         val ids = details.mapNotNull { it.InvoiceDetailID }
         deleteSyncRange("InvoiceDetail", ids)
     }
 
-    fun updateInvoiceDetail(details: List<InvoiceDetail>) {
+    suspend fun updateInvoiceDetail(details: List<InvoiceDetail>) {
         val ids = details.mapNotNull { it.InvoiceDetailID }
         val existingIds = syncRepository.getExistingSyncIdsForCreateNewOrUpdate("InvoiceDetail", ids)
 

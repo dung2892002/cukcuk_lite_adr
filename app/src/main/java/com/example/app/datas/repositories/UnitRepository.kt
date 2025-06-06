@@ -9,13 +9,15 @@ import com.example.app.utils.getBoolean
 import com.example.app.utils.getDateTime
 import com.example.app.utils.getString
 import com.example.app.utils.getUUID
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.UUID
 
 @SuppressLint("Recycle")
-class UnitRepository(dbHelper: CukcukDbHelper) {
-    private val db = dbHelper.readableDatabase
+class UnitRepository(private val dbHelper: CukcukDbHelper) {
 
-    fun checkUseByInventory(unitId: UUID) : Boolean {
+    suspend fun checkUseByInventory(unitId: UUID) : Boolean = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val query = """
             SELECT 1 FROM Inventory i WHERE i.UnitID = ? LIMIT 1
         """.trimIndent()
@@ -33,10 +35,11 @@ class UnitRepository(dbHelper: CukcukDbHelper) {
             cursor?.close()
         }
 
-        return exists
+        exists
     }
 
-    fun checkExistUnitName(name: String, unitId: UUID?): Boolean {
+    suspend fun checkExistUnitName(name: String, unitId: UUID?): Boolean = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val query: String
         val args: Array<String>
 
@@ -68,11 +71,11 @@ class UnitRepository(dbHelper: CukcukDbHelper) {
             cursor?.close()
         }
 
-        return exists
+        exists
     }
 
-
-    fun getAllUnit() : MutableList<Unit> {
+    suspend fun getAllUnit() : MutableList<Unit> = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val units = mutableListOf<Unit>()
 
         val query = """
@@ -103,10 +106,11 @@ class UnitRepository(dbHelper: CukcukDbHelper) {
         finally {
             cursor?.close()
         }
-        return units
+        units
     }
 
-    fun getUnitById(unitId: UUID) : Unit? {
+    suspend fun getUnitById(unitId: UUID) : Unit? = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         var unit : Unit? = null
 
         val query = """
@@ -137,11 +141,12 @@ class UnitRepository(dbHelper: CukcukDbHelper) {
         finally {
             cursor?.close()
         }
-        return unit
+        unit
     }
 
-    fun createUnit(unit: Unit): Boolean {
-        return try {
+    suspend fun createUnit(unit: Unit): Boolean = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
+        try {
             val values = ContentValues().apply {
                 put("UnitID", unit.UnitID?.toString() ?: UUID.randomUUID().toString())
                 put("UnitName", unit.UnitName)
@@ -163,10 +168,11 @@ class UnitRepository(dbHelper: CukcukDbHelper) {
         }
     }
 
-    fun updateUnit(unit: Unit): Boolean {
-        if (unit.UnitID == null) return false
+    suspend fun updateUnit(unit: Unit): Boolean = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
+        if (unit.UnitID == null) false
 
-        return try {
+        try {
             val values = ContentValues().apply {
                 put("UnitName", unit.UnitName)
                 put("Description", unit.Description)
@@ -190,8 +196,9 @@ class UnitRepository(dbHelper: CukcukDbHelper) {
         }
     }
 
-    fun deleteUnit(unitId: UUID) : Boolean {
-        return try {
+    suspend fun deleteUnit(unitId: UUID) : Boolean = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
+        try {
             val result = db.delete(
                 "Unit",
                 "UnitID = ?",

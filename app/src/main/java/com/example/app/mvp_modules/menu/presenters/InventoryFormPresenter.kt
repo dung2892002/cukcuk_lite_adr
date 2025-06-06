@@ -11,7 +11,7 @@ class InventoryFormPresenter
     (private val view: InventoryFormContract.View,
      private val repository: InventoryRepository) : InventoryFormContract.Presenter {
 
-    override fun handleSubmitForm(inventory: Inventory, isAddNew: Boolean) : SeverResponse {
+    override suspend fun handleSubmitForm(inventory: Inventory, isAddNew: Boolean) : SeverResponse {
         var response = SeverResponse(true, "")
 
         if (inventory.InventoryName.trim().isEmpty()) {
@@ -40,7 +40,7 @@ class InventoryFormPresenter
         return response
     }
 
-    override fun handleDeleteInventory(inventory: Inventory): SeverResponse {
+    override suspend fun handleDeleteInventory(inventory: Inventory): SeverResponse {
         var response = SeverResponse(true, "Xóa thành công")
 
         var checked = repository.checkInventoryIsInInvoice(inventory)
@@ -59,7 +59,7 @@ class InventoryFormPresenter
         return response
     }
 
-    override fun getInventory(inventoryId: UUID): Inventory? {
+    override suspend fun getInventory(inventoryId: UUID): Inventory? {
         return repository.getInventoryById(inventoryId)
     }
 }

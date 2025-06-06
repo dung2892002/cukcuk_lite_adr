@@ -10,7 +10,7 @@ import com.example.app.utils.SyncHelper
 class SalePresenter(private val view: SaleContract.View,
     private val repository: InvoiceRepository) : SaleContract.Presenter {
     @SuppressLint("NewApi")
-    override fun fetchData(): MutableList<Invoice> {
+    override suspend fun fetchData(): MutableList<Invoice> {
         return repository.getListInvoiceNotPayment()
     }
 
@@ -18,12 +18,11 @@ class SalePresenter(private val view: SaleContract.View,
         view.navigateToInvoiceActivity(invoice)
     }
 
-
     override fun handleNavigateInvoiceForm(invoice: Invoice?) {
         view.navigateToInvoiceFormActivity(invoice)
     }
 
-    override fun handleDeleteInvoice(invoice: Invoice): SeverResponse {
+    override suspend fun handleDeleteInvoice(invoice: Invoice): SeverResponse {
         val response = SeverResponse(false, "Có lỗi xảy ra")
         if (invoice.InvoiceID == null) {
             return response

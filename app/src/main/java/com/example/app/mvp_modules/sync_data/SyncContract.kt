@@ -11,7 +11,7 @@ interface SyncContract {
     }
 
     interface Presenter{
-        fun getSyncData()
+        suspend fun getSyncData()
         fun handleSyncData()
     }
 }

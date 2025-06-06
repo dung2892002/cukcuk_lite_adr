@@ -8,7 +8,8 @@ class StatisticByInventoryPresenter(
     private val view: StatisticByInventoryContract.View,
     private val repository: StatisticRepository
 ) : StatisticByInventoryContract.Presenter {
-    override fun statisticInventoryDateToDate(
+
+    override suspend fun statisticInventoryDateToDate(
         dateStart: LocalDateTime,
         dateEnd: LocalDateTime,
     ) {

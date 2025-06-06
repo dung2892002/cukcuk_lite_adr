@@ -21,17 +21,18 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.ActivityUnitBinding
 import com.example.app.datas.CukcukDbHelper
-import com.example.app.datas.repositories.SyncRepository
 import com.example.app.datas.repositories.UnitRepository
 import com.example.app.dto.SeverResponse
 import com.example.app.entities.Unit
 import com.example.app.mvp_modules.menu.adapters.ListUnitAdapter
 import com.example.app.mvp_modules.menu.contracts.UnitContract
 import com.example.app.mvp_modules.menu.presenters.UnitPresenter
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.util.UUID
 
@@ -79,10 +80,13 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
         val repository = UnitRepository(dbHelper)
         presenter = UnitPresenter(this, repository)
 
-        units = presenter.getListUnit()
+        lifecycleScope.launch {
+            units = presenter.getListUnit()
+            getUnitSelected()
+            setupAdapter()
+        }
+
         setupToolbar()
-        getUnitSelected()
-        setupAdapter()
 
         binding.btnSubmitUnit.setOnClickListener {
             presenter.handleUpdateUnitInventory(unitSelected)
@@ -192,8 +196,10 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
         }
 
         btnSubmit.setOnClickListener {
-            dialog.dismiss()
-            presenter.handleDelete(unit)
+            lifecycleScope.launch {
+                dialog.dismiss()
+                presenter.handleDelete(unit)
+            }
         }
 
         dialog.show()
@@ -206,8 +212,6 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.title = ""
     }
-
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_inventory_unit_activity, menu)
@@ -268,15 +272,16 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
         }
 
         btnSubmit.setOnClickListener {
-            val value = edtUnitName.text.toString()
-            var newUnit = unitEdited.copy()
-            newUnit.UnitName = value
-            presenter.handleSubmit(newUnit, isAddNew)
+            lifecycleScope.launch {
+                val value = edtUnitName.text.toString()
+                var newUnit = unitEdited.copy()
+                newUnit.UnitName = value
+                presenter.handleSubmit(newUnit, isAddNew)
+            }
         }
 
         dialog.show()
     }
-
 
     private fun getUnitSelected() {
         val unitId = intent.getSerializableExtra("unit_id_data") as? UUID
@@ -295,12 +300,14 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
 
     override fun onDelete(response: SeverResponse) {
         if (response.isSuccess) {
-            units = presenter.getListUnit()
-            adapter.updateData(units)
-            if (unitSelected.UnitID == unitEdited.UnitID) {
-                unitSelected.UnitID = null
+            lifecycleScope.launch {
+                units = presenter.getListUnit()
+                adapter.updateData(units)
+                if (unitSelected.UnitID == unitEdited.UnitID) {
+                    unitSelected.UnitID = null
+                    unitSelected.UnitName = ""
+                }
             }
-            updateSelectedData()
         } else {
             Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
         }
@@ -311,7 +318,7 @@ class UnitActivity : AppCompatActivity(), UnitContract.View {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun onSubmit(response: SeverResponse, isAddNew: Boolean) {
+    override suspend fun onSubmit(response: SeverResponse, isAddNew: Boolean) {
         if (response.isSuccess) {
             dialog.dismiss()
             units = presenter.getListUnit()

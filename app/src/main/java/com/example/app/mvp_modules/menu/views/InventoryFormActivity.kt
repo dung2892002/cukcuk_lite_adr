@@ -30,6 +30,7 @@ import com.example.app.mvp_modules.menu.contracts.InventoryFormContract
 import com.example.app.mvp_modules.menu.presenters.InventoryFormPresenter
 import java.util.UUID
 import androidx.core.graphics.toColorInt
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app.databinding.ActivityInventoryFormBinding
@@ -41,6 +42,7 @@ import com.example.app.mvp_modules.menu.adapters.ListColorAdapter
 import com.example.app.mvp_modules.menu.adapters.ListImageAdapter
 import com.example.app.utils.FormatDisplay
 import com.example.app.utils.ImageHelper
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 @Suppress("DEPRECATION")
@@ -82,11 +84,15 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
         val repository = InventoryRepository(dbHelper)
         presenter = InventoryFormPresenter(this, repository)
 
-        getInventory()
+        lifecycleScope.launch {
+            getInventory()
+        }
         setupToolbar()
 
         binding.btnSubmit.setOnClickListener {
-            handleSubmitForm()
+            lifecycleScope.launch {
+                handleSubmitForm()
+            }
         }
 
         binding.btnSelectColor.setOnClickListener {
@@ -171,8 +177,10 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
         }
 
         btnSubmit.setOnClickListener {
-            dialog.dismiss()
-            deleteDish()
+            lifecycleScope.launch {
+                dialog.dismiss()
+                deleteDish()
+            }
         }
 
         dialog.show()
@@ -197,7 +205,9 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
                 true
             }
             R.id.btnSubmitDishFormToolbar -> {
-                handleSubmitForm()
+                lifecycleScope.launch {
+                    handleSubmitForm()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -298,7 +308,7 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
         dialog.show()
     }
 
-    private fun getInventory() {
+    private suspend fun getInventory() {
         val inventoryIdIntent = intent.getSerializableExtra("inventory_data") as? UUID
         if (inventoryIdIntent != null) {
             "Sửa món".also { binding.txtToolbarTitle.text = it }
@@ -337,7 +347,7 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
         binding.btnSelectImage.backgroundTintList = ColorStateList.valueOf(colorInt)
     }
 
-    override fun handleSubmitForm() {
+    override suspend fun handleSubmitForm() {
         inventory.InventoryName = binding.edtDishName.text.toString()
         if (!isAddNew) {
             inventory.Inactive = !binding.chkIsActiveDish.isChecked
@@ -353,7 +363,7 @@ class InventoryFormActivity : AppCompatActivity(), InventoryFormContract.View {
     }
 
 
-    override fun deleteDish() {
+    override suspend fun deleteDish() {
         val response = presenter.handleDeleteInventory(inventory)
         Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
         if (response.isSuccess) {

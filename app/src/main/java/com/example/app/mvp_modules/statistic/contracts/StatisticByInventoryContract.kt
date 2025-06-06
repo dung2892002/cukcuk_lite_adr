@@ -9,6 +9,6 @@ interface StatisticByInventoryContract {
     }
 
     interface Presenter{
-        fun statisticInventoryDateToDate(dateStart: LocalDateTime, dateEnd: LocalDateTime)
+        suspend fun statisticInventoryDateToDate(dateStart: LocalDateTime, dateEnd: LocalDateTime)
     }
 }

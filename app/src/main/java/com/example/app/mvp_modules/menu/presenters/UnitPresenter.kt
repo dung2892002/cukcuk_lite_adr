@@ -10,7 +10,7 @@ import java.util.UUID
 class UnitPresenter(private val view: UnitContract.View,
                     private val repository: UnitRepository) : UnitContract.Presenter {
 
-    override fun getListUnit(): MutableList<Unit> {
+    override suspend fun getListUnit(): MutableList<Unit> {
         return repository.getAllUnit()
     }
 
@@ -18,7 +18,7 @@ class UnitPresenter(private val view: UnitContract.View,
         view.onChangeUnitInventory()
     }
 
-    override fun handleSubmit(unit: Unit, isAddNew: Boolean) {
+    override suspend fun handleSubmit(unit: Unit, isAddNew: Boolean) {
         val response = SeverResponse(true, "")
         response.isSuccess = !repository.checkExistUnitName(unit.UnitName, unit.UnitID)
         if (!response.isSuccess) {
@@ -42,7 +42,7 @@ class UnitPresenter(private val view: UnitContract.View,
         }
     }
 
-    override fun handleDelete(unit: Unit) {
+    override suspend fun handleDelete(unit: Unit) {
         val response = SeverResponse(true, "")
         response.isSuccess = !repository.checkUseByInventory(unit.UnitID!!)
         if (!response.isSuccess) {

@@ -11,10 +11,10 @@ interface InvoiceContract {
     }
 
     interface Presenter{
-        fun handlePaymentInvoice(invoice: Invoice) : SeverResponse
+        suspend fun handlePaymentInvoice(invoice: Invoice) : SeverResponse
         fun createInvoice()
-        fun getInvoiceDetails(invoice: Invoice) : MutableList<InvoiceDetail>
-        fun getNewInvoiceNo(): String
+        suspend fun getInvoiceDetails(invoice: Invoice) : MutableList<InvoiceDetail>
+        suspend fun getNewInvoiceNo(): String
     }
 
 }

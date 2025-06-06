@@ -8,9 +8,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.example.app.R
 import com.example.app.databinding.ActivitySyncDataBinding
 import com.example.app.datas.CukcukDbHelper
+import kotlinx.coroutines.launch
 
 class SyncDataActivity : AppCompatActivity(), SyncContract.View {
     private lateinit var binding: ActivitySyncDataBinding
@@ -26,7 +28,9 @@ class SyncDataActivity : AppCompatActivity(), SyncContract.View {
         presenter = SyncPresenter(this, db)
 
         setupToolbar()
-        presenter.getSyncData()
+        lifecycleScope.launch {
+            presenter.getSyncData()
+        }
 
         binding.btnSync.setOnClickListener {
             presenter.handleSyncData()

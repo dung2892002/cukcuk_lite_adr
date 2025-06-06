@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.ActivityInvoiceBinding
@@ -23,6 +24,7 @@ import com.example.app.mvp_modules.sale.adapters.ListInvoiceDetailBillAdapter
 import com.example.app.mvp_modules.sale.contracts.InvoiceContract
 import com.example.app.mvp_modules.sale.presenters.InvoicePresenter
 import com.example.app.utils.FormatDisplay
+import kotlinx.coroutines.launch
 
 @Suppress("DEPRECATION")
 class InvoiceActivity : AppCompatActivity(), InvoiceContract.View {
@@ -58,14 +60,19 @@ class InvoiceActivity : AppCompatActivity(), InvoiceContract.View {
         presenter = InvoicePresenter(this, repository)
 
         setupToolbar()
-        getInvoiceData()
+
+        lifecycleScope.launch {
+            getInvoiceData()
+        }
 
         binding.btnOpenCalculator.setOnClickListener {
             openCalculator()
         }
 
         binding.btnSubmitBill.setOnClickListener {
-            paymentInvoice()
+            lifecycleScope.launch {
+                paymentInvoice()
+            }
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -124,14 +131,16 @@ class InvoiceActivity : AppCompatActivity(), InvoiceContract.View {
             }
 
             R.id.btnSubmitBillToolbar -> {
-                paymentInvoice()
+                lifecycleScope.launch {
+                    paymentInvoice()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
-    private fun paymentInvoice() {
+    private suspend fun paymentInvoice() {
         val result = presenter.handlePaymentInvoice(invoice)
         if (result.isSuccess) {
             presenter.createInvoice()
@@ -140,7 +149,7 @@ class InvoiceActivity : AppCompatActivity(), InvoiceContract.View {
         }
     }
 
-    private fun getInvoiceData() {
+    private suspend fun getInvoiceData() {
         invoice = intent.getSerializableExtra("invoice_data") as Invoice
         fromSaleFragment = intent.getSerializableExtra("from_sale_fragment") as Boolean
 

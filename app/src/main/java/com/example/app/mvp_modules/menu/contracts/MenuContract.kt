@@ -11,7 +11,7 @@ interface MenuContract {
 
     interface Presenter {
         fun openInventoryForm(inventoryId: UUID?)
-        fun fetchData()
+        suspend fun fetchData()
     }
 
 }

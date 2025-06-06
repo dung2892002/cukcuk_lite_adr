@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.ActivitySelectInventoryBinding
@@ -25,6 +26,7 @@ import com.example.app.mvp_modules.sale.adapters.ListSelectInventoryAdapter
 import com.example.app.mvp_modules.sale.contracts.InvoiceFormContract
 import com.example.app.mvp_modules.sale.presenters.InvoiceFormPresenter
 import com.example.app.utils.FormatDisplay
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 
 @Suppress("DEPRECATION")
@@ -50,14 +52,20 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
         presenter = InvoiceFormPresenter(this, repository)
 
         setupToolbar()
-        getDataOrder()
+        lifecycleScope.launch {
+            getDataOrder()
+        }
 
         binding.btnCreateBill.setOnClickListener {
-            paymentInvoice()
+            lifecycleScope.launch {
+                paymentInvoice()
+            }
         }
 
         binding.btnSaveOrder.setOnClickListener {
-            presenter.submitInvoice(invoice, inventoriesSelect, false)
+            lifecycleScope.launch {
+                presenter.submitInvoice(invoice, inventoriesSelect, false)
+            }
         }
 
 
@@ -132,7 +140,7 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
         }
     }
 
-    private fun paymentInvoice() {
+    private suspend fun paymentInvoice() {
         if (invoice.Amount == 0.0) {
             Toast.makeText(this, "Vui lòng chọn món", Toast.LENGTH_SHORT).show()
             return
@@ -160,7 +168,9 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
             }
 
             R.id.btnSubmitSelectDishToolbar -> {
-                paymentInvoice()
+                lifecycleScope.launch {
+                    paymentInvoice()
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -173,7 +183,7 @@ class InvoiceFormActivity : AppCompatActivity(), InvoiceFormContract.View {
     }
 
     @SuppressLint("NewApi")
-    private fun getDataOrder() {
+    private suspend fun getDataOrder() {
         val invoiceData = intent.getSerializableExtra("invoice_data") as Invoice?
         invoice = invoiceData
             ?: Invoice(

@@ -1,10 +1,7 @@
 package com.example.app.mvp_modules.menu.presenters
 
-import android.annotation.SuppressLint
 import com.example.app.datas.repositories.InventoryRepository
-import com.example.app.entities.Inventory
 import com.example.app.mvp_modules.menu.contracts.MenuContract
-import java.time.LocalDateTime
 import java.util.UUID
 
 class MenuPresenter(private val view: MenuContract.View,
@@ -14,7 +11,7 @@ class MenuPresenter(private val view: MenuContract.View,
     }
 
 
-    override fun fetchData() {
+    override suspend fun fetchData() {
         val dishes = repository.getAllInventory()
         view.showDataInventories(dishes)
     }

@@ -6,16 +6,16 @@ import java.util.UUID
 
 interface InventoryFormContract {
     interface View{
-        fun handleSubmitForm()
-        fun deleteDish()
+        suspend fun handleSubmitForm()
+        suspend fun deleteDish()
         fun openCalculator()
         fun openSelectUnitDish()
     }
 
     interface Presenter{
-        fun handleSubmitForm(inventory:Inventory, isAddNew: Boolean) : SeverResponse
-        fun handleDeleteInventory(inventory: Inventory) : SeverResponse
-        fun getInventory(inventoryId: UUID) : Inventory?
+        suspend fun handleSubmitForm(inventory:Inventory, isAddNew: Boolean) : SeverResponse
+        suspend fun handleDeleteInventory(inventory: Inventory) : SeverResponse
+        suspend fun getInventory(inventoryId: UUID) : Inventory?
     }
 
 

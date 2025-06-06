@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.FragmentMenuBinding
@@ -24,6 +25,7 @@ import com.example.app.entities.Inventory
 import com.example.app.mvp_modules.menu.adapters.ListInventoryAdapter
 import com.example.app.mvp_modules.menu.contracts.MenuContract
 import com.example.app.mvp_modules.menu.presenters.MenuPresenter
+import kotlinx.coroutines.launch
 import java.util.UUID
 
 class MenuFragment : Fragment(), MenuContract.View {
@@ -75,7 +77,9 @@ class MenuFragment : Fragment(), MenuContract.View {
     }
 
     private fun fetchData() {
-        presenter.fetchData()
+        lifecycleScope.launch {
+            presenter.fetchData()
+        }
     }
 
     private fun setupToolbar() {

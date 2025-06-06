@@ -31,7 +31,7 @@ class SyncPresenter(private val view: SyncContract.View,
     private val inventoryRepository = InventoryRepository(dbHelper)
     private val invoiceRepository = InvoiceRepository(dbHelper)
 
-    override fun getSyncData() {
+    override suspend fun getSyncData() {
         val lastSyncTime = syncRepository.getLastSyncTime()
         val countSync = syncRepository.countSync()
 

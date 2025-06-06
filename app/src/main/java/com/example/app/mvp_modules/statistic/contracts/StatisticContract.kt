@@ -14,16 +14,16 @@ interface StatisticContract {
     }
 
     interface Presenter{
-        fun handleClickItemOverview(item: StatisticOverview, position: Int)
+        suspend fun handleClickItemOverview(item: StatisticOverview, position: Int)
         fun handleNavigateByTime(item: StatisticByTime)
         fun handleNavigateByOverview(item: StatisticOverview)
-        fun statisticOverview()
-        fun statisticCurrentWeek()
-        fun statisticPreviousWeek()
-        fun statisticCurrentMonth()
-        fun statisticPreviousMonth()
-        fun statisticCurrentYear()
-        fun statisticPreviousYear()
-        fun statisticInventoryDateToDate(dateStart: LocalDateTime, dateEnd: LocalDateTime)
+        suspend fun statisticOverview()
+        suspend fun statisticCurrentWeek()
+        suspend fun statisticPreviousWeek()
+        suspend fun statisticCurrentMonth()
+        suspend fun statisticPreviousMonth()
+        suspend fun statisticCurrentYear()
+        suspend fun statisticPreviousYear()
+        suspend fun statisticInventoryDateToDate(dateStart: LocalDateTime, dateEnd: LocalDateTime)
     }
 }

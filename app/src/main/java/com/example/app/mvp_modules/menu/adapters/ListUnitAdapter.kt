@@ -68,7 +68,6 @@ class ListUnitAdapter(
     }
 
     override fun onBindViewHolder(holder: UnitViewHolder, position: Int) {
-        println("Name: ${units[position].UnitName}")
         holder.unitName.text = units[position].UnitName
         if (units[position].UnitID == selectedUnit.UnitID) {
             holder.imgCheck.visibility = View.VISIBLE

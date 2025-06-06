@@ -13,14 +13,15 @@ import com.example.app.utils.getDouble
 import com.example.app.utils.getInt
 import com.example.app.utils.getString
 import com.example.app.utils.getUUID
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.Locale
 import java.util.UUID
 
 @SuppressLint("Recycle")
-class InvoiceRepository(dbHelper: CukcukDbHelper) {
-    private val db = dbHelper.readableDatabase
-
-    fun getNewInvoiceNo() : String {
+class InvoiceRepository(private val dbHelper: CukcukDbHelper) {
+    suspend fun getNewInvoiceNo() : String = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         var count = 0
         val query = """
             SELECT COUNT(*) FROM Invoice WHERE PaymentStatus = 1
@@ -40,10 +41,11 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
             cursor?.close()
         }
 
-        return String.format(Locale.US, "%05d", count + 1)
+        String.format(Locale.US, "%05d", count + 1)
     }
 
-    fun getListInvoiceNotPayment() : MutableList<Invoice> {
+    suspend fun getListInvoiceNotPayment() : MutableList<Invoice> = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val invoices = mutableListOf<Invoice>()
         val query = """
             SELECT InvoiceID, InvoiceDate, Amount, NumberOfPeople, TableName, ListItemName, InvoiceDate, ReceiveAmount
@@ -86,10 +88,11 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         finally {
             cursor?.close()
         }
-        return invoices
+        invoices
     }
 
-    fun getListInvoicesDetail(invoiceId: UUID) : MutableList<InvoiceDetail> {
+    suspend fun getListInvoicesDetail(invoiceId: UUID) : MutableList<InvoiceDetail> = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val invoicesDetail = mutableListOf<InvoiceDetail>()
         val query = """
             SELECT 
@@ -133,11 +136,12 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         finally {
             cursor?.close()
         }
-        return invoicesDetail
+        invoicesDetail
     }
 
-    fun deleteInvoice(invoiceId: String) : Boolean {
-        return try {
+    suspend fun deleteInvoice(invoiceId: String) : Boolean = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
+        try {
             db.beginTransaction()
             db.delete(
                 "InvoiceDetail",
@@ -161,7 +165,8 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         }
     }
 
-    fun getInvoiceById(invoiceId: UUID): Invoice? {
+    suspend fun getInvoiceById(invoiceId: UUID): Invoice? = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         var invoice: Invoice? = null
         val invoiceQuery = "SELECT * FROM Invoice WHERE InvoiceID = ?"
         val cursor = db.rawQuery(invoiceQuery, arrayOf(invoiceId.toString()))
@@ -216,10 +221,11 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
             }
             detailCursor.close()
         }
-        return invoice
+        invoice
     }
 
-    fun getInvoiceDetailById(invoiceDetailId: UUID): InvoiceDetail? {
+    suspend fun getInvoiceDetailById(invoiceDetailId: UUID): InvoiceDetail? = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         var invoiceDetail: InvoiceDetail? = null
         val invoiceQuery = "SELECT * FROM InvoiceDetail WHERE InvoiceDetailID = ?"
         var cursor: Cursor? = null
@@ -254,14 +260,11 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         finally {
             cursor?.close()
         }
-
-
-
-
-        return invoiceDetail
+        invoiceDetail
     }
 
-    fun getAllInventoryInactive() : MutableList<Inventory> {
+    suspend fun getAllInventoryInactive() : MutableList<Inventory> = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val query =""" 
             SELECT 
                 i.InventoryID, i.InventoryName, i.Price,
@@ -308,11 +311,12 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         finally {
             cursor?.close()
         }
-        return inventoryList
+        inventoryList
     }
 
-    fun createInvoice(invoice: Invoice): Boolean {
-        return try {
+    suspend fun createInvoice(invoice: Invoice): Boolean = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
+         try {
             db.beginTransaction()
             insertInvoice(invoice)
             insertInvoiceDetailRange(invoice.InvoiceDetails)
@@ -327,11 +331,12 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         }
     }
 
-    fun updateInvoice(invoice: Invoice,
+    suspend fun updateInvoice(invoice: Invoice,
                       newsDetail: MutableList<InvoiceDetail>,
                       updatesDetail: MutableList<InvoiceDetail>,
-                      deletesDetail: MutableList<InvoiceDetail>): Boolean {
-        return try {
+                      deletesDetail: MutableList<InvoiceDetail>): Boolean = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
+         try {
             db.beginTransaction()
             updateInvoiceOnly(invoice)
             insertInvoiceDetailRange(newsDetail)
@@ -349,8 +354,9 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         }
     }
 
-    fun paymentInvoice(invoice: Invoice): Boolean {
-        return try {
+    suspend fun paymentInvoice(invoice: Invoice): Boolean = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
+         try {
             db.beginTransaction()
             val values = ContentValues().apply {
                 put("ReceiveAmount", invoice.ReceiveAmount)
@@ -373,8 +379,8 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         }
     }
 
-
-    private fun insertInvoice(invoice: Invoice) {
+    private suspend fun insertInvoice(invoice: Invoice) = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val values = ContentValues().apply {
             put("InvoiceID", invoice.InvoiceID.toString())
             put("InvoiceType", invoice.InvoiceType)
@@ -397,7 +403,8 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         db.insert("Invoice", null, values)
     }
 
-    private fun insertInvoiceDetailRange(details: List<InvoiceDetail>) {
+    private suspend fun insertInvoiceDetailRange(details: List<InvoiceDetail>) = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         for (detail in details) {
             val values = ContentValues().apply {
                 put("InvoiceDetailID", detail.InvoiceDetailID.toString())
@@ -422,7 +429,8 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         }
     }
 
-    private fun updateInvoiceOnly(invoice: Invoice) {
+    private suspend fun updateInvoiceOnly(invoice: Invoice) = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val values = ContentValues().apply {
             put("InvoiceType", invoice.InvoiceType)
             put("InvoiceNo", invoice.InvoiceNo)
@@ -448,7 +456,8 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         )
     }
 
-    private fun updateInvoiceDetailRange(details: List<InvoiceDetail>) {
+    private suspend fun updateInvoiceDetailRange(details: List<InvoiceDetail>) = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val sql = """
         UPDATE InvoiceDetail SET
             InvoiceDetailType = ?,
@@ -498,7 +507,8 @@ class InvoiceRepository(dbHelper: CukcukDbHelper) {
         }
     }
 
-    private fun deleteInvoiceDetailRange(detailIds: List<UUID>) {
+    private suspend fun deleteInvoiceDetailRange(detailIds: List<UUID>) = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val sql = "DELETE FROM InvoiceDetail WHERE InvoiceDetailID = ?"
         val statement = db.compileStatement(sql)
 

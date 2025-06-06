@@ -9,14 +9,16 @@ import com.example.app.utils.getBoolean
 import com.example.app.utils.getDouble
 import com.example.app.utils.getString
 import com.example.app.utils.getUUID
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.UUID
 
 
 @SuppressLint("Recycle")
-class InventoryRepository(dbHelper: CukcukDbHelper) {
-    private val db = dbHelper.readableDatabase
+class InventoryRepository(private val dbHelper: CukcukDbHelper) {
 
-    fun getAllInventory() : MutableList<Inventory> {
+    suspend fun getAllInventory() : MutableList<Inventory> = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val query =""" 
             SELECT 
                 i.InventoryID, i.InventoryName, i.Price,
@@ -58,10 +60,11 @@ class InventoryRepository(dbHelper: CukcukDbHelper) {
         } finally {
             cursor?.close()
         }
-        return inventoryList
+        inventoryList
     }
 
-    fun getInventoryById(inventoryID: UUID) : Inventory? {
+    suspend fun getInventoryById(inventoryID: UUID) : Inventory? = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
         val query = """
             SELECT 
                 i.InventoryID, i.InventoryName, i.Price,
@@ -106,12 +109,12 @@ class InventoryRepository(dbHelper: CukcukDbHelper) {
         finally {
             cursor?.close()
         }
-        return inventory
+        inventory
     }
 
-
-    fun createInventory(inventory: Inventory): Boolean {
-        return try {
+    suspend fun createInventory(inventory: Inventory): Boolean = withContext(Dispatchers.IO) {
+        val db = dbHelper.readableDatabase
+        try {
             val values = ContentValues().apply {
                 put("InventoryID", inventory.InventoryID?.toString() ?: UUID.randomUUID().toString())
                 put("InventoryCode", inventory.InventoryCode)
@@ -139,11 +142,11 @@ class InventoryRepository(dbHelper: CukcukDbHelper) {
         }
     }
 
+    suspend fun updateInventory(inventory: Inventory): Boolean = withContext(Dispatchers.IO) {
+        if (inventory.InventoryID == null) false
 
-    fun updateInventory(inventory: Inventory): Boolean {
-        if (inventory.InventoryID == null) return false
-
-        return try {
+        val db = dbHelper.readableDatabase
+        try {
             val values = ContentValues().apply {
                 put("InventoryCode", inventory.InventoryCode)
                 put("InventoryName", inventory.InventoryName)
@@ -174,11 +177,11 @@ class InventoryRepository(dbHelper: CukcukDbHelper) {
         }
     }
 
+    suspend fun deleteInventory(inventory: Inventory): Boolean = withContext(Dispatchers.IO) {
+        if (inventory.InventoryID == null) false
 
-    fun deleteInventory(inventory: Inventory): Boolean {
-        if (inventory.InventoryID == null) return false
-
-        return try {
+        val db = dbHelper.readableDatabase
+        try {
             val result = db.delete(
                 "Inventory",
                 "InventoryID = ?",
@@ -192,10 +195,10 @@ class InventoryRepository(dbHelper: CukcukDbHelper) {
         }
     }
 
+    suspend fun checkInventoryIsInInvoice(inventory: Inventory): Boolean = withContext(Dispatchers.IO) {
+        if (inventory.InventoryID == null) false
 
-    fun checkInventoryIsInInvoice(inventory: Inventory): Boolean {
-        if (inventory.InventoryID == null) return false
-
+        val db = dbHelper.readableDatabase
         val query = """
         SELECT 1 FROM InvoiceDetail i WHERE i.InventoryId = ? LIMIT 1
     """.trimIndent()
@@ -213,7 +216,6 @@ class InventoryRepository(dbHelper: CukcukDbHelper) {
             cursor?.close()
         }
 
-        return exists
+        exists
     }
-
 }

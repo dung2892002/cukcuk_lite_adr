@@ -18,7 +18,7 @@ import java.util.UUID
 class InvoiceFormPresenter(private val view: InvoiceFormContract.View,
     private val repository: InvoiceRepository) : InvoiceFormContract.Presenter {
 
-    override fun handleDataInventorySelect(invoice: Invoice): MutableList<InventorySelect> {
+    override suspend fun handleDataInventorySelect(invoice: Invoice): MutableList<InventorySelect> {
         val inventories = fetchInventories()
 
         if (invoice.InvoiceID != null) {
@@ -56,7 +56,7 @@ class InvoiceFormPresenter(private val view: InvoiceFormContract.View,
     }
 
 
-    override fun submitInvoice(invoice: Invoice, inventoriesSelect: MutableList<InventorySelect>, toPayment: Boolean) {
+    override suspend fun submitInvoice(invoice: Invoice, inventoriesSelect: MutableList<InventorySelect>, toPayment: Boolean) {
         var response = SeverResponse(true, "")
 
         if (invoice.Amount == 0.0) {
@@ -103,7 +103,7 @@ class InvoiceFormPresenter(private val view: InvoiceFormContract.View,
     }
 
     @SuppressLint("NewApi")
-    override fun paymentInvoice(
+    override suspend fun paymentInvoice(
         inventoriesSelect: MutableList<InventorySelect>,
         invoice: Invoice
     ) {
@@ -113,11 +113,11 @@ class InvoiceFormPresenter(private val view: InvoiceFormContract.View,
     }
 
 
-    private fun fetchInventories() : MutableList<Inventory> {
+    private suspend fun fetchInventories() : MutableList<Inventory> {
         return repository.getAllInventoryInactive()
     }
 
-    private fun getInvoiceDetails(invoiceID: UUID) : MutableList<InvoiceDetail> {
+    private suspend fun getInvoiceDetails(invoiceID: UUID) : MutableList<InvoiceDetail> {
         return repository.getListInvoicesDetail(invoiceID)
     }
 

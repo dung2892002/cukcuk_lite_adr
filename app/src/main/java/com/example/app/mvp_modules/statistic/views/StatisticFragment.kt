@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.app.R
 import com.example.app.databinding.FragmentStatisticBinding
@@ -26,6 +27,7 @@ import com.example.app.mvp_modules.statistic.adapters.StatisticOverviewAdapter
 import com.example.app.mvp_modules.statistic.contracts.StatisticContract
 import com.example.app.mvp_modules.statistic.presenters.StatisticPresenter
 import com.example.app.utils.ChartUtils
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -62,7 +64,9 @@ class StatisticFragment : Fragment(), StatisticContract.View {
         val repository = StatisticRepository(db)
         presenter = StatisticPresenter(this, repository)
 
-        presenter.statisticOverview()
+        viewLifecycleOwner.lifecycleScope.launch {
+            presenter.statisticOverview()
+        }
 
         binding.header.setOnClickListener {
             showSelectTimeStatisticDialog()
@@ -79,38 +83,52 @@ class StatisticFragment : Fragment(), StatisticContract.View {
             .create()
 
         dialogView.findViewById<TextView>(R.id.selectOverview).setOnClickListener {
-            dialog.dismiss()
-            presenter.statisticOverview()
+            viewLifecycleOwner.lifecycleScope.launch {
+                dialog.dismiss()
+                presenter.statisticOverview()
+            }
         }
 
         dialogView.findViewById<TextView>(R.id.selectCurrentWeek).setOnClickListener {
-            closeDialog()
-            presenter.statisticCurrentWeek()
+            viewLifecycleOwner.lifecycleScope.launch {
+                closeDialog()
+                presenter.statisticCurrentWeek()
+            }
         }
 
         dialogView.findViewById<TextView>(R.id.selectPreviousWeek).setOnClickListener {
-            closeDialog()
-            presenter.statisticPreviousWeek()
+            viewLifecycleOwner.lifecycleScope.launch {
+                closeDialog()
+                presenter.statisticPreviousWeek()
+            }
         }
 
         dialogView.findViewById<TextView>(R.id.selectCurrentMonth).setOnClickListener {
-            closeDialog()
-            presenter.statisticCurrentMonth()
+            viewLifecycleOwner.lifecycleScope.launch {
+                closeDialog()
+                presenter.statisticCurrentMonth()
+            }
         }
 
         dialogView.findViewById<TextView>(R.id.selectPreviousMonth).setOnClickListener {
-            closeDialog()
-            presenter.statisticPreviousMonth()
+            viewLifecycleOwner.lifecycleScope.launch {
+                closeDialog()
+                presenter.statisticPreviousMonth()
+            }
         }
 
         dialogView.findViewById<TextView>(R.id.selectCurrentYear).setOnClickListener {
-            closeDialog()
-            presenter.statisticCurrentYear()
+            viewLifecycleOwner.lifecycleScope.launch {
+                closeDialog()
+                presenter.statisticCurrentYear()
+            }
         }
 
         dialogView.findViewById<TextView>(R.id.selectPreviousYear).setOnClickListener {
-            closeDialog()
-            presenter.statisticPreviousYear()
+           viewLifecycleOwner.lifecycleScope.launch {
+               closeDialog()
+               presenter.statisticPreviousYear()
+           }
         }
 
         dialogView.findViewById<TextView>(R.id.selectDateToDate).setOnClickListener {
@@ -141,6 +159,7 @@ class StatisticFragment : Fragment(), StatisticContract.View {
             val date = selectedStartDate
             DatePickerDialog(
                 requireContext(),
+                R.style.CustomDatePickerDialogTheme,
                 { _, year, month, day ->
                 selectedStartDate = LocalDate.of(year, month + 1, day)
                 tvDateStart.text = selectedStartDate.format(formatter)
@@ -166,10 +185,12 @@ class StatisticFragment : Fragment(), StatisticContract.View {
         }
 
         dialogView.findViewById<AppCompatButton>(R.id.btnSubmitStatisticDateToDate).setOnClickListener {
-            val startDateTime = selectedStartDate.atTime(0, 0, 0)
-            val endDateTime = selectedEndDate.atTime(23, 59, 59)
-            selectDateDialog.dismiss()
-            presenter.statisticInventoryDateToDate(startDateTime, endDateTime)
+            viewLifecycleOwner.lifecycleScope.launch {
+                val startDateTime = selectedStartDate.atTime(0, 0, 0)
+                val endDateTime = selectedEndDate.atTime(23, 59, 59)
+                selectDateDialog.dismiss()
+                presenter.statisticInventoryDateToDate(startDateTime, endDateTime)
+            }
         }
 
         selectDateDialog.show()
@@ -182,7 +203,9 @@ class StatisticFragment : Fragment(), StatisticContract.View {
     private fun setupAdapterOverview() {
         adapterOverview = StatisticOverviewAdapter(requireContext(), statisticOverview).apply {
             onItemClick = {item, position ->
-                presenter.handleClickItemOverview(item, position)
+                viewLifecycleOwner.lifecycleScope.launch {
+                    presenter.handleClickItemOverview(item, position)
+                }
             }
         }
         binding.recyclerStatisticOverview.layoutManager = LinearLayoutManager(requireContext())
